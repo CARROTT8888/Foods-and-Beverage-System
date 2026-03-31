@@ -5,10 +5,10 @@ A small final year project
 
 ## Features
 
-- Orders Food and Beverage Based on Category
+- Orders Foods and Beverages based on Category
 - Selects Order Location before Ordering
-- Fullscreen mode
-- Cross platform
+- Selects Foods and Beverages Option While During Order
+- Every Data Details based on Branch
 
 ## HOW TO WRITE README:)
 

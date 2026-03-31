@@ -61,7 +61,7 @@
               <h1 class="text-lg font-bold text-green-900">Opening</h1>
             </div>
             <p class="text-3xl text-green-950 mt-3 font-extrabold">
-              <?php echo $totalStatusOpening; ?>
+              -
             </p>
           </div>
         </div>
@@ -85,7 +85,7 @@
               <h1 class="text-lg font-bold text-red-900">Closed</h1>
             </div>
             <p class="text-3xl text-green-red mt-3 font-extrabold">
-              <?php echo $totalStatusClosed; ?>
+              -
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@
               <h1 class="text-lg font-bold text-amber-900">Setup</h1>
             </div>
             <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-              <?php echo $totalStatusSetup; ?>
+              -
             </p>
           </div>
         </div>
@@ -133,7 +133,7 @@
               <h1 class="text-lg font-bold text-slate-900">Deprecated</h1>
             </div>
             <p class="text-3xl text-slate-950 mt-3 font-extrabold">
-              <?php echo $totalStatusDeprecated; ?>
+              -
             </p>
           </div>
         </div>

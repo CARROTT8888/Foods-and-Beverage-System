@@ -42,6 +42,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $types .= "s";
     }
 
+    if (isset($_POST['status'])) {
+        $fields[] = "status=?";
+        $params[] = $_POST['status'];
+        $types .= "s";
+    }
+
+    if (isset($_POST['startTime'])) {
+        $fields[] = "startTime=?";
+        $params[] = trim($_POST['startTime']);
+        $types .= "s";
+    }
+
+    if (isset($_POST['endTime'])) {
+        $fields[] = "endTime=?";
+        $params[] = trim($_POST['endTime']);
+        $types .= "s";
+    }
+
     // Only run if at least one field is being updated
     if (!empty($fields)) {
         $sql = "UPDATE branch SET " . implode(', ', $fields) . " WHERE branchId=?";
@@ -55,28 +73,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             /*header("Location: /web/dashboard/branches.php");*/
             echo "<script>window.location.href='/web/dashboard/branches.php';</script>";
             exit();
-        };
+        }
+        ;
         /*$stmt->close();*/
     }
 }
 ?>
 
-<div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999" id="updateBranchDialog" aria-hidden="true">
+<div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
+    id="updateBranchDialog" aria-hidden="true">
     <div class="bg-white rounded-xl p-3 w-106">
         <form method="POST">
             <input type="hidden" name="branchId" id="branchId">
-            
+
             <label>Name</label>
             <input type="text" name="name" id="name" required class="border p-2 w-full">
 
             <label>Slug</label>
-            <input type="text" name="slug" id="slug" required class="border p-2 w-full">
+            <input type="text" name="slug" id="slug" disabled class="border p-2 w-full">
 
             <label>Address</label>
             <input type="text" name="address" id="address" class="border p-2 w-full">
 
+            <label>Status</label>
+            <div class="w-full max-w-sm min-w-[200px]">
+                <div class="relative">
+                    <select name="status" id="status"
+                        class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                        <option selected disabled value="">Choose a Status</option>
+                        <option value="Opening">Opening</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Setup">Setup</option>
+                        <option value="Deprecated">Deprecated</option>
+                    </select>
+                    
+                </div>
+            </div>
+            <label>Start Time</label>
+            <input type="time" name="startTime" id="startTime" class="border p-2 w-full" />
+            <label>End Time</label>
+            <input type="time" name="endTime" id="endTime" class="border p-2 w-full" />
+            
+
             <button type="submit" class="bg-blue-500 text-white p-2 mt-2">Update</button>
-            <button type="button" onclick="document.getElementById('updateBranchDialog').classList.add('opacity-0', 'pointer-events-none')">Cancel</button>
+            <button type="button"
+                onclick="document.getElementById('updateBranchDialog').classList.add('opacity-0', 'pointer-events-none')">Cancel</button>
         </form>
     </div>
 </div>

@@ -1,12 +1,12 @@
 <div
     class="text-sm w-56 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium lg:flex hidden flex-col">
-    <a href="/web/dashboard/index.php" class="rounded mt-3 mb-5 flex h-max items-center cursor-pointer">
+    <a href="/web/dashboard/" class="rounded mt-3 mb-5 flex h-max items-center cursor-pointer">
         <img src="../assets/logo.png" alt="brand"
             class="inline-block object-cover object-center w-10 h-10 rounded-sm" />
         <p class="font-sans antialiased text-2xl text-current font-extrabold">Dashboard</p>
     </a>
     <ul class="flex flex-col gap-2 flex-1 overflow-y-auto">
-        <a href="/web/dashboard/index.php"
+        <a href="/web/dashboard/"
             class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
             <i class='bx bxs-dashboard mr-2 text-xl'></i>
             <span>Dashboard</span>
@@ -18,7 +18,7 @@
                     aria-controls="sidebarCollapseList"
                     class="flex items-center hover:text-mutedForeground min-w-40 cursor-pointer py-1.5 px-2.5 rounded-md align-middle transition-all duration-300 ease-in ">
                     <div class="flex items-center gap-1">
-                        <a href="/web/dashboard/branches.php"
+                        <a href="/web/dashboard/branches"
                             class="sidebar-link hover:text-primary hover:underline">Branches</a>
                         <span data-icon
                             class="grid place-items-center shrink-0 transition-transform duration-300 ease-in-out">

@@ -100,6 +100,12 @@
                                         <i class='bx bxs-time'></i>
                                         <span>Setup</span>
                                     </div>
+                                <?php elseif ($data['status'] === 'Deprecated'): ?>
+                                    <div
+                                        class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-5 right-5">
+                                        <i class='bx bxs-x-circle '></i>
+                                        <span>Deprecated</span>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                             <div class="w-full h-max rounded px-3.5 py-2.5 ">
@@ -123,7 +129,7 @@
                                                 View Details
                                             </a>
                                             <button type="button"
-                                                onclick="fillUpdateForm('<?php echo $data['branchId']; ?>','<?php echo htmlspecialchars($data['name']); ?>','<?php echo htmlspecialchars($data['slug']); ?>','<?php echo htmlspecialchars($data['address']); ?>')"
+                                                onclick="fillUpdateForm('<?php echo $data['branchId']; ?>', '<?php echo htmlspecialchars($data['name']); ?>', '<?php echo htmlspecialchars($data['slug']); ?>', '<?php echo htmlspecialchars($data['address']); ?>', '<?php echo htmlspecialchars($data['status']); ?>', '<?php echo htmlspecialchars($data['startTime']); ?>', '<?php echo htmlspecialchars($data['endTime']); ?>')"
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
                                                 Update Branch
@@ -142,9 +148,9 @@
                                     <p class="font-sans antialiased text-base font-semibold">Address: </p>
                                     <span class="font-sans text-secondaryForeground line-clamp-1">
                                         <?php if (!empty($data['address'])): ?>
-                                            <?php echo htmlspecialchars($data['address']); ?>
+                                            <div title="<?php echo htmlspecialchars($data['address']); ?>"><?php echo htmlspecialchars($data['address']); ?></div>
                                         <?php else: ?>
-                                            <div class="italic">The address is not released.</div>
+                                            <div class="italic" title="The address is not released.">The address is not released.</div>
                                         <?php endif ?>
                                     </span>
                                 </div>
@@ -163,7 +169,7 @@
                                     </p>
                                     <span class="font-sans text-secondaryForeground">
                                         <?php if ($data['startTime'] !== null): ?>
-                                            <?php echo htmlspecialchars($data['startTime']); ?>
+                                            <?php echo htmlspecialchars($data['startTime']); ?> - <?php echo htmlspecialchars($data['endTime']); ?>
                                         <?php else: ?>
                                             <div class="italic">The time is not scheduled.</div>
                                         <?php endif ?>
@@ -205,11 +211,15 @@
 </script>
 
 <script>
-    function fillUpdateForm(branchId, name, slug, address) {
+    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime) {
         document.getElementById("branchId").value = branchId;
         document.getElementById("name").value = name;
         document.getElementById("slug").value = slug;
         document.getElementById("address").value = address;
+        document.getElementById("status").value = status;
+        document.getElementById("startTime").value = startTime;
+        document.getElementById("endTime").value = endTime;
+        /*document.getElementById("state").value = state;*/
 
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
     }
