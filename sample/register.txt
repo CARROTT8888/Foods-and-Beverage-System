@@ -1,0 +1,133 @@
+<?php
+require_once 'includes/config.php';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    //insert the remaining codes in this code block
+    $name = trim($_POST['full_name']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+    $confirm_password = trim($_POST['confirm_password']);
+    $phone = trim($_POST['phone_number']);
+
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $registrationMessage = "Invalid email format.";
+        // Validate password strength
+    } elseif (strlen($password) < 5 || !preg_match('/[\W_]/', $password)) {
+        $registrationMessage = "Password must be at least 11 characters and include a symbol.";
+        // Validate Malaysian mobile phone (01 + 8–9 digits)
+    } elseif (!preg_match('/^01\d{8,9}$/', $phone)) {
+        $registrationMessage = "Invalid Malaysian phone number.";
+    } elseif ($confirm_password !== $password) {
+        $registrationMessage = "Password does not match";
+    } else {
+        // if all user inputs are valid
+        $emailCheckStmt = $conn->prepare("SELECT Cus_ID FROM customer WHERE Cus_Email = ?");
+        $emailCheckStmt->bind_param("s", $email);
+        $emailCheckStmt->execute();
+        $emailCheckStmt->store_result();
+        if ($emailCheckStmt->num_rows > 0) {
+            $emailAlreadyExists = true;
+            $registrationMessage = "Email already registered.";
+            $emailCheckStmt->close();
+        } else {
+            $emailCheckStmt->close();
+            $query = "INSERT INTO customer (Cus_Name, Cus_Email, Cus_password, Cus_Phone)
+                        VALUES (?, ?, ?, ?)";
+            $emailCheckStmt = $conn->prepare($query);
+            $emailCheckStmt->bind_param(
+                'ssss',
+                $name, $email, $password, $phone
+            );
+            if ($emailCheckStmt->execute()) {
+                header("Location: Lab 10 Q1.php?message=success");
+                exit();
+            } else {
+                header("Location: Lab 10 Q1.php?message=failed");
+            }
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Lakeshow Grocer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/template.css">
+
+</head>
+
+<body>
+    <?php include_once 'includes/header.php'; ?>
+
+    <section class="main-container">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Create Your Account</h2>
+                <?php if (!empty($registrationMessage)): ?>
+                    <div class="error-message">
+                        <?php echo htmlspecialchars($registrationMessage) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <form id="registerForm" method="POST" action="" class="register-form">
+                <div class="form-group">
+                    <label for="full_name" class="form-label">Full Name</label>
+                    <input type="text" name="full_name" class="form-control" placeholder="Full Name" value="" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email"
+                        required />
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+                        required>
+                    <div class="password-strength-text" id="password-strength-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="form-control"
+                        placeholder="Password" required><span class="password-toggle" id="toggleConfirmPassword">
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone_number" class="form-label">Phone Number</label>
+                    <input type="text" name="phone_number" class="form-control"
+                        placeholder="Phone Number (e.g., 0123456789)" value="" required pattern="01\d{8,9}"
+                        maxlength="11" inputmode="numeric">
+                </div>
+
+                <button type="submit" class="btn-register">Register Now</button>
+            </form>
+
+            <div class="login-link">
+                <p>Already have an account? <a href="Lab 10 Q2 login.php">Login here</a></p>
+            </div>
+        </div>
+    </section>
+
+    <?php include_once 'includes/footer.php'; ?>
+
+
+    <?php if ($registrationSuccess): ?>
+
+    <?php endif; ?>
+
+    <?php if ($emailAlreadyExists): ?>
+
+    <?php endif; ?>
+
+
+</body>
+
+</html>

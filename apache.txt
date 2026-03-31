@@ -1,0 +1,6 @@
+Alias /web "C:\Users\Asus\vscoode\abc\Foods-and-Beverage-System"
+<Directory "C:\Users\Asus\vscoode\abc\Foods-and-Beverage-System">
+Options Indexes FollowSymLinks MultiViews
+AllowOverride All
+Require all granted
+</Directory>
