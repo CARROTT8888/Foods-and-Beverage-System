@@ -1,6 +1,8 @@
+![image](https://image2url.com/r2/default/images/1775036690025-7ed00447-e77e-4336-b78a-ed7884d512ee.jpeg)
+
 ## Foods and Beverages System
 
-A small final year project
+Floudemo, a Small Final Year Project
 
 
 ## Features
