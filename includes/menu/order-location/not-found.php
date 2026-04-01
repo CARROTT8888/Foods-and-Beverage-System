@@ -1,12 +1,11 @@
 <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
     <img src="./assets/404.png" alt="404" class="w-[300px] h-[300px]" />
     <h2 class="md:text-6xl text-4xl font-bold text-gray-800">Result Not Found!</h2>
-    <p class="text-base mt-4 text-gray-500">Oppps, maybe you should think about the keyword properly before search
-        again!</p>
+    <p class="text-base mt-4 text-gray-500">No branches match your current filters. Try adjusting your search or clearing your status/state selections.</p>
     <div class="flex items-center gap-4 mt-6">
-        <button type="button"
+        <button type="button" onclick="window.location('/web/order-location')"
             class="bg-primary hover:bg-indigo-600 px-7 py-2.5 text-white rounded active:scale-95 transition-all">
-            Go back home
+            Clear All
         </button>
         <button type="button" class="group flex items-center gap-2 px-7 py-2.5 active:scale-95 transition">
             Contact support

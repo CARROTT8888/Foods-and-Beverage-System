@@ -2,7 +2,7 @@
   class="relative h-screen bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8 max-w-7xl w-full">
   <div
     class="rounded-lg border shadow-sm overflow-hidden bg-white border-slate-200 shadow-slate-950/5 flex h-full w-full max-w-7xl flex-row">
-    <img class="w-2/5 object-cover" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"
+    <img class="w-2/5 object-cover" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
       alt="card-image" />
     <div class="p-4 h-max w-full">
       <?php if ($branch['status'] === 'Opening'): ?>
@@ -27,17 +27,41 @@
           <i class='bx bxs-time'></i>
           <span>Setup</span>
         </div>
+        <?php elseif ($branch['status'] === 'Deprecated'): ?>
+        <div
+          class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto p-1 px-2 absolute">
+          <i class='bx bxs-x-circle'></i>
+          <span>Deprecated</span>
+        </div>
       <?php endif; ?>
       <h1 class="font-sans antialiased font-extrabold text-lg md:text-xl lg:text-2xl text-current mt-7 items-center ">
         <?php echo htmlspecialchars($branch['name']); ?> <i class='bx bx-edit text-lg md:text-xl lg:text-2xl ml-2'></i>
       </h1>
-      <p class="font-sans antialiased text-base mb-2 text-slate-600 flex">
-        <?php if ($branch['address'] !== null): ?>
-          Address: <?php echo htmlspecialchars($branch['address']); ?>
-        <?php else: ?>
-        <div class="italic">Address: The address is not released.</div>
-      <?php endif ?>
-      </p>
+      <div class="mb-5 items-center">
+        <p class="font-sans antialiased text-base flex items-center gap-2 ">
+          <?php if (!empty($branch['address'])): ?>
+            <i class='bx bxs-map text-xl text-primary'></i> <span class="font-medium"><?php echo htmlspecialchars($branch['address']); ?></span>
+          <?php else: ?>
+            <i class='bx bxs-map text-xl text-primary'></i> <?php echo "<span class='italic text-secondaryForeground'>The address is not released.</span>" ?>
+          <?php endif ?>
+        </p>
+        <div class="flex justify-between">
+          <p class="font-sans antialiased text-base flex items-center gap-2 ">
+            <?php if (!empty($branch['contactNumber'])): ?>
+              <i class='bx bxs-phone text-xl text-primary'></i> <span class="font-medium"><?php echo htmlspecialchars($branch['contactNumber']); ?></span>
+            <?php else: ?>
+              <i class='bx bxs-phone text-xl text-primary'></i> <?php echo "<span class='italic text-secondaryForeground'>The contact number is not released.</span>" ?>
+            <?php endif ?>
+          </p>
+          <p class="font-sans antialiased text-base flex items-center gap-2 ">
+            <?php if (!empty($branch['endTime'])): ?>
+              <i class='bx bxs-hourglass text-xl text-primary'></i> <span class="text-green-500 font-medium"><?php echo htmlspecialchars($branch['startTime']); ?></span> - <span class="text-red-500 font-medium"><?php echo htmlspecialchars($branch['endTime']); ?></span>
+            <?php else: ?>
+              <i class='bx bxs-hourglass text-xl text-primary'></i> <?php echo "<span class='italic text-secondaryForeground'>The opening hour is not scheduled.</span>" ?>
+            <?php endif ?>
+          </p>
+        </div>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4.5">
         <!-- Card 1 -->
         <div

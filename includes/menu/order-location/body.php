@@ -75,6 +75,16 @@ $stmtcount->close();
                     }, $statuses);
                     $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
                 }
+                if (!empty($_GET['state'])) {
+                    $states = $_GET['state'];
+                    if (!is_array($states)) {
+                        $states = [$states];
+                    }
+                    $escapedStates = array_map(function ($state) use ($conn) {
+                        return "'" . $conn->real_escape_string($state) . "'";
+                    }, $states);
+                    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
+                }
                 $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
                 $stmt = $conn->prepare($branchQuery);
                 if (!empty($params)) {
@@ -108,6 +118,18 @@ $stmtcount->close();
                                         <i class='bx bxs-no-entry'></i>
                                         <span>Closed</span>
                                     </div>
+                                <?php elseif ($data['status'] === 'Setup'): ?>
+                                    <div
+                                        class="flex items-center gap-2 text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-5 right-5">
+                                        <i class='bx bxs-time'></i>
+                                        <span>Setup</span>
+                                    </div>
+                                <?php elseif ($data['status'] === 'Deprecated'): ?>
+                                    <div
+                                        class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-5 right-5">
+                                        <i class='bx bxs-x-circle '></i>
+                                        <span>Deprecated</span>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                             <div class="w-full h-max rounded px-3.5 py-2.5 ">
@@ -126,19 +148,44 @@ $stmtcount->close();
                                                 stroke-linejoin="round"></path>
                                         </svg>5.0</p>
                                 </div>
-                                <div class="flex gap-2">
-                                    <p class="font-sans antialiased text-base font-semibold">Address: </p>
-                                    <span class="font-sans text-secondaryForeground line-clamp-2">Banda Kaba, Kampung Lapan,
-                                        75000,
-                                        Melaka</span>
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-map text-xl'></i>
+                                    </p>
+                                    <span class="font-sans text-secondaryForeground line-clamp-1">
+                                        <?php if (!empty($data['address'])): ?>
+                                            <div title="<?php echo htmlspecialchars($data['address']); ?>">
+                                                <?php echo htmlspecialchars($data['address']); ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="italic" title="The address is not released.">The address is not released.
+                                            </div>
+                                        <?php endif ?>
+                                    </span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <p class="font-sans antialiased text-base font-semibold">Contact Number: </p>
-                                    <span class="font-sans text-secondaryForeground">0123456789</span>
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-phone text-xl'></i></p>
+                                    <span class="font-sans text-secondaryForeground line-clamp-1">
+                                        <?php if (!empty($data['contactNumber'])): ?>
+                                            <div title="<?php echo htmlspecialchars($data['contactNumber']); ?>">
+                                                <?php echo htmlspecialchars($data['contactNumber']); ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="italic" title="The contact number is not released.">The contact number is
+                                                not released.</div>
+                                        <?php endif; ?>
+                                    </span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <p class="font-sans antialiased text-base line-champ-2 font-semibold">Opening Time: </p>
-                                    <span class="font-sans text-secondaryForeground">8:00 AM - 10:30 PM</span>
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-sans antialiased text-base "><i class='bx bxs-hourglass text-xl'></i>
+                                    </p>
+                                    <span class="font-sans text-secondaryForeground">
+                                        <?php if (!empty($data['endTime'])): ?>
+                                            <?php echo htmlspecialchars($data['startTime']); ?> -
+                                            <?php echo htmlspecialchars($data['endTime']); ?>
+                                        <?php else: ?>
+                                            <div class="italic" title="The time is not scheduled.">The time is not scheduled.</div>
+                                        <?php endif ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="w-full px-3.5 pb-3.5 rounded pt-3"><button

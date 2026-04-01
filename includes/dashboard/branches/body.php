@@ -163,41 +163,40 @@
 
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <p class="font-sans antialiased text-base"><i class='bx bxs-map text-xl'></i>
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-map text-xl text-primary'></i>
                                     </p>
-                                    <span class="font-sans text-secondaryForeground line-clamp-1">
+                                    <span class="font-sans line-clamp-1">
                                         <?php if (!empty($data['address'])): ?>
                                             <div title="<?php echo htmlspecialchars($data['address']); ?>">
-                                                <?php echo htmlspecialchars($data['address']); ?>
+                                                <span class="font-medium"><?php echo htmlspecialchars($data['address']); ?></span>
                                             </div>
                                         <?php else: ?>
-                                            <div class="italic" title="The address is not released.">The address is not released.
+                                            <div class="italic text-secondaryForeground" title="The address is not released.">The address is not released.
                                             </div>
                                         <?php endif ?>
                                     </span>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <p class="font-sans antialiased text-base"><i class='bx bxs-phone text-xl'></i></p>
-                                    <span class="font-sans text-secondaryForeground line-clamp-1">
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-phone text-xl text-primary'></i></p>
+                                    <span class="font-sans line-clamp-1">
                                         <?php if (!empty($data['contactNumber'])): ?>
                                             <div title="<?php echo htmlspecialchars($data['contactNumber']); ?>">
-                                                <?php echo htmlspecialchars($data['contactNumber']); ?>
+                                                <span class="font-medium"><?php echo htmlspecialchars($data['contactNumber']); ?></span>
                                             </div>
                                         <?php else: ?>
-                                            <div class="italic" title="The contact number is not released.">The contact number is
+                                            <div class="italic text-secondaryForeground" title="The contact number is not released.">The contact number is
                                                 not released.</div>
                                         <?php endif; ?>
                                     </span>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <p class="font-sans antialiased text-base "><i class='bx bxs-hourglass text-xl'></i>
+                                    <p class="font-sans antialiased text-base "><i class='bx bxs-hourglass text-xl text-primary'></i>
                                     </p>
-                                    <span class="font-sans text-secondaryForeground">
+                                    <span class="font-sans">
                                         <?php if (!empty($data['endTime'])): ?>
-                                            <?php echo htmlspecialchars($data['startTime']); ?> -
-                                            <?php echo htmlspecialchars($data['endTime']); ?>
+                                            <span class="text-green-500 font-medium"><?php echo htmlspecialchars($data['startTime']); ?></span> - <span class="text-red-500 font-medium"><?php echo htmlspecialchars($data['endTime']); ?></span>
                                         <?php else: ?>
-                                            <div class="italic" title="The time is not scheduled.">The time is not scheduled.</div>
+                                            <div class="italic text-secondaryForeground" title="The time is not scheduled.">The time is not scheduled.</div>
                                         <?php endif ?>
                                     </span>
                                 </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2026 at 05:18 PM
+-- Generation Time: Apr 01, 2026 at 06:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,7 +38,7 @@ CREATE TABLE `branch` (
   `contactNumber` varchar(20) DEFAULT NULL,
   `startTime` varchar(10) DEFAULT NULL,
   `endTime` varchar(10) DEFAULT NULL,
-  `state` varchar(150) DEFAULT NULL
+  `state` enum('Johor','Kedah','Kelantan','Melaka','Negeri Sembilan','Pahang','Perak','Perlis','Pulau Pinang','Sabah','Sarawak','Selangor','Terengganu') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -47,11 +47,11 @@ CREATE TABLE `branch` (
 
 INSERT INTO `branch` (`branchId`, `name`, `slug`, `image`, `createdAt`, `address`, `status`, `contactNumber`, `startTime`, `endTime`, `state`) VALUES
 (1, 'Multimedia University', '111', NULL, '0000-00-00 00:00:00', NULL, 'Closed', NULL, NULL, NULL, NULL),
-(2, 'Treble Clef', 'tc', NULL, '0000-00-00 00:00:00', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Setup', '0123456789\n', NULL, NULL, NULL),
-(3, 'GPA 3.78', 'gpa', NULL, '2026-03-25 21:14:55', 'abc123', 'Setup', NULL, NULL, NULL, NULL),
+(2, 'Treble Clef', 'tc', NULL, '0000-00-00 00:00:00', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Opening', '0123456789', '08:00', '17:00', 'Melaka'),
+(3, 'GPA 3.78', 'gpa', NULL, '2026-03-25 21:14:55', 'abc123', 'Opening', NULL, '', '', 'Kelantan'),
 (4, '???', 'tc2121', NULL, '2026-03-30 15:51:00', 'where is treble clef', 'Deprecated', NULL, NULL, NULL, NULL),
-(5, 'Treble Clef 2', 'tc1121', NULL, '2026-03-31 00:42:30', '', 'Closed', NULL, NULL, NULL, NULL),
-(8, 'testing', '123', NULL, '2026-03-31 01:26:35', 'i am testing header location', 'Closed', NULL, NULL, NULL, NULL);
+(5, 'Treble Clef 2', 'tc1121', NULL, '2026-03-31 00:42:30', '', 'Closed', NULL, '', '', NULL),
+(8, 'testing', '123', NULL, '2026-03-31 01:26:35', 'i am testing header location', 'Setup', '0106553599', '', '', NULL);
 
 -- --------------------------------------------------------
 
