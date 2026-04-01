@@ -17,7 +17,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/web/menu"
+                            <a href="/web/order-location"
                                 class="font-sans nav-link antialiased text-sm flex flex-row items-center gap-x-2 p-1 hover:text-primary">
                                 <i class='bx bxs-food-menu'></i>
                                 Menu
@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/web/menu"
+                            <a href="/web/branches"
                                 class="font-sans nav-link antialiased text-sm flex flex-row items-center gap-x-2 p-1 hover:text-primary">
                                 <i class='bx bxs-building'></i>
                                 Branches
@@ -67,7 +67,7 @@
                             <i class='bx bxs-cog mr-2 text-lg'></i>
                             Settings
                         </a>
-                        <a href="/web/dashboard/index.php"
+                        <a href="/web/dashboard/"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bxs-dashboard mr-2 text-lg'></i>
                             Dashboard

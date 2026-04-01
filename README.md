@@ -6,6 +6,7 @@ A small final year project
 ## Features
 
 - Orders Foods and Beverages based on Category
+- GPS Location Tracking
 - Selects Order Location before Ordering
 - Selects Foods and Beverages Option While During Order
 - Every Data Details based on Branch

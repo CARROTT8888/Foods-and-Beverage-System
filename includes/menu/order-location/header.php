@@ -4,7 +4,12 @@
     $selectedStatuses = $_GET['status'] ?? [];
     if (!is_array($selectedStatuses)) {
         $selectedStatuses = [$selectedStatuses];
-    }
+    };
+    // filtering state
+    $selectedStates = $_GET['state'] ?? [];
+    if (!is_array($selectedStates)) {
+        $selectedStates = [$selectedStates];
+    };
     ?>
     <div class="flex items-center flex-wrap gap-4 ">
         <!-- Trigger Button -->
@@ -26,19 +31,23 @@
                     <?php if ($status === 'Opening'): ?>
                         <div
                             class="text-green-500  border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i></div>
+                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                        </div>
                     <?php elseif ($status === 'Closed'): ?>
                         <div
                             class="text-red-500 border border-red-500 bg-red-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i></div>
+                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                        </div>
                     <?php elseif ($status === 'Setup'): ?>
                         <div
                             class="text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i></div>
+                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                        </div>
                     <?php elseif ($status === 'Deprecated'): ?>
                         <div
                             class="text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i></div>
+                            <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                        </div>
                     <?php endif ?>
                 </a>
             <?php endforeach; ?>
@@ -196,6 +205,63 @@
                                     for="Deprecated"> Deprecated </label>
                                 <span
                                     class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatusDeprecated; ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Collapse Item -->
+                <div>
+                    <button class="w-full flex justify-between items-center py-2 text-slate-600 text-sm font-sans"
+                        onclick="toggleCollapse('collapseMarketing1')"> State <span
+                            class="transform transition-transform duration-300" id="iconMarketing1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="collapseMarketing1"
+                        class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
+                        <!-- Checkbox List -->
+                        <div class="flex flex-col gap-3 my-2">
+                            <?php
+                            $filter = "";
+                            // filtering state
+                            $selectedStates = $_GET['state'] ?? [];
+                            if (!is_array($selectedStates)) {
+                                $selectedStates = [$selectedStates];
+                            }
+                            if (!empty($selectedStates)) {
+                                $escapedStates = array_map(function ($state) use ($conn) {
+                                    return "'" . $conn->real_escape_string($state) . "'";
+                                }, $selectedStates);
+                                $filter .= " AND branch.status IN (" . implode(',', $escapedStates) . ")";
+                            }
+                            // final query with filter
+                            $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
+                            $branchResult = $conn->query($branchQuery);
+                            ?>
+                            <!-- Checkbox Item -->
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Melaka">
+                                    <input type="checkbox" id="Melaka" name="state[]" value="Melaka"
+                                        <?= in_array('Melaka', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
+                                    for="Melaka"> Melaka </label>
+                                <span class="font-sans antialiased text-sm text-green-600 ml-6">-</span>
                             </div>
                         </div>
                     </div>

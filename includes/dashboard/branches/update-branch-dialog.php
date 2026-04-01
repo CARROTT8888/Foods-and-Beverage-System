@@ -48,6 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $types .= "s";
     }
 
+    if (isset($_POST['state'])) {
+        $fields[] = "state=?";
+        $params[] = $_POST['state'];
+        $types .= "s";
+    }
+
     if (isset($_POST['startTime'])) {
         $fields[] = "startTime=?";
         $params[] = trim($_POST['startTime']);
@@ -57,6 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['endTime'])) {
         $fields[] = "endTime=?";
         $params[] = trim($_POST['endTime']);
+        $types .= "s";
+    }
+
+    if (!empty(trim($_POST['contactNumber']))) {
+        $fields[] = "contactNumber=?";
+        $params[] = trim($_POST['contactNumber']);
         $types .= "s";
     }
 
@@ -87,18 +99,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="hidden" name="branchId" id="branchId">
 
             <label>Name</label>
-            <input type="text" name="name" id="name" required class="border p-2 w-full">
+            <input type="text" name="name" id="updateName" required class="border p-2 w-full">
 
             <label>Slug</label>
-            <input type="text" name="slug" id="slug" disabled class="border p-2 w-full">
+            <input type="text" name="slug" id="updateSlug" readonly class="border p-2 w-full">
 
             <label>Address</label>
-            <input type="text" name="address" id="address" class="border p-2 w-full">
+            <input type="text" name="address" id="updateAddress" class="border p-2 w-full">
 
             <label>Status</label>
             <div class="w-full max-w-sm min-w-[200px]">
                 <div class="relative">
-                    <select name="status" id="status"
+                    <select name="status" id="updateStatus"
                         class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
                         <option selected disabled value="">Choose a Status</option>
                         <option value="Opening">Opening</option>
@@ -106,15 +118,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="Setup">Setup</option>
                         <option value="Deprecated">Deprecated</option>
                     </select>
-                    
+
+                </div>
+            </div>
+
+            <label>State</label>
+            <div class="w-full max-w-sm min-w-[200px]">
+                <div class="relative">
+                    <select name="state" id="updateState"
+                        class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                        <option selected disabled value="">Choose a State</option>
+                        <option value="Johor">Johor</option>
+                        <option value="Kedah">Kedah</option>
+                        <option value="Kelantan">Kelantan</option>
+                        <option value="Melaka">Melaka</option>
+                        <option value="Negeri Sembilan">Negeri Sembilan</option>
+                        <option value="Pahang">Pahang</option>
+                        <option value="Perak">Perak</option>
+                        <option value="Perlis">Perlis</option>
+                        <option value="Pulau Pinang">Pulau Pinang</option>
+                        <option value="Sabah">Sabah</option>
+                        <option value="Sarawak">Sarawak</option>
+                        <option value="Selangor">Selangor</option>
+                        <option value="Terengganu">Terengganu</option>
+                    </select>
                 </div>
             </div>
             <label>Start Time</label>
-            <input type="time" name="startTime" id="startTime" class="border p-2 w-full" />
+            <input type="time" name="startTime" id="updateStartTime" class="border p-2 w-full" />
             <label>End Time</label>
-            <input type="time" name="endTime" id="endTime" class="border p-2 w-full" />
-            
-
+            <input type="time" name="endTime" id="updateEndTime" class="border p-2 w-full" />
+            <label>Contact Number</label>
+            <input type="text" name="contactNumber" id="updateContactNumber" class="border p-2 w-full">
             <button type="submit" class="bg-blue-500 text-white p-2 mt-2">Update</button>
             <button type="button"
                 onclick="document.getElementById('updateBranchDialog').classList.add('opacity-0', 'pointer-events-none')">Cancel</button>

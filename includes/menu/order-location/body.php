@@ -59,6 +59,7 @@ $stmtcount->close();
                         $filter .= " AND branch.status = 'Deprecated'";
                     }
                 }*/
+                // filtering status
                 if (!empty($_GET['status'])) {
                     $statuses = $_GET['status'];
                     if (!is_array($statuses)) {
@@ -68,6 +69,17 @@ $stmtcount->close();
                         return "'" . $conn->real_escape_string($status) . "'";
                     }, $statuses);
                     $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
+                };
+                // filtering state
+                if (!empty($_GET['state'])) {
+                    $states = $_GET['state'];
+                    if (!is_array($states)) {
+                        $states = [$states];
+                    }
+                    $escapedStates = array_map(function ($states) use ($conn) {
+                        return "'" . $conn->real_escape_string($states) . "'";
+                    }, $states);
+                    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
                 }
                 $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
                 $branchResult = $conn->query($branchQuery);

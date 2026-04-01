@@ -172,7 +172,7 @@
             </div>
             <div class="relative w-full">
 
-                <input placeholder="Search a name, state, or address" name="search"
+                <input placeholder="Search a name, state, or address" name="search" value=""
                     class="w-full aria-disabled:cursor-not-allowed outline-none focus:outline-none placeholder:text-slate-black bg-transparent ring-transparent border border-slate-200 transition-all duration-300 ease-in disabled:opacity-50 disabled:pointer-events-none data-[error=true]:border-error data-[success=true]:border-success select-none data-[shape=pill]:rounded-full text-sm rounded-md py-2 px-2.5 ring shadow-sm data-[icon-placement=start]:ps-9 data-[icon-placement=end]:pe-9 hover:border-primary-800 hover:ring-primary-800/10 focus:border-primary peer"
                     data-error="false" data-success="false" data-shape="default" data-icon-placement="end" type="text"
                     data-tabindex="" />

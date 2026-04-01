@@ -128,9 +128,17 @@
                                                 <i class='bx bx-show mr-2 text-lg'></i>
                                                 View Details
                                             </a>
-                                            <button type="button"
-                                                onclick="fillUpdateForm('<?php echo $data['branchId']; ?>', '<?php echo htmlspecialchars($data['name']); ?>', '<?php echo htmlspecialchars($data['slug']); ?>', '<?php echo htmlspecialchars($data['address']); ?>', '<?php echo htmlspecialchars($data['status']); ?>', '<?php echo htmlspecialchars($data['startTime']); ?>', '<?php echo htmlspecialchars($data['endTime']); ?>')"
-                                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["branchId"]); ?>,
+                                                <?php echo json_encode($data["name"]); ?>,
+                                                <?php echo json_encode($data["slug"]); ?>,
+                                                <?php echo json_encode($data["address"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["startTime"]); ?>,
+                                                <?php echo json_encode($data["endTime"]); ?>,
+                                                <?php echo json_encode($data["contactNumber"]); ?>,
+                                                <?php echo json_encode($data["state"]); ?>
+                                                )' class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
                                                 Update Branch
                                             </button>
@@ -144,34 +152,42 @@
                                     </div>
 
                                 </div>
-                                <div class="flex gap-2">
-                                    <p class="font-sans antialiased text-base font-semibold">Address: </p>
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-map text-xl'></i>
+                                    </p>
                                     <span class="font-sans text-secondaryForeground line-clamp-1">
                                         <?php if (!empty($data['address'])): ?>
-                                            <div title="<?php echo htmlspecialchars($data['address']); ?>"><?php echo htmlspecialchars($data['address']); ?></div>
+                                            <div title="<?php echo htmlspecialchars($data['address']); ?>">
+                                                <?php echo htmlspecialchars($data['address']); ?>
+                                            </div>
                                         <?php else: ?>
-                                            <div class="italic" title="The address is not released.">The address is not released.</div>
+                                            <div class="italic" title="The address is not released.">The address is not released.
+                                            </div>
                                         <?php endif ?>
                                     </span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <p class="font-sans antialiased text-base font-semibold">Contact Number: </p>
-                                    <span class="font-sans text-secondaryForeground">
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-phone text-xl'></i></p>
+                                    <span class="font-sans text-secondaryForeground line-clamp-1">
                                         <?php if (!empty($data['contactNumber'])): ?>
-                                            <?php echo htmlspecialchars($data['contactNumber']); ?>
-                                        <?php else:
-                                            echo "-"; ?>
+                                            <div title="<?php echo htmlspecialchars($data['contactNumber']); ?>">
+                                                <?php echo htmlspecialchars($data['contactNumber']); ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="italic" title="The contact number is not released.">The contact number is
+                                                not released.</div>
                                         <?php endif; ?>
                                     </span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <p class="font-sans antialiased text-base line-champ-2 font-semibold">Opening Time:
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-sans antialiased text-base "><i class='bx bxs-hourglass text-xl'></i>
                                     </p>
                                     <span class="font-sans text-secondaryForeground">
-                                        <?php if ($data['startTime'] !== null): ?>
-                                            <?php echo htmlspecialchars($data['startTime']); ?> - <?php echo htmlspecialchars($data['endTime']); ?>
+                                        <?php if (!empty($data['endTime'])): ?>
+                                            <?php echo htmlspecialchars($data['startTime']); ?> -
+                                            <?php echo htmlspecialchars($data['endTime']); ?>
                                         <?php else: ?>
-                                            <div class="italic">The time is not scheduled.</div>
+                                            <div class="italic" title="The time is not scheduled.">The time is not scheduled.</div>
                                         <?php endif ?>
                                     </span>
                                 </div>
@@ -185,13 +201,13 @@
                                     </button>
                                 </a>
                             </div>
-                            <?php include 'update-branch-dialog.php'; ?>
                         </div>
                         <?php
                     endwhile;
                 else:
                     include_once 'not-found.php';
                 endif; ?>
+                <?php include 'update-branch-dialog.php'; ?>
 </section>
 <script>
     const sidebar = document.getElementById('sidebar');
@@ -208,18 +224,19 @@
             sidebar.classList.add('-translate-x-full');
         }
     });
-</script>
 
-<script>
-    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime) {
+    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime, contactNumber, state) {
+        console.log(branchId, name);
+
         document.getElementById("branchId").value = branchId;
-        document.getElementById("name").value = name;
-        document.getElementById("slug").value = slug;
-        document.getElementById("address").value = address;
-        document.getElementById("status").value = status;
-        document.getElementById("startTime").value = startTime;
-        document.getElementById("endTime").value = endTime;
-        /*document.getElementById("state").value = state;*/
+        document.getElementById("updateName").value = name;
+        document.getElementById("updateSlug").value = slug;
+        document.getElementById("updateAddress").value = address;
+        document.getElementById("updateStatus").value = status;
+        document.getElementById("updateStartTime").value = startTime;
+        document.getElementById("updateEndTime").value = endTime;
+        document.getElementById("updateContactNumber").value = contactNumber;
+        document.getElementById("updateState").value = state;
 
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
     }
