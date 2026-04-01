@@ -44,8 +44,14 @@ $stmtcount->close();
                 class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <?php
                 $filter = "";
-                if (isset($_GET['name']) && !empty($_GET['name'])) {
-                    $filter = " AND branch.name LIKE '%" . $_GET['name'] . "%'";
+                $params = [];
+                $types = "";
+                $search = $_GET['search'] ?? '';
+                if (!empty($search)) {
+                    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
+                    $searchValue = "%" . $search . "%";
+                    $params = [$searchValue, $searchValue, $searchValue];
+                    $types = "sss";
                 }
                 ;
                 /*if (isset($_GET['status']) && !empty($_GET['status'])) {
@@ -59,7 +65,6 @@ $stmtcount->close();
                         $filter .= " AND branch.status = 'Deprecated'";
                     }
                 }*/
-                // filtering status
                 if (!empty($_GET['status'])) {
                     $statuses = $_GET['status'];
                     if (!is_array($statuses)) {
@@ -69,20 +74,15 @@ $stmtcount->close();
                         return "'" . $conn->real_escape_string($status) . "'";
                     }, $statuses);
                     $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
-                };
-                // filtering state
-                if (!empty($_GET['state'])) {
-                    $states = $_GET['state'];
-                    if (!is_array($states)) {
-                        $states = [$states];
-                    }
-                    $escapedStates = array_map(function ($states) use ($conn) {
-                        return "'" . $conn->real_escape_string($states) . "'";
-                    }, $states);
-                    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
                 }
                 $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
-                $branchResult = $conn->query($branchQuery);
+                $stmt = $conn->prepare($branchQuery);
+                if (!empty($params)) {
+                    $stmt->bind_param($types, ...$params);
+                }
+                $stmt->execute();
+                $branchResult = $stmt->get_result();
+                //$branchResult = $conn->query($branchQuery);
                 if ($branchResult->num_rows > 0):
                     while ($data = $branchResult->fetch_assoc()):
                         ?>

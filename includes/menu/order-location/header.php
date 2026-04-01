@@ -1,3 +1,50 @@
+<?php
+$filter = "";
+$params = [];
+$types = "";
+$search = $_GET['search'] ?? '';
+if (!empty($search)) {
+    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
+    $searchValue = "%" . $search . "%";
+    $params = [$searchValue, $searchValue, $searchValue];
+    $types = "sss";
+}
+;
+// filtering status
+$selectedStatuses = $_GET['status'] ?? [];
+if (!is_array($selectedStatuses)) {
+    $selectedStatuses = [$selectedStatuses];
+}
+if (!empty($selectedStatuses)) {
+    $escapedStatuses = array_map(function ($status) use ($conn) {
+        return "'" . $conn->real_escape_string($status) . "'";
+    }, $selectedStatuses);
+    $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
+}
+// filtering state
+$selectedStates = $_GET['state'] ?? [];
+if (!is_array($selectedStates)) {
+    $selectedStates = [$selectedStates];
+}
+if (!empty($selectedStates)) {
+    $escapedStates = array_map(function ($state) use ($conn) {
+        return "'" . $conn->real_escape_string($state) . "'";
+    }, $selectedStates);
+    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
+}
+// final query with filter
+/*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
+$branchResult = $conn->query($branchQuery);*/
+
+$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
+$stmt = $conn->prepare($branchQuery);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$branchResult = $stmt->get_result();
+?>
+
 <div class="flex gap-2 ml-7">
     <?php
     // filtering status
@@ -69,7 +116,8 @@
                 </a>
             </div>
             <div class="relative w-full">
-                <input placeholder="Search a name, state, or address" name="name"
+
+                <input placeholder="Search a name, state, or address" name="search" value=""
                     class="w-full aria-disabled:cursor-not-allowed outline-none focus:outline-none placeholder:text-slate-black bg-transparent ring-transparent border border-slate-200 transition-all duration-300 ease-in disabled:opacity-50 disabled:pointer-events-none data-[error=true]:border-error data-[success=true]:border-success select-none data-[shape=pill]:rounded-full text-sm rounded-md py-2 px-2.5 ring shadow-sm data-[icon-placement=start]:ps-9 data-[icon-placement=end]:pe-9 hover:border-primary-800 hover:ring-primary-800/10 focus:border-primary peer"
                     data-error="false" data-success="false" data-shape="default" data-icon-placement="end" type="text"
                     data-tabindex="" />
@@ -102,28 +150,7 @@
                         class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
                         <!-- Checkbox List -->
                         <div class="flex flex-col gap-3 my-2">
-                            <?php
-                            $filter = "";
-                            // filtering name
-                            if (!empty($_GET['name'])) {
-                                $name = $conn->real_escape_string($_GET['name']);
-                                $filter .= " AND branch.name LIKE '%$name%'";
-                            }
-                            // filtering status
-                            $selectedStatuses = $_GET['status'] ?? [];
-                            if (!is_array($selectedStatuses)) {
-                                $selectedStatuses = [$selectedStatuses];
-                            }
-                            if (!empty($selectedStatuses)) {
-                                $escapedStatuses = array_map(function ($status) use ($conn) {
-                                    return "'" . $conn->real_escape_string($status) . "'";
-                                }, $selectedStatuses);
-                                $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
-                            }
-                            // final query with filter
-                            $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
-                            $branchResult = $conn->query($branchQuery);
-                            ?>
+
                             <!-- Checkbox Item -->
                             <div class="inline-flex items-center justify-betweena">
                                 <label class="flex items-center cursor-pointer relative" for="Opening">
@@ -210,39 +237,22 @@
                     </div>
 
                 </div>
-
                 <!-- Collapse Item -->
                 <div>
                     <button class="w-full flex justify-between items-center py-2 text-slate-600 text-sm font-sans"
-                        onclick="toggleCollapse('collapseMarketing1')"> State <span
-                            class="transform transition-transform duration-300" id="iconMarketing1">
+                        onclick="toggleCollapse('collapseMarketing2')"> State <span
+                            class="transform transition-transform duration-300" id="iconMarketing2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                 stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </span>
                     </button>
-                    <div id="collapseMarketing1"
+                    <div id="collapseMarketing2"
                         class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
                         <!-- Checkbox List -->
                         <div class="flex flex-col gap-3 my-2">
-                            <?php
-                            $filter = "";
-                            // filtering state
-                            $selectedStates = $_GET['state'] ?? [];
-                            if (!is_array($selectedStates)) {
-                                $selectedStates = [$selectedStates];
-                            }
-                            if (!empty($selectedStates)) {
-                                $escapedStates = array_map(function ($state) use ($conn) {
-                                    return "'" . $conn->real_escape_string($state) . "'";
-                                }, $selectedStates);
-                                $filter .= " AND branch.status IN (" . implode(',', $escapedStates) . ")";
-                            }
-                            // final query with filter
-                            $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
-                            $branchResult = $conn->query($branchQuery);
-                            ?>
+
                             <!-- Checkbox Item -->
                             <div class="inline-flex items-center justify-between">
                                 <label class="flex items-center cursor-pointer relative" for="Melaka">
@@ -260,8 +270,9 @@
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
-                                    for="Melaka"> Melaka </label>
-                                <span class="font-sans antialiased text-sm text-green-600 ml-6">-</span>
+                                    for="Melaka"> Melaka</label>
+                                <span
+                                    class="font-sans antialiased text-sm text-green-600 ml-6">-</span>
                             </div>
                         </div>
                     </div>
@@ -339,7 +350,7 @@
         event.preventDefault();
     }
 </script>
-<span class="absolute mt-2 top-12 ml-10 text-secondaryForeground">Showing
+<span class="text-secondaryForeground relative left-5 lg:left-10 bottom-2">Showing
     <?php echo $branchResult->num_rows; ?> of
     <?php echo $totalBranchNumber; ?>
     branches

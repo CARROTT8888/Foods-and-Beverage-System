@@ -61,6 +61,16 @@
                     }, $statuses);
                     $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
                 }
+                if (!empty($_GET['state'])) {
+                    $states = $_GET['state'];
+                    if (!is_array($states)) {
+                        $states = [$states];
+                    }
+                    $escapedStates = array_map(function ($state) use ($conn) {
+                        return "'" . $conn->real_escape_string($state) . "'";
+                    }, $states);
+                    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
+                }
                 $branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
                 $stmt = $conn->prepare($branchQuery);
                 if (!empty($params)) {
