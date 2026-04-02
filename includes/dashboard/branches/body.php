@@ -24,7 +24,7 @@
     </h1>
     <div class="flex sm:items-center flex-wrap gap-6">
         <!-- Dropdown Container -->
-        <div class="relative mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div class="relative mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl w-full">
             <?php include '../includes/dashboard/branches/header.php'; ?>
             <div
                 class="w-auto text-center grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">

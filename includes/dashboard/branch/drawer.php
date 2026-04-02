@@ -1,5 +1,77 @@
-<div
-    class="text-sm w-61.5 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium lg:flex hidden flex-col">
+<?php
+include '../database/fnbdb.php';
+$errorMessage = "";
+
+// check if the session variable is exist
+if (!isset($_SESSION['userId'])) {
+    header("Location: sign-in.php");
+    exit();
+}
+;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['name'];
+    $slug = $_POST['slug'];
+
+    $checkNameQuery = $conn->prepare("SELECT branchId FROM branch WHERE name = ?");
+    $checkNameQuery->bind_param("s", $name);
+    $checkNameQuery->execute();
+    $checkNameQuery->store_result();
+    if ($checkNameQuery->num_rows > 0) {
+        $nameAlreadyExists = true;
+        $errorMessage = "The branch's name has already exist.";
+        $checkNameQuery->close();
+    } else {
+        $checkNameQuery->close();
+        $branchQuery = "INSERT INTO branch (name, slug) VALUES (?, ?)";
+        $checkNameQuery = $conn->prepare($branchQuery);
+        $checkNameQuery->bind_param("ss", $name, $slug);
+        if ($checkNameQuery->execute()) {
+            header("Location: /web/dashboard/branches.php");
+            exit();
+        }
+    }
+}
+;
+
+$filter = "";
+$countstatusOpeningsql = "SELECT COUNT(*) FROM branch WHERE status = 'Opening'";
+$stmtcount = $conn->prepare($countstatusOpeningsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusOpening);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusClosedsql = "SELECT COUNT(*) FROM branch WHERE status = 'Closed'";
+$stmtcount = $conn->prepare($countstatusClosedsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusClosed);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusSetupsql = "SELECT COUNT(*) FROM branch WHERE status = 'Setup'";
+$stmtcount = $conn->prepare($countstatusSetupsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusSetup);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusDeprecatedsql = "SELECT COUNT(*) FROM branch WHERE status = 'Deprecated'";
+$stmtcount = $conn->prepare($countstatusDeprecatedsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusDeprecated);
+$stmtcount->fetch();
+$stmtcount->close();
+
+$countnobranchsql = "SELECT COUNT(*) FROM branch";
+$stmtcount = $conn->prepare($countnobranchsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalBranchNumber);
+$stmtcount->fetch();
+$stmtcount->close();
+?>
+
+<div class="fixed inset-0 bg-slate-950/50 opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
+    id="sidebarDrawer" aria-hidden="true">
+    <div onclick="event.stopPropagation()"
+    class="text-sm w-61.5 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium lg:hidden flex flex-col">
     <a href="/web/dashboard/branches">
         <button
             class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in items-center disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-transparent text-primaryForeground hover:bg-accent hover:text-accentForeground">
@@ -23,21 +95,21 @@
             <i class='bx bxs-bowl-hot mr-2 text-xl'></i>
             <span>Orders</span>
         </li>
-        <a href="/web/dashboard/bmenu?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
-            class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
+        <li
+            class="flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
             <i class='bx bxs-food-menu mr-2 text-xl'></i>
             <span>Menu</span>
-        </a>
+        </li>
         <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
             class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
             <i class='bx bx-table mr-2 text-xl'></i>
             <span>Tables</span>
         </a>
-        <i
+        <li
             class="flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
             <i class='bx bxs-user mr-2 text-xl'></i>
             <span>Users</span>
-        </i>
+        </li>
         <a href="dashboard.php"
             class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
             <i class='bx bxs-star mr-2 text-xl'></i>
@@ -66,4 +138,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>
