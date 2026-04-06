@@ -112,38 +112,42 @@
             <span>Reports</span>
         </li>
     </ul>
-    <div class="w-full rounded p-2 mt-auto hover:bg-accent hover:text-accentForeground cursor-pointer dropdown" data-placement="bottom-start">
+    <div class="w-full rounded p-2 mt-auto hover:bg-accent hover:text-accentForeground cursor-pointer dropdown"
+        data-placement="bottom-start">
         <div class="flex items-center gap-4" data-toggle="dropdown" aria-expanded="false">
             <img class="inline-block h-11 w-11 rounded-full object-cover object-center"
                 src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/ct-assets/team-4.jpg"
                 alt="avatar" />
             <div>
-                <p title="<?php echo htmlspecialchars($_SESSION['name']) ?>" class="font-sans text-base text-current antialiased line-champ-1 truncate w-[100px]"><?php echo htmlspecialchars($_SESSION['name']) ?></p>
+                <p title="<?php echo htmlspecialchars($_SESSION['name']) ?>"
+                    class="font-sans text-base text-current antialiased line-champ-1 truncate w-[100px]">
+                    <?php echo htmlspecialchars($_SESSION['name']) ?></p>
                 <p title="<?php echo htmlspecialchars($_SESSION['email']) ?>"
-                    class="font-sans text-sm text-slate-600 antialiased line-champ-1 truncate w-[100px]"><?php echo htmlspecialchars($_SESSION['email']) ?></p>
+                    class="font-sans text-sm text-slate-600 antialiased line-champ-1 truncate w-[100px]">
+                    <?php echo htmlspecialchars($_SESSION['email']) ?></p>
             </div>
         </div>
         <div data-role="menu"
-                        class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px]">
-                        <div class="p-1 text-mutedForeground">
-                            <p class="font-sans antialiased text-sm text-current font-semibold">My Account</p>
-                        </div>
-                        <a href="#"
-                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
-                            <i class='bx bxs-user-circle mr-2 text-lg'></i>
-                            Profile
-                        </a>
-                        <a href="#"
-                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
-                            <i class='bx bxs-cog mr-2 text-lg'></i>
-                            Settings
-                        </a>
-                        <hr class="!my-1 -mx-1 border-slate-200">
-                        <a href="/web/sign-out"
-                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
-                            <i class='bx bx-log-out mr-2 text-lg'></i>
-                            Logout
-                        </a>
-                    </div>
+            class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px]">
+            <div class="p-1 text-mutedForeground">
+                <p class="font-sans antialiased text-sm text-current font-semibold">My Account</p>
+            </div>
+            <a href="#"
+                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                <i class='bx bxs-user-circle mr-2 text-lg'></i>
+                Profile
+            </a>
+            <a href="#"
+                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                <i class='bx bxs-cog mr-2 text-lg'></i>
+                Settings
+            </a>
+            <hr class="!my-1 -mx-1 border-slate-200">
+            <a href="/web/sign-out"
+                class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                <i class='bx bx-log-out mr-2 text-lg'></i>
+                Logout
+            </a>
+        </div>
     </div>
 </div>

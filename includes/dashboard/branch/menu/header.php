@@ -98,7 +98,7 @@ $branchResult = $stmt->get_result();
                                 fill="currentColor"></path>
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-red-900">Occupied</h1>
+                    <h1 class="text-lg font-bold text-red-900">Sold Out</h1>
                 </div>
                 <p class="text-3xl text-green-red mt-3 font-extrabold">
                     -
@@ -128,7 +128,7 @@ $branchResult = $stmt->get_result();
                             <circle cx="16" cy="7" r="1" fill="currentColor" />
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-amber-900">Dirty</h1>
+                    <h1 class="text-lg font-bold text-amber-900">Coming Soon</h1>
                 </div>
                 <p class="text-3xl text-amber-950 mt-3 font-extrabold">
                     -
@@ -157,7 +157,7 @@ $branchResult = $stmt->get_result();
                                 fill="currentColor"></path>
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-orange-900">Reserved</h1>
+                    <h1 class="text-lg font-bold text-orange-900">Limited</h1>
                 </div>
                 <p class="text-3xl text-orange-950 mt-3 font-extrabold">
                     -
@@ -185,7 +185,7 @@ $branchResult = $stmt->get_result();
                                 d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-slate-900">Blocked</h1>
+                    <h1 class="text-lg font-bold text-slate-900">Discontinued</h1>
                 </div>
                 <p class="text-3xl text-slate-950 mt-3 font-extrabold">
                     -
