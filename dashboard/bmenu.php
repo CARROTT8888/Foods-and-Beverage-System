@@ -97,15 +97,26 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
                     link.setAttribute("aria-current", "page");
                 }
             });
-            const dialog = document.getElementById("seatTableDialog");
-            window.openDialog = function () {
+            /*const dialog = document.getElementById("seatTableDialog");
+            window.openDrawer = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeDialog = function () {
+            window.closeDrawer = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
-            };
+            };*/
+            const drawer = document.getElementById("sidebarDrawerBranch");
+
+            function openDrawerBranch() {
+                drawer.classList.remove("opacity-0", "pointer-events-none");
+                drawer.classList.add("opacity-100");
+            }
+
+            function closeDrawerBranch() {
+                drawer.classList.remove("opacity-100");
+                drawer.classList.add("opacity-0", "pointer-events-none");
+            }
         });
     </script>
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />

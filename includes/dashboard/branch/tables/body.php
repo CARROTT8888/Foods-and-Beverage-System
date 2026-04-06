@@ -9,7 +9,7 @@
                 </path>
             </svg>
         </button>--->
-        <button type="button" data-toggle="modal" data-target="#sidebarDrawer"
+        <button type="button" data-toggle="modal" data-target="#sidebarDrawerBranch"
             class="text-gray-500 hover:text-gray-600">
             <span class="lg:hidden flex font-bold">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"

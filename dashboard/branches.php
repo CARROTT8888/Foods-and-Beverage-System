@@ -30,7 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($checkNameQuery->execute()) {
             header("Location: /web/dashboard/branches.php");
             exit();
-        };
+        }
+        ;
     }
 }
 ;
@@ -131,8 +132,8 @@ $stmtcount->close();
             };
         });
     </script>
-    <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet"/>
-    
+    <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />
+
 </head>
 
 <body class="flex">
