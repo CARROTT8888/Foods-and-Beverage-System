@@ -19,7 +19,7 @@
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
             <?php include '../includes/dashboard/tables/header.php'; ?>
             <div
-                class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
+                class="w-auto text-center max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <?php
                 $filter = "";
                 $params = [];
@@ -79,6 +79,344 @@
                         </div>
                     <?php endwhile ?>
                 <?php endif ?>
+                <div class="w-full overflow-x-auto rounded-lg border border-slate-200 mt-4">
+                    <table class="w-full text-left">
+                        <thead
+                            class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600 dark:bg-surface-dark">
+                            <tr>
+                                <th class="px-2.5 py-2 text-start font-medium">
+                                    Transaction
+                                </th>
+                                <th class="px-2.5 py-2 text-start font-medium">
+                                    Amount
+                                </th>
+                                <th class="px-2.5 py-2 text-start font-medium">
+                                    Date
+                                </th>
+                                <th class="px-2.5 py-2 text-start font-medium">
+                                    Status
+                                </th>
+                                <th class="px-2.5 py-2 text-start font-medium">
+                                    Account
+                                </th>
+                                <th class="px-2.5 py-2 text-start font-medium">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                            src="https://docs.material-tailwind.com/img/logos/logo-spotify.svg"
+                                            alt="Spotify" />
+                                        <small class="font-sans antialiased text-sm text-current font-bold">
+                                            Spotify
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        $2,500
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        Wed 3:00pm
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 bg-green-500/10 border-transparent text-green-500 shadow-none">
+                                            <span class="font-sans text-current my-0.5 mx-1.5">
+                                                paid
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                            <img class="inline-block object-center rounded h-full w-full object-contain p-1"
+                                                src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
+                                                alt="visa" />
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <small class="font-sans antialiased text-sm text-current capitalize">
+                                                visa 1234
+                                            </small>
+                                            <small class="font-sans antialiased text-sm text-current opacity-70">
+                                                06/2026
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <button
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <svg class="h-4 w-4" width="1.5em" height="1.5em" viewBox="0 0 24 24"
+                                            stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            color="currentColor">
+                                            <path
+                                                d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                            src="https://docs.material-tailwind.com/img/logos/logo-amazon.svg"
+                                            alt="Amazon" />
+                                        <small class="font-sans antialiased text-sm text-current font-bold">
+                                            Amazon
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        $5,000
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        Wed 1:00pm
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 bg-green-500/10 border-transparent text-green-500 shadow-none">
+                                            <span class="font-sans text-current my-0.5 mx-1.5">
+                                                paid
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                            <img class="inline-block object-center rounded h-full w-full object-contain p-1"
+                                                src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
+                                                alt="master-card" />
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <small class="font-sans antialiased text-sm text-current capitalize">
+                                                master card 1234
+                                            </small>
+                                            <small class="font-sans antialiased text-sm text-current opacity-70">
+                                                06/2026
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <button
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <svg class="h-4 w-4" width="1.5em" height="1.5em" viewBox="0 0 24 24"
+                                            stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            color="currentColor">
+                                            <path
+                                                d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                            src="https://docs.material-tailwind.com/img/logos/logo-pinterest.svg"
+                                            alt="Pinterest" />
+                                        <small class="font-sans antialiased text-sm text-current font-bold">
+                                            Pinterest
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        $3,400
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        Mon 7:40pm
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 bg-warning/10 border-transparent text-amber-500 shadow-none">
+                                            <span class="font-sans text-current my-0.5 mx-1.5">
+                                                pending
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                            <img class="inline-block object-center rounded h-full w-full object-contain p-1"
+                                                src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
+                                                alt="master-card" />
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <small class="font-sans antialiased text-sm text-current capitalize">
+                                                master card 1234
+                                            </small>
+                                            <small class="font-sans antialiased text-sm text-current opacity-70">
+                                                06/2026
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <button
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <svg class="h-4 w-4" width="1.5em" height="1.5em" viewBox="0 0 24 24"
+                                            stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            color="currentColor">
+                                            <path
+                                                d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                            src="https://docs.material-tailwind.com/img/logos/logo-google.svg"
+                                            alt="Google" />
+                                        <small class="font-sans antialiased text-sm text-current font-bold">
+                                            Google
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        $1,000
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        Wed 5:00pm
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 bg-green-500/10 border-transparent text-green-500 shadow-none">
+                                            <span class="font-sans text-current my-0.5 mx-1.5">
+                                                paid
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                            <img class="inline-block object-center rounded h-full w-full object-contain p-1"
+                                                src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
+                                                alt="visa" />
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <small class="font-sans antialiased text-sm text-current capitalize">
+                                                visa 1234
+                                            </small>
+                                            <small class="font-sans antialiased text-sm text-current opacity-70">
+                                                06/2026
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <button
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <svg class="h-4 w-4" width="1.5em" height="1.5em" viewBox="0 0 24 24"
+                                            stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            color="currentColor">
+                                            <path
+                                                d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                            src="https://docs.material-tailwind.com/img/logos/logo-netflix.svg"
+                                            alt="netflix" />
+                                        <small class="font-sans antialiased text-sm text-current font-bold">
+                                            Netflix
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        $14,000
+                                    </small>
+                                </td>
+                                <td class="p-4">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        Wed 3:30am
+                                    </small>
+                                </td>
+                                <td class="p-4">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 bg-red-500/10 border-transparent text-red-500 shadow-none">
+                                            <span class="font-sans text-current my-0.5 mx-1.5">
+                                                cancelled
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                            <img class="inline-block object-center rounded h-full w-full object-contain p-1"
+                                                src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
+                                                alt="visa" />
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <small class="font-sans antialiased text-sm text-current capitalize">
+                                                visa 1234
+                                            </small>
+                                            <small class="font-sans antialiased text-sm text-current opacity-70">
+                                                06/2026
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <button
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <svg class="h-4 w-4" width="1.5em" height="1.5em" viewBox="0 0 24 24"
+                                            stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            color="currentColor">
+                                            <path
+                                                d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
 </section>
