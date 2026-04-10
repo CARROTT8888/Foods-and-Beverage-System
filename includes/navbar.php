@@ -53,7 +53,7 @@
                         src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/ct-assets/team-4.jpg"
                         alt="profile-picture" class="object-cover w-11 h-11 rounded-full cursor-pointer">
                     <div data-role="menu"
-                        class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px]">
+                        class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px] cursor-default">
                         <div class="p-1 text-mutedForeground">
                             <p class="font-sans antialiased text-sm text-current font-semibold">My Account</p>
                         </div>

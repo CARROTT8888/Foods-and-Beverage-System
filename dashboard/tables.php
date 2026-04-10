@@ -8,81 +8,34 @@ if (!isset($_SESSION['userId'])) {
 
 include '../database/fnbdb.php';
 $branch = null;
-if (isset($_GET['slug']) && is_string($_GET['slug'])) {
-    $slug = $_GET['slug'];
-    $stmt = $conn->prepare("SELECT * FROM branch WHERE slug = ?");
-    $stmt->bind_param("s", $slug);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $branch = $result->fetch_assoc();
-    } else {
-        die("
-        <div class='col-span-full flex flex-col items-center justify-center py-16 text-center'>
-    <img src='../assets/404.png' alt='404' class='w-[300px] h-[300px]' />
-    <h2 class='md:text-6xl text-4xl font-bold text-gray-800'>Result Not Found!</h2>
-    <p class='text-base mt-4 text-gray-500'>Oppps, maybe you should think about the keyword properly before search
-        again!</p>
-    <div class='flex items-center gap-4 mt-6'>
-        <button type='button'
-            class='bg-primary hover:bg-indigo-600 px-7 py-2.5 text-white rounded active:scale-95 transition-all'>
-            Go back home
-        </button>
-        <button type='button' class='group flex items-center gap-2 px-7 py-2.5 active:scale-95 transition'>
-            Contact support
-            <svg class='group-hover:translate-x-0.5 mt-1 transition' width='15' height='11' viewBox='0 0 15 11'
-                fill='none' xmlns='http://www.w3.org/2000/svg'>
-                <path d='M1 5.5h13.092M8.949 1l5.143 4.5L8.949 10' stroke='#1F2937' stroke-width='1.5'
-                    stroke-linecap='round' stroke-linejoin='round' />
-            </svg>
-        </button>
-    </div>
-</div>
-<script src='https://cdn.tailwindcss.com/3.4.16'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'></script>
-        ");
-    }
-    $stmt->close();
-} else {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        die("<div class='alert alert-danger'>Error: Invalid Request. <a href='Lab 09 Q1.php'>Go Back</a></div>");
-    }
-}
 
 $filter = "";
-$branchId = $branch['branchId'];
-$countstatusAvailablesql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Available' AND branchId = ?";
+$countstatusAvailablesql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Available'";
 $stmtcount = $conn->prepare($countstatusAvailablesql);
-$stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusAvailable);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusOccupiedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Occupied' AND branchId = ?";
+$countstatusOccupiedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Occupied'";
 $stmtcount = $conn->prepare($countstatusOccupiedsql);
-$stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusOccupied);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusReservedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Reserved' AND branchId = ?";
+$countstatusReservedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Reserved'";
 $stmtcount = $conn->prepare($countstatusReservedsql);
-$stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusReserved);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusDirtysql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Dirty' AND branchId = ?";
+$countstatusDirtysql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Dirty'";
 $stmtcount = $conn->prepare($countstatusDirtysql);
-$stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusDirty);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusBlockedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Blocked' AND branchId = ?";
+$countstatusBlockedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Blocked'";
 $stmtcount = $conn->prepare($countstatusBlockedsql);
-$stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusBlocked);
 $stmtcount->fetch();
@@ -169,10 +122,10 @@ $stmtcount->close();
 
 <body class="flex">
     <div class="">
-        <?php include '../includes/dashboard/branch/sidebar.php'; ?>
+        <?php include '../includes/dashboard/sidebar.php'; ?>
     </div>
     <div class="min-h-screen w-full flex justify-center">
-        <?php include '../includes/dashboard/branch/tables/body.php'; ?>
+        <?php include '../includes/dashboard/tables/body.php'; ?>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>

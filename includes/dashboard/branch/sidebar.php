@@ -49,7 +49,7 @@
             <span>Reports</span>
         </li>
     </ul>
-    <div class="w-full rounded p-2 mt-auto hover:bg-accent hover:text-accentForeground cursor-pointer dropdown"
+    <div class="w-full rounded p-2 mt-auto hover:bg-accent hover:text-accentForeground dropdown cursor-pointer"
         data-placement="bottom-start">
         <div class="flex items-center gap-4" data-toggle="dropdown" aria-expanded="false">
             <img class="inline-block h-11 w-11 rounded-full object-cover object-center"
@@ -67,17 +67,17 @@
             </div>
         </div>
         <div data-role="menu"
-            class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px]">
+            class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px] cursor-default">
             <div class="p-1 text-mutedForeground">
                 <p class="font-sans antialiased text-sm text-current font-semibold">My Account</p>
             </div>
             <a href="#"
-                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center cursor-pointer">
                 <i class='bx bxs-user-circle mr-2 text-lg'></i>
                 Profile
             </a>
             <a href="#"
-                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center cursor-pointer">
                 <i class='bx bxs-cog mr-2 text-lg'></i>
                 Settings
             </a>

@@ -1,7 +1,7 @@
 <section
     class="relative overflow-y-scroll h-screen bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8 max-w-7xl w-full">
     <h1 class="max-w-7xl mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8 w-full">
-        <button type="button" data-toggle="modal" data-target="#sidebarDrawerBranch"
+        <button type="button" data-toggle="modal" data-target="#sidebarDrawer"
             class="text-gray-500 hover:text-gray-600">
             <span class="lg:hidden flex font-bold">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -11,13 +11,13 @@
                 </svg>
             </span>
         </button>
-        <?php include '../includes/dashboard/branch/drawer.php'; ?>
+        <?php include '../includes/dashboard/tables/drawer.php'; ?>
         Tables
     </h1>
     <div class="flex sm:items-center flex-wrap gap-6">
         <!-- Dropdown Container -->
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
-            <?php include '../includes/dashboard/branch/tables/header.php'; ?>
+            <?php include '../includes/dashboard/tables/header.php'; ?>
             <div
                 class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <?php

@@ -19,24 +19,14 @@ if (!empty($selectedStatuses)) {
     $escapedStatuses = array_map(function ($status) use ($conn) {
         return "'" . $conn->real_escape_string($status) . "'";
     }, $selectedStatuses);
-    $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
+    $filter .= " AND seat_table.status IN (" . implode(',', $escapedStatuses) . ")";
 }
-// filtering state
-$selectedStates = $_GET['state'] ?? [];
-if (!is_array($selectedStates)) {
-    $selectedStates = [$selectedStates];
-}
-if (!empty($selectedStates)) {
-    $escapedStates = array_map(function ($state) use ($conn) {
-        return "'" . $conn->real_escape_string($state) . "'";
-    }, $selectedStates);
-    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
-}
+
 // final query with filter
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/
 
-$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
+$branchQuery = "SELECT * FROM seat_table WHERE 1" . $filter . " ORDER BY tableId DESC";
 $stmt = $conn->prepare($branchQuery);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
@@ -46,6 +36,28 @@ $branchResult = $stmt->get_result();
 ?>
 
 <div class="w-full px-4 sm:px-6 lg:px-10">
+    <script>
+        function toggleCollapse(event, id) {
+            event.preventDefault();
+
+            const container = document.getElementById('collapsibleContainer');
+            const allContents = container.querySelectorAll('[id^="collapse"]');
+            const allIcons = container.querySelectorAll('[id^="icon"]');
+
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`icon${id.replace('collapse', '')}`);
+
+            const isCurrentlyVisible = !content.classList.contains('hidden');
+
+            allContents.forEach((c) => c.classList.add('hidden'));
+            allIcons.forEach((i) => i.classList.remove('rotate-180'));
+
+            if (!isCurrentlyVisible) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            }
+        };
+    </script>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4.5">
         <!-- Card 1 -->
         <div
@@ -218,22 +230,27 @@ $branchResult = $stmt->get_result();
                     $url = '?' . http_build_query($query);
                     ?>
                     <a href="<?= $url ?>" class="">
-                        <?php if ($status === 'Opening'): ?>
+                        <?php if ($status === 'Available'): ?>
                             <div
                                 class="text-green-500  border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
                                 <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
                             </div>
-                        <?php elseif ($status === 'Closed'): ?>
+                        <?php elseif ($status === 'Occupied'): ?>
                             <div
                                 class="text-red-500 border border-red-500 bg-red-100 rounded-full text-sm w-auto p-1 px-2 items-center">
                                 <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
                             </div>
-                        <?php elseif ($status === 'Setup'): ?>
+                        <?php elseif ($status === 'Reserved'): ?>
                             <div
                                 class="text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
                                 <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
                             </div>
-                        <?php elseif ($status === 'Deprecated'): ?>
+                        <?php elseif ($status === 'Dirty'): ?>
+                            <div
+                                class="text-orange-500 border border-orange-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Blocked'): ?>
                             <div
                                 class="text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-sm w-auto p-1 px-2 items-center">
                                 <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
@@ -287,24 +304,24 @@ $branchResult = $stmt->get_result();
                 <!-- Collapse Item -->
                 <div>
                     <button class="w-full flex justify-between items-center py-2 text-slate-600 text-sm font-sans"
-                        onclick="toggleCollapse('collapseMarketing')"> Status <span
-                            class="transform transition-transform duration-300" id="iconMarketing">
+                        type="button" onclick="toggleCollapse(event, 'collapseTables')"> Status <span
+                            class="transform transition-transform duration-300" id="iconTables">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                 stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </span>
                     </button>
-                    <div id="collapseMarketing"
+                    <div id="collapseTables"
                         class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
                         <!-- Checkbox List -->
                         <div class="flex flex-col gap-3 my-2">
 
                             <!-- Checkbox Item -->
                             <div class="inline-flex items-center justify-betweena">
-                                <label class="flex items-center cursor-pointer relative" for="Opening">
-                                    <input type="checkbox" id="Opening" name="status[]" value="Opening"
-                                        <?= in_array('Opening', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Available">
+                                    <input type="checkbox" id="Available" name="status[]" value="Available"
+                                        <?= in_array('Available', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -317,14 +334,14 @@ $branchResult = $stmt->get_result();
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
-                                    for="Opening"> Opening </label>
+                                    for="Available">Available</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-green-600 ml-6"><?php echo $totalStatusOpening; ?></span>
+                                    class="font-sans antialiased text-sm text-green-600 ml-6"><?php echo $totalStatusAvailable; ?></span>
                             </div>
                             <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Closed">
-                                    <input type="checkbox" id="Closed" name="status[]" value="Closed"
-                                        <?= in_array('Closed', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Occupied">
+                                    <input type="checkbox" id="Occupied" name="status[]" value="Occupied"
+                                        <?= in_array('Occupied', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -337,14 +354,15 @@ $branchResult = $stmt->get_result();
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-red-600 flex-1"
-                                    for="Closed"> Closed </label>
+                                    for="Occupied">Occupied</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-red-600 ml-6"><?php echo $totalStatusClosed; ?></span>
+                                    class="font-sans antialiased text-sm text-red-600 ml-6"><?php echo $totalStatusOccupied; ?></span>
                             </div>
 
                             <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Setup">
-                                    <input type="checkbox" id="Setup" name="status[]" value="Setup" <?= in_array('Setup', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Reserved">
+                                    <input type="checkbox" id="Reserved" name="status[]" value="Reserved"
+                                        <?= in_array('Reserved', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -357,15 +375,35 @@ $branchResult = $stmt->get_result();
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-amber-600 flex-1"
-                                    for="Setup"> Setup </label>
+                                    for="Reserved">Reserved</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-amber-600 ml-6"><?php echo $totalStatusSetup; ?></span>
+                                    class="font-sans antialiased text-sm text-amber-600 ml-6"><?php echo $totalStatusReserved; ?></span>
                             </div>
 
                             <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Deprecated">
-                                    <input type="checkbox" id="Deprecated" name="status[]" value="Deprecated"
-                                        <?= in_array('Deprecated', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Dirty">
+                                    <input type="checkbox" id="Dirty" name="status[]" value="Dirty" <?= in_array('Dirty', $selectedStatuses) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-orange-600 flex-1"
+                                    for="Dirty">Dirty</label>
+                                <span
+                                    class="font-sans antialiased text-sm text-orange-600 ml-6"><?php echo $totalStatusDirty; ?></span>
+                            </div>
+
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Blocked">
+                                    <input type="checkbox" id="Blocked" name="status[]" value="Blocked"
+                                        <?= in_array('Blocked', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -378,9 +416,9 @@ $branchResult = $stmt->get_result();
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
-                                    for="Deprecated"> Deprecated </label>
+                                    for="Blocked">Blocked</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatusDeprecated; ?></span>
+                                    class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatusBlocked; ?></span>
                             </div>
                         </div>
                     </div>
@@ -388,48 +426,12 @@ $branchResult = $stmt->get_result();
                 </div>
                 <!-- Collapse Item -->
                 <div>
-                    <button class="w-full flex justify-between items-center py-2 text-slate-600 text-sm font-sans"
-                        onclick="toggleCollapse('collapseMarketing2')"> State <span
-                            class="transform transition-transform duration-300" id="iconMarketing2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </span>
+                    <button
+                        class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground w-full"
+                        type="submit">
+                        Apply
                     </button>
-                    <div id="collapseMarketing2"
-                        class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
-                        <!-- Checkbox List -->
-                        <div class="flex flex-col gap-3 my-2">
-
-                            <!-- Checkbox Item -->
-                            <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Melaka">
-                                    <input type="checkbox" id="Melaka" name="state[]" value="Melaka"
-                                        <?= in_array('Melaka', $selectedStates) ? 'checked' : '' ?>
-                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
-                                    <span
-                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
-                                            fill="currentColor" stroke="currentColor" stroke-width="1">
-                                            <path fill-rule="evenodd"
-                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                clip-rule="evenodd"></path>
-                                        </svg>
-                                    </span>
-                                </label>
-                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
-                                    for="Melaka"> Melaka</label>
-                                <span class="font-sans antialiased text-sm text-green-600 ml-6">-</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-
-                <button
-                    class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground w-full"
-                    type="submit">Apply</button>
             </div>
         </div>
     </form>
@@ -477,26 +479,6 @@ $branchResult = $stmt->get_result();
             }
         }
     });
-</script>
-<script>
-    function toggleCollapse(id) {
-        const container = document.getElementById('collapsibleContainer');
-        const allContents = container.querySelectorAll('[id^="collapse"]');
-        const allIcons = container.querySelectorAll('[id^="icon"]');
-        const content = document.getElementById(id);
-        const icon = document.getElementById(`icon${id.replace('collapse', '')}`);
-        // Check if the clicked section is already expanded
-        const isCurrentlyVisible = !content.classList.contains('hidden');
-        // Collapse all sections first
-        allContents.forEach((c) => c.classList.add('hidden'));
-        allIcons.forEach((i) => i.classList.remove('rotate-180'));
-        // If the clicked section was not already expanded, expand it
-        if (!isCurrentlyVisible) {
-            content.classList.remove('hidden');
-            icon.classList.add('rotate-180');
-        }
-        event.preventDefault();
-    }
 </script>
 <span class="text-secondaryForeground relative left-5 lg:left-10">Showing
     <?php echo $branchResult->num_rows; ?> of
