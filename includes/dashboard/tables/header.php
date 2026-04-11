@@ -26,13 +26,13 @@ if (!empty($selectedStatuses)) {
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/
 
-$branchQuery = "SELECT * FROM seat_table WHERE 1" . $filter . " ORDER BY tableId DESC";
-$stmt = $conn->prepare($branchQuery);
+$seatQuery = "SELECT * FROM seat_table WHERE 1" . $filter . " ORDER BY tableId DESC";
+$stmt = $conn->prepare($seatQuery);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
 }
 $stmt->execute();
-$branchResult = $stmt->get_result();
+$seatResult = $stmt->get_result();
 ?>
 
 <div class="w-full px-4 sm:px-6 lg:px-10">
@@ -260,7 +260,7 @@ $branchResult = $stmt->get_result();
                 <?php endforeach; ?>
             </div>
         </div>
-        <button type="button" data-toggle="modal" data-target="#createBranchDialog"
+        <button type="button" data-toggle="modal" onclick="openDialog()"
             class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
             <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
         </button>
@@ -481,7 +481,7 @@ $branchResult = $stmt->get_result();
     });
 </script>
 <span class="text-secondaryForeground relative left-5 lg:left-10">Showing
-    <?php echo $branchResult->num_rows; ?> of
-    <?php echo $totalBranchNumber; ?>
+    <?php echo $seatResult->num_rows; ?> of
+    <?php echo $totalSeatNumber; ?>
     tables
 </span>

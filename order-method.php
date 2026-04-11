@@ -67,9 +67,14 @@ if (!isset($_SESSION['userId'])) {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDialog();
+                }
+            });
         });
     </script>
-    
+
 </head>
 
 <body class="flex justify-center h-screen flex-col">

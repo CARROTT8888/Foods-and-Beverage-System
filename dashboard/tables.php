@@ -6,6 +6,8 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 
+// Initialize variables to prevent "Undefined variable" notices
+$errorMessage = '';
 include '../database/fnbdb.php';
 $branch = null;
 
@@ -40,6 +42,48 @@ $stmtcount->execute();
 $stmtcount->bind_result($totalStatusBlocked);
 $stmtcount->fetch();
 $stmtcount->close();
+$countstatussql = "SELECT COUNT(*) FROM seat_table";
+$stmtcount = $conn->prepare($countstatussql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalSeatNumber);
+$stmtcount->fetch();
+$stmtcount->close();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tableName = $_POST['tableName'];
+    $branchId = $_POST['branchId'];
+    $totalSeat = $_POST['totalSeat'];
+    $status = "Available";
+
+    // auto set available seat same as total seat
+    $availableSeat = $totalSeat;
+
+    // check for duplocate table code
+    $checkQuery = "SELECT tableId FROM seat_table WHERE tableName = ? AND branchId = ?";
+    $checkStmt = $conn->prepare($checkQuery);
+    $checkStmt->bind_param('si', $tableName, $branchId);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows > 0) {
+        $errorMessage = 'The table code has already exists.';
+        $checkStmt->close();
+    } else {
+        $checkStmt->close();
+        // insert new table (fixed column/value count)
+        $query = "INSERT INTO seat_table (tableName, branchId, totalSeat, availableSeat, status) VALUES (?, ?, ?, ?, ?)";
+        $addseatstmt = $conn->prepare($query);
+        //corrected bind_param types: s = string, i = integer, d = double/decimal\
+        $addseatstmt->bind_param('siiis', $tableName, $branchId, $totalSeat, $availableSeat, $status);
+        if($addseatstmt->execute()) {
+            header("Location: /web/dashboard/tables");
+            exit();
+        } else {
+            $errorMessage = "Error: " . $conn->error;
+        }
+        $addseatstmt->close();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +94,7 @@ $stmtcount->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Tables - <?php echo htmlspecialchars($branch['name']) ?> - Floudemo</title>
+    <title>Floudemo - Dashboard Tables</title>
     <link rel="Icon" href="../assets/logo.png" sizes="64x64">
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -94,22 +138,25 @@ $stmtcount->close();
                     link.setAttribute("aria-current", "page");
                 }
             });
-            /*const dialog = document.getElementById("seatTableDialog");
-            window.openDrawer = function () {
+            const dialog = document.getElementById("seatTableDialog");
+            window.openDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeDrawer = function () {
+            window.closeDialog = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
-            };*/
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDialog();
+                }
+            });
             const drawer = document.getElementById("sidebarDrawerBranch");
-
             function openDrawerBranch() {
                 drawer.classList.remove("opacity-0", "pointer-events-none");
                 drawer.classList.add("opacity-100");
             }
-
             function closeDrawerBranch() {
                 drawer.classList.remove("opacity-100");
                 drawer.classList.add("opacity-0", "pointer-events-none");
