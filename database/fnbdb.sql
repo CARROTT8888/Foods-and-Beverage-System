@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2026 at 06:52 PM
+-- Generation Time: Apr 11, 2026 at 07:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,8 +46,8 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`branchId`, `name`, `slug`, `image`, `createdAt`, `address`, `status`, `contactNumber`, `startTime`, `endTime`, `state`) VALUES
-(1, 'Multimedia University', '111', NULL, '0000-00-00 00:00:00', NULL, 'Closed', NULL, NULL, NULL, NULL),
-(2, 'Treble Clef', 'tc', NULL, '0000-00-00 00:00:00', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Opening', '0123456789', '08:00', '17:00', 'Melaka'),
+(1, 'Multimedia University', '111', NULL, '2026-04-01 16:42:42', NULL, 'Closed', NULL, NULL, NULL, NULL),
+(2, 'Treble Clef', 'tc', NULL, '2026-04-01 16:42:33', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Opening', '0123456789', '08:00', '17:00', 'Melaka'),
 (3, 'GPA 3.78', 'gpa', NULL, '2026-03-25 21:14:55', 'abc123', 'Opening', NULL, '', '', 'Kelantan'),
 (4, '???', 'tc2121', NULL, '2026-03-30 15:51:00', 'where is treble clef', 'Deprecated', NULL, NULL, NULL, NULL),
 (5, 'Treble Clef 2', 'tc1121', NULL, '2026-03-31 00:42:30', '', 'Closed', NULL, '', '', NULL),
@@ -220,11 +220,25 @@ CREATE TABLE `payment` (
 --
 
 CREATE TABLE `seat_table` (
-  `tableId` int(11) NOT NULL,
+  `tableId` int(11) UNSIGNED NOT NULL,
   `tableName` text NOT NULL,
-  `status` enum('Available','Occupied','Reserved','Blocked','Dirty') NOT NULL,
+  `totalSeat` int(11) NOT NULL,
+  `availableSeat` int(11) NOT NULL,
+  `status` enum('Available','Occupied','Reserved','Blocked','Dirty') NOT NULL DEFAULT 'Available',
   `branchId` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `seat_table`
+--
+
+INSERT INTO `seat_table` (`tableId`, `tableName`, `totalSeat`, `availableSeat`, `status`, `branchId`) VALUES
+(1, 'B02', 3, 3, 'Available', 1),
+(2, 'A01', 4, 4, 'Available', 2),
+(11, 'A02', 2, 2, 'Available', 2),
+(12, 'A03', 4, 4, 'Available', 2),
+(13, 'B01', 2, 2, 'Dirty', 1),
+(14, 'D12', 3, 3, 'Available', 3);
 
 -- --------------------------------------------------------
 
@@ -351,7 +365,7 @@ ALTER TABLE `payment`
 -- Indexes for table `seat_table`
 --
 ALTER TABLE `seat_table`
-  ADD UNIQUE KEY `branchId` (`branchId`);
+  ADD PRIMARY KEY (`tableId`);
 
 --
 -- Indexes for table `user`
@@ -434,6 +448,12 @@ ALTER TABLE `order_status_history`
 --
 ALTER TABLE `payment`
   MODIFY `paymentId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `seat_table`
+--
+ALTER TABLE `seat_table`
+  MODIFY `tableId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `user`

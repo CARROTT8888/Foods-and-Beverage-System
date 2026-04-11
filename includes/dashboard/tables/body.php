@@ -87,7 +87,8 @@
                                             alt="Spotify" />--->
                                         <a
                                             href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']) ?>">
-                                            <small class="font-sans antialiased text-sm text-current font-bold hover:underline">
+                                            <small
+                                                class="font-sans antialiased text-sm text-current font-bold hover:underline">
                                                 <?php echo htmlspecialchars($data['tableName']); ?>
                                             </small>
                                         </a>
@@ -210,10 +211,42 @@
                                     </div>
                                 </td>
                                 <td class="p-4 border-b border-surface-light">
-                                    <button
-                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
-                                        <i class='bx bx-dots-vertical-rounded'></i>
-                                    </button>
+                                    <div class="dropdown">
+                                        <button data-toggle="dropdown" aria-expanded="false"
+                                            class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </button>
+                                        <div data-role="menu"
+                                            class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+
+                                            <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']); ?>"
+                                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                <i class='bx bx-show mr-2 text-lg'></i>
+                                                View Tables
+                                            </a>
+                                            <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["branchId"]); ?>,
+                                                <?php echo json_encode($data["name"]); ?>,
+                                                <?php echo json_encode($data["slug"]); ?>,
+                                                <?php echo json_encode($data["address"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["startTime"]); ?>,
+                                                <?php echo json_encode($data["endTime"]); ?>,
+                                                <?php echo json_encode($data["contactNumber"]); ?>,
+                                                <?php echo json_encode($data["state"]); ?>
+                                                )'
+                                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                <i class='bx bxs-edit mr-2 text-lg'></i>
+                                                Update Branch
+                                            </button>
+
+                                            <a href="sign-out.php"
+                                                class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                                <i class='bx bxs-trash mr-2 text-lg'></i>
+                                                Delete Branch
+                                            </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endwhile ?>
