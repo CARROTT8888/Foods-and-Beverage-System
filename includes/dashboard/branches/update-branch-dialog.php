@@ -238,15 +238,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="hidden" name="old_image"
                         value="<?php echo htmlspecialchars($branch['image'] ?? ''); ?>">
 
-                    <input type="file" name="image" id="updateImageFile" accept="image/png, image/jpeg, image/gif">
+                    <input type="file" class="bg-red-400 w-full text-center flex justify-center" name="image" id="updateImageFile" accept="image/png, image/jpeg, image/gif">
 
-                    <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                    <div class="text-sm text-secondaryForeground mt-5" >
                         Max file size: 2MB (JPG, PNG, GIF)
                     </div>
 
-                    <div style="margin-top: 10px;">
+                    <div class="mt-[10px]">
                         <p style="margin: 0; font-weight: bold;">Current Image:</p>
-                        <img id="previewImage" src="" class="w-full h-48 object-cover">
+                        <img id="previewImage" src="" class="rounded w-full h-48 object-cover">
                     </div>
                 </div>
             </div>
