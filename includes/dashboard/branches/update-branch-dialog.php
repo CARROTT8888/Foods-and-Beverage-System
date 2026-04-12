@@ -72,6 +72,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $types .= "s";
     }
 
+    // IMAGE UPLOAD (optional)
+    $imageName = $_POST['old_image'] ?? null;
+
+    // remove image checkbox
+    if (isset($_POST['remove_image'])) {
+        $imageName = null;
+    }
+
+    // upload new image if user selected
+    if (!empty($_FILES['image']['name'])) {
+
+        $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/Foods-and-Beverage-System/uploads/branches/";
+
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileType = $_FILES['image']['type'];
+        $fileSize = $_FILES['image']['size'];
+
+        if (!in_array($fileType, $allowedTypes)) {
+            die("Only JPG, PNG, GIF files are allowed.");
+        }
+
+        if ($fileSize > 2 * 1024 * 1024) {
+            die("File size must be less than 2MB.");
+        }
+
+        $fileExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        $newFileName = "branch_" . time() . "_" . rand(1000, 9999) . "." . $fileExt;
+
+        $targetFile = $targetDir . $newFileName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+            $imageName = $newFileName;
+        } else {
+            die("Image upload failed.");
+        }
+    }
+
+    // IMPORTANT: Add image into update
+    $fields[] = "image=?";
+    $params[] = $imageName;
+    $types .= "s";
+
     // Only run if at least one field is being updated
     if (!empty($fields)) {
         $sql = "UPDATE branch SET " . implode(', ', $fields) . " WHERE branchId=?";
@@ -80,53 +126,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param($types, ...$params);
+
         if ($stmt->execute()) {
             $stmt->close();
-            /*header("Location: /web/dashboard/branches.php");*/
             echo "<script>window.location.href='/web/dashboard/branches.php';</script>";
             exit();
         }
-        ;
-        /*$stmt->close();*/
+
+        $stmt->close();
     }
 }
 ?>
 
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
-    id="updateBranchDialog" aria-hidden="true">
-    <div class="bg-white rounded-xl p-3 w-106">
-        <form method="POST">
+    id="updateBranchDialog">
+    <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-115 p-5 ">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="flex justify-between mb-4">
+                <h1 class="text-lg text-slate-800 font-semibold">Let's Update a Branch</h1>
+                <button type="button" data-dismiss="modal" aria-label="Close"
+                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-red-500 hover:bg-red-200/10 hover:border-red-200/10 shadow-none hover:shadow-none outline-none">
+                    <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5">
+                        <path
+                            d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
             <input type="hidden" name="branchId" id="branchId">
 
-            <label>Name</label>
-            <input type="text" name="name" id="updateName" required class="border p-2 w-full">
+            <div class="overflow-y-scroll h-[500px]">
+                <div class="">
+                    <label for="name" class="block text-sm font-medium text-foreground mb-1 text-start">Name</label>
+                    <input type="text" name="name" id="updateName" required
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
+                </div>
 
-            <label>Slug</label>
-            <input type="text" name="slug" id="updateSlug" readonly class="border p-2 w-full">
+                <div class="mt-6">
+                    <label for="slug" class="block text-sm font-medium text-foreground mb-1 text-start">Slug</label>
+                    <input type="text" name="slug" id="updateSlug" readonly
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
+                </div>
 
-            <label>Address</label>
-            <input type="text" name="address" id="updateAddress" class="border p-2 w-full">
+                <div class="mt-6">
+                    <label for="address"
+                        class="block text-sm font-medium text-foreground mb-1 text-start">Address</label>
+                    <input type="text" name="address" id="updateAddress" class="border p-2 w-full">
+                </div>
 
-            <label>Status</label>
-            <div class="w-full max-w-sm min-w-[200px]">
-                <div class="relative">
+                <div class="mt-6">
+                    <label for="status" class="block text-sm font-medium text-foreground mb-1 text-start">Status</label>
+
                     <select name="status" id="updateStatus"
-                        class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
                         <option selected disabled value="">Choose a Status</option>
                         <option value="Opening">Opening</option>
                         <option value="Closed">Closed</option>
                         <option value="Setup">Setup</option>
                         <option value="Deprecated">Deprecated</option>
                     </select>
-
                 </div>
-            </div>
 
-            <label>State</label>
-            <div class="w-full max-w-sm min-w-[200px]">
-                <div class="relative">
+                <div class="mt-6">
+                    <label for="state" class="block text-sm font-medium text-foreground mb-1 text-start">State</label>
+
                     <select name="state" id="updateState"
-                        class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
                         <option selected disabled value="">Choose a State</option>
                         <option value="Johor">Johor</option>
                         <option value="Kedah">Kedah</option>
@@ -142,17 +208,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="Selangor">Selangor</option>
                         <option value="Terengganu">Terengganu</option>
                     </select>
+
+                </div>
+
+                <div class="mt-6">
+                    <label for="startTime" class="block text-sm font-medium text-foreground mb-1 text-start">Start
+                        Time</label>
+                    <input type="time" name="startTime" id="updateStartTime"
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition" />
+                </div>
+
+                <div class="mt-6">
+                    <label for="endTime" class="block text-sm font-medium text-foreground mb-1 text-start">End
+                        Time</label>
+                    <input type="time" name="endTime" id="updateEndTime"
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition" />
+                </div>
+
+                <div class="mt-6">
+                    <label for="contactNumber" class="block text-sm font-medium text-foreground mb-1 text-start">Contact
+                        Number</label>
+                    <input type="text" name="contactNumber" id="updateContactNumber"
+                        class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
+                </div>
+
+                <div class="mt-6">
+                    <label for="image" class="block text-sm font-medium text-foreground mb-1 text-start">Upload
+                        Image (Optional)</label>
+                    <input type="hidden" name="old_image"
+                        value="<?php echo htmlspecialchars($branch['image'] ?? ''); ?>">
+
+                    <input type="file" name="image" id="updateImageFile" accept="image/png, image/jpeg, image/gif">
+
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                        Max file size: 2MB (JPG, PNG, GIF)
+                    </div>
+
+                    <?php if (!empty($branch['image'])): ?>
+                        <div style="margin-top: 10px;">
+                            <p style="margin: 0; font-weight: bold;">Current Image:</p>
+                            <img src="/web/uploads/branches/<?php echo htmlspecialchars($branch['image']); ?>"
+                                style="max-width: 150px; border-radius: 6px; border: 1px solid #ddd;">
+
+                            <div style="margin-top: 10px;">
+                                <input type="checkbox" name="remove_image" id="remove_image">
+                                <label for="remove_image">Remove current image</label>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
-            <label>Start Time</label>
-            <input type="time" name="startTime" id="updateStartTime" class="border p-2 w-full" />
-            <label>End Time</label>
-            <input type="time" name="endTime" id="updateEndTime" class="border p-2 w-full" />
-            <label>Contact Number</label>
-            <input type="text" name="contactNumber" id="updateContactNumber" class="border p-2 w-full">
-            <button type="submit" class="bg-blue-500 text-white p-2 mt-2">Update</button>
-            <button type="button"
-                onclick="document.getElementById('updateBranchDialog').classList.add('opacity-0', 'pointer-events-none')">Cancel</button>
+
+            <div class="mt-6">
+                <button type="submit"
+                    class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">Update</button>
+            </div>
+
         </form>
     </div>
 </div>

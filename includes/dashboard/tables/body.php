@@ -45,14 +45,14 @@
                             $filter = "";
                             $params = [];
                             $types = "";
-                            /*$search = $_GET['search'] ?? '';
+                            $search = $_GET['search'] ?? '';
                             if (!empty($search)) {
-                                $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
+                                $filter = " AND (seat_table.tableName LIKE ?)";
                                 $searchValue = "%" . $search . "%";
-                                $params = [$searchValue, $searchValue, $searchValue];
-                                $types = "sss";
+                                $params = [$searchValue];
+                                $types = "s";
                             }
-                            ;*/
+                            ;
                             if (!empty($_GET['status'])) {
                                 $statuses = $_GET['status'];
                                 if (!is_array($statuses)) {
@@ -63,12 +63,36 @@
                                 }, $statuses);
                                 $filter .= " AND seat_table.status IN (" . implode(',', $escapedStatuses) . ")";
                             }
+                            $limitRecords = 10;
+                            $perPage = isset($_GET['perPage']) && is_numeric($_GET['perPage']) ? (int) $_GET['perPage'] : 1;
+                            if ($perPage < 1) {
+                                $perPage = 1;
+                            }
+                            ;
+                            $offset = ($perPage - 1) * $limitRecords;
+                            $countQuery = "
+                            SELECT COUNT(*) as total FROM seat_table
+                            JOIN branch ON seat_table.branchId = branch.branchId
+                            WHERE 1 $filter
+                            ";
+                            $countStmt = $conn->prepare($countQuery);
+
+                            if (!empty($params)) {
+                                $countStmt->bind_param($types, ...$params);
+                            }
+
+                            $countStmt->execute();
+                            $countResult = $countStmt->get_result();
+                            $totalRow = $countResult->fetch_assoc();
+                            $totalRecords = $totalRow['total'];
+                            $totalPages = ceil($totalRecords / $limitRecords);
                             $tableQuery = "
                             SELECT seat_table.*, branch.name, branch.address, branch.slug
                             FROM seat_table
                             JOIN branch ON seat_table.branchId = branch.branchId
                             WHERE 1 $filter
                             ORDER BY seat_table.tableId DESC
+                            LIMIT $limitRecords OFFSET $offset
                             ";
                             $stmt = $conn->prepare($tableQuery);
                             if (!empty($params)) {
@@ -255,12 +279,41 @@
                     </table>
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-200 py-4"><small
-                        class="font-sans antialiased text-sm text-current">Page 1 of 10</small>
-                    <div class="flex gap-2"><button
-                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1.5 px-3 shadow-sm hover:shadow bg-transparent border-slate-200 text-slate-800 hover:bg-slate-200"
-                            data-shape="default" data-width="default">Previous</button><button
-                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1.5 px-3 shadow-sm hover:shadow bg-transparent border-slate-200 text-slate-800 hover:bg-slate-200"
-                            data-shape="default" data-width="default">Next</button></div>
+                        class="font-sans antialiased text-sm text-current">Page
+                        <?php echo $perPage; ?> of
+                        <?php echo $totalPages; ?>
+                    </small>
+                    <div class="flex gap-2">
+                        <?php
+                        $query = $_GET;
+                        ?>
+                        <?php if ($perPage > 1):
+                            $query['perPage'] = $perPage - 1;
+                            ?>
+                        <a href="/web/dashboard/tables?<?php echo http_build_query($query); ?>"
+                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1.5 px-3 shadow-sm hover:shadow bg-transparent border-slate-200 text-slate-800 hover:bg-slate-200">
+                            Previous
+                        </a>
+                        <?php else: ?>
+                        <button disabled
+                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-sm rounded-md py-1.5 px-3 shadow-sm bg-transparent border-slate-200 text-slate-400 cursor-not-allowed">
+                            Previous
+                        </button>
+                        <?php endif; ?>
+                        <?php if ($perPage < $totalPages):
+                            $query['perPage'] = $perPage + 1;
+                            ?>
+                        <a href="/web/dashboard/tables?<?php echo http_build_query($query); ?>"
+                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1.5 px-3 shadow-sm hover:shadow bg-transparent border-slate-200 text-slate-800 hover:bg-slate-200">
+                            Next
+                        </a>
+                        <?php else: ?>
+                        <button disabled
+                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-sm rounded-md py-1.5 px-3 shadow-sm bg-transparent border-slate-200 text-slate-400 cursor-not-allowed">
+                            Next
+                        </button>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
 

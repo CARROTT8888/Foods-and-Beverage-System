@@ -121,15 +121,34 @@ $stmtcount->close();
                     link.setAttribute("aria-current", "page");
                 }
             });
-            const dialog = document.getElementById("seatTableDialog");
-            window.openDialog = function () {
+            const dialog = document.getElementById("branchDialog");
+            window.openBranchDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeDialog = function () {
+            window.closeBranchDialog = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeBranchDialog();
+                }
+            });
+            const dialog2 = document.getElementById("searchOrFilterDialog");
+            window.openDialog = function () {
+                dialog2.classList.remove("opacity-0", "pointer-events-none");
+                dialog2.classList.add("opacity-100");
+            };
+            window.closeDialog = function () {
+                dialog2.classList.remove("opacity-100");
+                dialog2.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDialog();
+                }
+            });
         });
     </script>
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />

@@ -85,9 +85,13 @@
                         <div
                             class="rounded-lg border text-start overflow-hidden mt-5 bg-white border-slate-200 shadow-slate-950/5 w-full max-w-[26rem]a shadow-lg">
                             <div class="p-2 h-max rounded relative">
-                                <img class="w-full h-full rounded"
-                                    src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
-                                    alt="ui/ux review check" />
+                                <?php if ($data['image']): ?>
+                                    <img class="w-full h-48 object-cover rounded" src="/Foods-and-Beverage-System/uploads/branches/<?php echo htmlspecialchars($data['image']); ?>" alt="test"/>
+                                <?php else: ?>
+                                    <img class="w-full h-full rounded"
+                                        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
+                                        alt="ui/ux review check" />
+                                <?php endif; ?>
                                 <?php if ($data['status'] === 'Opening'): ?>
                                     <div
                                         class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-5 right-5">
@@ -148,7 +152,8 @@
                                                 <?php echo json_encode($data["endTime"]); ?>,
                                                 <?php echo json_encode($data["contactNumber"]); ?>,
                                                 <?php echo json_encode($data["state"]); ?>
-                                                )' class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                )'
+                                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
                                                 Update Branch
                                             </button>
@@ -171,32 +176,41 @@
                                                 <span class="font-medium"><?php echo htmlspecialchars($data['address']); ?></span>
                                             </div>
                                         <?php else: ?>
-                                            <div class="italic text-secondaryForeground" title="The address is not released.">The address is not released.
+                                            <div class="italic text-secondaryForeground" title="The address is not released.">The
+                                                address is not released.
                                             </div>
                                         <?php endif ?>
                                     </span>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <p class="font-sans antialiased text-base"><i class='bx bxs-phone text-xl text-primary'></i></p>
+                                    <p class="font-sans antialiased text-base"><i class='bx bxs-phone text-xl text-primary'></i>
+                                    </p>
                                     <span class="font-sans line-clamp-1">
                                         <?php if (!empty($data['contactNumber'])): ?>
                                             <div title="<?php echo htmlspecialchars($data['contactNumber']); ?>">
-                                                <span class="font-medium"><?php echo htmlspecialchars($data['contactNumber']); ?></span>
+                                                <span
+                                                    class="font-medium"><?php echo htmlspecialchars($data['contactNumber']); ?></span>
                                             </div>
                                         <?php else: ?>
-                                            <div class="italic text-secondaryForeground" title="The contact number is not released.">The contact number is
+                                            <div class="italic text-secondaryForeground"
+                                                title="The contact number is not released.">The contact number is
                                                 not released.</div>
                                         <?php endif; ?>
                                     </span>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <p class="font-sans antialiased text-base "><i class='bx bxs-hourglass text-xl text-primary'></i>
+                                    <p class="font-sans antialiased text-base "><i
+                                            class='bx bxs-hourglass text-xl text-primary'></i>
                                     </p>
                                     <span class="font-sans">
                                         <?php if (!empty($data['endTime'])): ?>
-                                            <span class="text-green-500 font-medium"><?php echo htmlspecialchars($data['startTime']); ?></span> - <span class="text-red-500 font-medium"><?php echo htmlspecialchars($data['endTime']); ?></span>
+                                            <span
+                                                class="text-green-500 font-medium"><?php echo htmlspecialchars($data['startTime']); ?></span>
+                                            - <span
+                                                class="text-red-500 font-medium"><?php echo htmlspecialchars($data['endTime']); ?></span>
                                         <?php else: ?>
-                                            <div class="italic text-secondaryForeground" title="The time is not scheduled.">The time is not scheduled.</div>
+                                            <div class="italic text-secondaryForeground" title="The time is not scheduled.">The time
+                                                is not scheduled.</div>
                                         <?php endif ?>
                                     </span>
                                 </div>
@@ -247,6 +261,14 @@
         document.getElementById("updateContactNumber").value = contactNumber;
         document.getElementById("updateState").value = state;
 
+        // OPEN dialog
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
+
+        // ESC close
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                document.getElementById("updateBranchDialog").classList.add("opacity-0", "pointer-events-none");
+            }
+        });
     }
 </script>

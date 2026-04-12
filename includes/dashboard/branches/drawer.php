@@ -103,9 +103,7 @@ $stmtcount->close();
                             </span>
                         </div>
                     </div>
-                    <button type="button" data-toggle="modal" data-target="#createBranchDialog2">
-                        <i class="bx bx-plus"></i>
-                    </button>
+                    
                 </div>
                 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
                     id="createBranchDialog2" aria-hidden="true">

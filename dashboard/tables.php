@@ -139,19 +139,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             });
             const dialog = document.getElementById("seatTableDialog");
-            window.openDialog = function () {
+            window.openTableDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeDialog = function () {
+            window.closeTableDialog = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeTableDialog();
+                }
+            });
+            const dialog2 = document.getElementById("searchOrFilterDialog");
+            window.openDialog = function () {
+                dialog2.classList.remove("opacity-0", "pointer-events-none");
+                dialog2.classList.add("opacity-100");
+            };
+            window.closeDialog = function () {
+                dialog2.classList.remove("opacity-100");
+                dialog2.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
                     closeDialog();
                 }
             });
+            
             const drawer = document.getElementById("sidebarDrawerBranch");
             function openDrawerBranch() {
                 drawer.classList.remove("opacity-0", "pointer-events-none");
