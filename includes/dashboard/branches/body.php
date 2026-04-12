@@ -86,7 +86,9 @@
                             class="rounded-lg border text-start overflow-hidden mt-5 bg-white border-slate-200 shadow-slate-950/5 w-full max-w-[26rem]a shadow-lg">
                             <div class="p-2 h-max rounded relative">
                                 <?php if ($data['image']): ?>
-                                    <img class="w-full h-48 object-cover rounded" src="/Foods-and-Beverage-System/uploads/branches/<?php echo htmlspecialchars($data['image']); ?>" alt="test"/>
+                                    <img class="w-full h-48 object-cover rounded"
+                                        src="/Foods-and-Beverage-System/uploads/branches/<?php echo htmlspecialchars($data['image']); ?>"
+                                        alt="test" />
                                 <?php else: ?>
                                     <img class="w-full h-full rounded"
                                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
@@ -151,7 +153,8 @@
                                                 <?php echo json_encode($data["startTime"]); ?>,
                                                 <?php echo json_encode($data["endTime"]); ?>,
                                                 <?php echo json_encode($data["contactNumber"]); ?>,
-                                                <?php echo json_encode($data["state"]); ?>
+                                                <?php echo json_encode($data["state"]); ?>,
+                                                <?php echo json_encode($data["image"]); ?>
                                                 )'
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
@@ -248,7 +251,7 @@
         }
     });
 
-    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime, contactNumber, state) {
+    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime, contactNumber, state, image) {
         console.log(branchId, name);
 
         document.getElementById("branchId").value = branchId;
@@ -260,6 +263,13 @@
         document.getElementById("updateEndTime").value = endTime;
         document.getElementById("updateContactNumber").value = contactNumber;
         document.getElementById("updateState").value = state;
+        //document.getElementById("previewImage").src = "/Foods-and-Beverage-System/uploads/branches/" + image;
+
+        if (image) {
+            document.getElementById("previewImage").src = "/Foods-and-Beverage-System/uploads/branches/" + image;
+        } else {
+            document.getElementById("previewImage").src = "https://via.placeholder.com/150";
+        }
 
         // OPEN dialog
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");

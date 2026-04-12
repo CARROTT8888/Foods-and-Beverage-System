@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             $stmt->close();
-            echo "<script>window.location.href='/web/dashboard/branches.php';</script>";
+            echo "<script>window.location.href='/web/dashboard/branches';</script>";
             exit();
         }
 
@@ -244,18 +244,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         Max file size: 2MB (JPG, PNG, GIF)
                     </div>
 
-                    <?php if (!empty($branch['image'])): ?>
-                        <div style="margin-top: 10px;">
-                            <p style="margin: 0; font-weight: bold;">Current Image:</p>
-                            <img src="/web/uploads/branches/<?php echo htmlspecialchars($branch['image']); ?>"
-                                style="max-width: 150px; border-radius: 6px; border: 1px solid #ddd;">
-
-                            <div style="margin-top: 10px;">
-                                <input type="checkbox" name="remove_image" id="remove_image">
-                                <label for="remove_image">Remove current image</label>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                    <div style="margin-top: 10px;">
+                        <p style="margin: 0; font-weight: bold;">Current Image:</p>
+                        <img id="previewImage" src="" class="w-full h-48 object-cover">
+                    </div>
                 </div>
             </div>
 
@@ -263,7 +255,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <button type="submit"
                     class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">Update</button>
             </div>
-
         </form>
     </div>
 </div>
