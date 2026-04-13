@@ -4,10 +4,10 @@ $params = [];
 $types = "";
 $search = $_GET['search'] ?? '';
 if (!empty($search)) {
-    $filter = " AND (seat_table.tableName LIKE ?)";
+    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
     $searchValue = "%" . $search . "%";
-    $params = [$searchValue];
-    $types = "s";
+    $params = [$searchValue, $searchValue, $searchValue];
+    $types = "sss";
 }
 ;
 // filtering status
@@ -19,57 +19,33 @@ if (!empty($selectedStatuses)) {
     $escapedStatuses = array_map(function ($status) use ($conn) {
         return "'" . $conn->real_escape_string($status) . "'";
     }, $selectedStatuses);
-    $filter .= " AND seat_table.status IN (" . implode(',', $escapedStatuses) . ")";
+    $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
 }
-
-$selectedBranches = $_GET['branch'] ?? [];
-if (!is_array($selectedBranches)) {
-    $selectedBranches = [$selectedBranches];
+// filtering state
+$selectedStates = $_GET['state'] ?? [];
+if (!is_array($selectedStates)) {
+    $selectedStates = [$selectedStates];
 }
-
-if (!empty($selectedBranches)) {
-    $escapedBranches = array_map(function ($id) use ($conn) {
-        return (int)$id;
-    }, $selectedBranches);
-    $filter .= " AND seat_table.branchId IN (" .implode(',', $escapedBranches) . ")";
+if (!empty($selectedStates)) {
+    $escapedStates = array_map(function ($state) use ($conn) {
+        return "'" . $conn->real_escape_string($state) . "'";
+    }, $selectedStates);
+    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
 }
-
 // final query with filter
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/
 
-$seatQuery = "SELECT * FROM seat_table WHERE 1" . $filter . " ORDER BY tableId DESC";
-$stmt = $conn->prepare($seatQuery);
+$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
+$stmt = $conn->prepare($branchQuery);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
 }
 $stmt->execute();
-$seatResult = $stmt->get_result();
+$branchResult = $stmt->get_result();
 ?>
 
 <div class="w-full px-4 sm:px-6 lg:px-10">
-    <script>
-        function toggleCollapse(event, id) {
-            event.preventDefault();
-
-            const container = document.getElementById('collapsibleContainer');
-            const allContents = container.querySelectorAll('[id^="collapse"]');
-            const allIcons = container.querySelectorAll('[id^="icon"]');
-
-            const content = document.getElementById(id);
-            const icon = document.getElementById(`icon${id.replace('collapse', '')}`);
-
-            const isCurrentlyVisible = !content.classList.contains('hidden');
-
-            allContents.forEach((c) => c.classList.add('hidden'));
-            allIcons.forEach((i) => i.classList.remove('rotate-180'));
-
-            if (!isCurrentlyVisible) {
-                content.classList.remove('hidden');
-                icon.classList.add('rotate-180');
-            }
-        };
-    </script>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4.5">
         <!-- Card 1 -->
         <div
@@ -96,7 +72,7 @@ $seatResult = $stmt->get_result();
                     <h1 class="text-lg font-bold text-green-900">Available</h1>
                 </div>
                 <p class="text-3xl text-green-950 mt-3 font-extrabold">
-                    <?php echo htmlspecialchars($totalStatusAvailable) ?>
+                    -
                 </p>
             </div>
         </div>
@@ -122,10 +98,10 @@ $seatResult = $stmt->get_result();
                                 fill="currentColor"></path>
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-red-900">Occupied</h1>
+                    <h1 class="text-lg font-bold text-red-900">Sold Out</h1>
                 </div>
                 <p class="text-3xl text-green-red mt-3 font-extrabold">
-                    <?php echo htmlspecialchars($totalStatusOccupied) ?>
+                    -
                 </p>
             </div>
         </div>
@@ -152,10 +128,10 @@ $seatResult = $stmt->get_result();
                             <circle cx="16" cy="7" r="1" fill="currentColor" />
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-amber-900">Dirty</h1>
+                    <h1 class="text-lg font-bold text-amber-900">Coming Soon</h1>
                 </div>
                 <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                    <?php echo htmlspecialchars($totalStatusDirty) ?>
+                    -
                 </p>
             </div>
         </div>
@@ -181,10 +157,10 @@ $seatResult = $stmt->get_result();
                                 fill="currentColor"></path>
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-orange-900">Reserved</h1>
+                    <h1 class="text-lg font-bold text-orange-900">Limited</h1>
                 </div>
                 <p class="text-3xl text-orange-950 mt-3 font-extrabold">
-                    <?php echo htmlspecialchars($totalStatusReserved) ?>
+                    -
                 </p>
             </div>
         </div>
@@ -209,10 +185,10 @@ $seatResult = $stmt->get_result();
                                 d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
                         </svg>
                     </div>
-                    <h1 class="text-lg font-bold text-slate-900">Blocked</h1>
+                    <h1 class="text-lg font-bold text-slate-900">Discontinued</h1>
                 </div>
                 <p class="text-3xl text-slate-950 mt-3 font-extrabold">
-                    <?php echo htmlspecialchars($totalStatusBlocked) ?>
+                    -
                 </p>
             </div>
         </div>
@@ -223,72 +199,25 @@ $seatResult = $stmt->get_result();
     if (!is_array($selectedStatuses)) {
         $selectedStatuses = [$selectedStatuses];
     }
-
-    $selectedBranches = $_GET['branch'] ?? [];
-    if (!is_array($selectedBranches)) {
-        $selectedBranches = [$selectedBranches];
-    }
-
-    if (!empty($selectedBranches)) {
-        //
-    }
     ?>
     <div class="flex items-center justify-between flex-wrap w-full">
         <div class="flex gap-2 relative top-5">
-            <!-- Trigger Button -->
             <button id="dropdownBtn" type="button" onclick="openDialog()"
                 class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
                 <i class="bx bx-search text-lg"></i><span class="lg:flex hidden">Search or Filter</span>
             </button>
-            <div class="flex items-center mb-10 gap-2 justify-self-start">
-                <?php foreach ($selectedStatuses as $status):
-                    $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $status);
-                    $query = $_GET;
-                    $query['status'] = $newStatuses;
-                    if (empty($newStatuses)) {
-                        unset($query['status']);
-                    }
-                    $url = '?' . http_build_query($query);
-                    ?>
-                    <a href="<?= $url ?>" class="">
-                        <?php if ($status === 'Available'): ?>
-                            <div
-                                class="text-green-500  border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
-                            </div>
-                        <?php elseif ($status === 'Occupied'): ?>
-                            <div
-                                class="text-red-500 border border-red-500 bg-red-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
-                            </div>
-                        <?php elseif ($status === 'Reserved'): ?>
-                            <div
-                                class="text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
-                            </div>
-                        <?php elseif ($status === 'Dirty'): ?>
-                            <div
-                                class="text-orange-500 border border-orange-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
-                            </div>
-                        <?php elseif ($status === 'Blocked'): ?>
-                            <div
-                                class="text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
-                            </div>
-                        <?php endif ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
         </div>
-        <button type="button" data-toggle="modal" onclick="openTableDialog()"
-            class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
-            <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
-        </button>
-        <?php include 'create-table-dialog.php'; ?>
+        <div class="flex relative top-5a">
+            <button type="button" data-toggle="modal" onclick="openCategoryDialog()"
+                class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
+                <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
+            </button>
+            <?php include 'create-category-dialog.php'; ?>
+        </div>
     </div>
+    <!---->
 </div>
-<?php include 'search-or-filter-dialog.php'; ?>
+</div>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script>
     // Dropdown logic
@@ -333,8 +262,23 @@ $seatResult = $stmt->get_result();
         }
     });
 </script>
-<span class="text-secondaryForeground relative left-5 lg:left-10">Showing
-    <?php echo $seatResult->num_rows; ?> of
-    <?php echo $totalSeatNumber; ?>
-    tables
-</span>
+<script>
+    function toggleCollapse(id) {
+        const container = document.getElementById('collapsibleContainer');
+        const allContents = container.querySelectorAll('[id^="collapse"]');
+        const allIcons = container.querySelectorAll('[id^="icon"]');
+        const content = document.getElementById(id);
+        const icon = document.getElementById(`icon${id.replace('collapse', '')}`);
+        // Check if the clicked section is already expanded
+        const isCurrentlyVisible = !content.classList.contains('hidden');
+        // Collapse all sections first
+        allContents.forEach((c) => c.classList.add('hidden'));
+        allIcons.forEach((i) => i.classList.remove('rotate-180'));
+        // If the clicked section was not already expanded, expand it
+        if (!isCurrentlyVisible) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        }
+        event.preventDefault();
+    }
+</script>

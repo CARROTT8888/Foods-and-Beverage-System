@@ -164,9 +164,45 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- Collapse Item -->
+                <div>
+                    <button class="w-full flex justify-between items-center py-2 text-slate-600 text-sm font-sans"
+                        type="button" onclick="toggleCollapse(event, 'collapseTables2')"> Branch <span
+                            class="transform transition-transform duration-300" id="iconTables2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="collapseTables2"
+                        class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
+                        <!-- Checkbox List -->
+                        <?php
+                        $branchQuery = "SELECT branchId, name FROM branch ORDER BY name ASC";
+                        $branchResult = $conn->query($branchQuery);
+                        ?>
+
+                        <div class="flex flex-col gap-3 my-2">
+                            <?php while ($branchRow = $branchResult->fetch_assoc()): ?>
+                                <div class="inline-flex items-center">
+                                    <label class="flex items-center cursor-pointer relative"
+                                        for="branch<?= $branchRow['branchId']; ?>">
+                                        <input type="checkbox" id="branch<?= $branchRow['branchId']; ?>" name="branch[]"
+                                            value="<?= $branchRow['branchId']; ?>" <?= in_array($branchRow['branchId'], $selectedBranches) ? 'checked' : '' ?>
+                                            class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    </label>
+
+                                    <label class="cursor-pointer ml-2 text-sm text-slate-700 flex-1"
+                                        for="branch<?= $branchRow['branchId']; ?>">
+                                        <?= htmlspecialchars($branchRow['name']); ?>
+                                    </label>
+                                </div>
+                            <?php endwhile; ?>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <button
                         class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground w-full"

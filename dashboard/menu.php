@@ -63,6 +63,13 @@ if (!isset($_SESSION['userId'])) {
                     link.setAttribute("aria-current", "page");
                 }
             });
+            document.querySelectorAll(".menu-link").forEach(link => {
+                const linkPath = new URL(link.href).pathname;
+                if (currentPath === linkPath) {
+                    link.classList.add("text-primary", "font-medium");
+                    link.setAttribute("aria-current", "page");
+                }
+            });
             const dialog = document.getElementById("seatTableDialog");
             window.openDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");

@@ -14,6 +14,7 @@
                     </svg>
                 </button>
             </div>
+            <input type="hidden" name="branchId" value="<?php echo $branch['branchId']; ?>">
             <div>
                 <label for="tableName" class="block text-sm font-medium text-foreground mb-1">Table Code</label>
                 <input type="text" name="tableName" placeholder="Enter a table code"
@@ -26,20 +27,7 @@
                     class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
                     required />
             </div>
-            <div>
-                <label for="branchId" class="block text-sm font-medium text-foreground mb-1">Branch</label>
-                <select type="text" id="branchId" name="branchId" placeholder="Enter a table code."
-                    class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
-                    <option value="" selected disabled>Select Branch</option>
-                    <?php
-                    $branchQuery = "SELECT branchId, name FROM branch";
-                    $result = $conn->query($branchQuery);
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='{$row['branchId']}'>{$row['name']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
+            
             <button type="submit"
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create

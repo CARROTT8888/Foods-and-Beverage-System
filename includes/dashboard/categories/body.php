@@ -1,23 +1,44 @@
 <section
     class="relative overflow-y-scroll h-screen bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8 max-w-7xl w-full">
-    <h1 class="max-w-7xl mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8 w-full">
-        <button type="button" data-toggle="modal" data-target="#sidebarDrawer"
-            class="text-gray-500 hover:text-gray-600">
-            <span class="lg:hidden flex font-bold">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
-            </span>
-        </button>
-        <?php include '../includes/dashboard/tables/drawer.php'; ?>
-        Tables
-    </h1>
+    <div>
+        <h1 class="max-w-7xl mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8 w-full">
+            <!-- Sidebar -->
+            <!---<button class="text-gray-500 hover:text-gray-600" id="open-sidebar">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>--->
+            <button type="button" data-toggle="modal" data-target="#sidebarDrawerBranch"
+                class="text-gray-500 hover:text-gray-600">
+                <span class="lg:hidden flex font-bold">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16">
+                        </path>
+                    </svg>
+                </span>
+            </button>
+            <?php include '../includes/dashboard/menu/drawer.php'; ?>
+            Menu
+        </h1>
+        <nav class="flex flex-wrap items-center gap-1 p-1px-4 sm:px-6 lg:px-8 relative bottom-4 ml-4">
+            <a href="/web/dashboard/categories"
+                class="menu-link inline-flex items-center gap-1.5 text-lg hover:text-primary hover:underline">Categories</a>
+            <span
+                class="inline-block mx-1 text-sm text-secondaryForeground opacity-50 pointer-events-none select-none">></span>
+            <a href="/web/dashboard/menu"
+                class="menu-link inline-flex items-center gap-1.5 text-lg text-slate-800a hover:text-primary hover:underline">Foods
+                and Beverages</a>
+        </nav>
+    </div>
     <div class="flex sm:items-center flex-wrap gap-6">
+        <?php include '../includes/dashboard/categories/header.php'; ?>
         <!-- Dropdown Container -->
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
-            <?php include '../includes/dashboard/tables/header.php'; ?>
+
             <div class="w-auto text-center max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <div class="w-full overflow-x-auto rounded-lg border border-slate-200 mt-4">
                     <table class="w-full text-left">
@@ -25,10 +46,7 @@
                             class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600 dark:bg-surface-dark">
                             <tr>
                                 <th class="px-2.5 py-2 text-start font-medium">
-                                    Table Code
-                                </th>
-                                <th class="px-2.5 py-2 text-start font-medium">
-                                    Available Seat(s)
+                                    Category Name
                                 </th>
                                 <th class="px-5 py-2 text-start font-medium">
                                     Status
@@ -47,7 +65,7 @@
                             $types = "";
                             $search = $_GET['search'] ?? '';
                             if (!empty($search)) {
-                                $filter = " AND (seat_table.tableName LIKE ?)";
+                                $filter = " AND (food_category.name LIKE ?)";
                                 $searchValue = "%" . $search . "%";
                                 $params = [$searchValue];
                                 $types = "s";
@@ -61,7 +79,7 @@
                                 $escapedStatuses = array_map(function ($status) use ($conn) {
                                     return "'" . $conn->real_escape_string($status) . "'";
                                 }, $statuses);
-                                $filter .= " AND seat_table.status IN (" . implode(',', $escapedStatuses) . ")";
+                                $filter .= " AND food_category.status IN (" . implode(',', $escapedStatuses) . ")";
                             }
 
                             if (!empty($_GET['branch'])) {
@@ -72,7 +90,7 @@
                                 $escapedBranches = array_map(function ($id) use ($conn) {
                                     return (int) $id;
                                 }, $selectedBranches);
-                                $filter .= " AND seat_table.branchId IN (" . implode(',', $escapedBranches) . ")";
+                                $filter .= " AND food_category.branchId IN (" . implode(',', $escapedBranches) . ")";
                             }
                             $limitRecords = 10;
                             $perPage = isset($_GET['perPage']) && is_numeric($_GET['perPage']) ? (int) $_GET['perPage'] : 1;
@@ -82,8 +100,8 @@
                             ;
                             $offset = ($perPage - 1) * $limitRecords;
                             $countQuery = "
-                            SELECT COUNT(*) as total FROM seat_table
-                            JOIN branch ON seat_table.branchId = branch.branchId
+                            SELECT COUNT(*) as total FROM food_category
+                            JOIN branch ON food_category.branchId = branch.branchId
                             WHERE 1 $filter
                             ";
                             $countStmt = $conn->prepare($countQuery);
@@ -98,11 +116,11 @@
                             $totalRecords = $totalRow['total'];
                             $totalPages = ceil($totalRecords / $limitRecords);
                             $tableQuery = "
-                            SELECT seat_table.*, branch.name, branch.address, branch.slug
-                            FROM seat_table
-                            JOIN branch ON seat_table.branchId = branch.branchId
+                            SELECT food_category.*, branch.name AS branchName, branch.address, branch.slug
+                            FROM food_category
+                            JOIN branch ON food_category.branchId = branch.branchId
                             WHERE 1 $filter
-                            ORDER BY seat_table.tableId DESC
+                            ORDER BY food_category.categoryId DESC
                             LIMIT $limitRecords OFFSET $offset
                             ";
                             $stmt = $conn->prepare($tableQuery);
@@ -121,83 +139,35 @@
                                             src="https://docs.material-tailwind.com/img/logos/logo-spotify.svg"
                                             alt="Spotify" />--->
                                         <a
-                                            href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']) ?>">
+                                            href="/web/dashboard/bcategories?slug=<?php echo htmlspecialchars($data['slug']) ?>">
                                             <small
                                                 class="font-sans antialiased text-sm text-current font-bold hover:underline">
-                                                <?php echo htmlspecialchars($data['tableName']); ?>
+                                                <?php echo htmlspecialchars($data['name']); ?>
                                             </small>
                                         </a>
                                     </div>
                                 </td>
-                                <td class="p-4 border-b border-surface-light gap-3">
-                                    <small class="font-sans antialiased text-sm text-current">
-                                        <?php echo htmlspecialchars($data['availableSeat']); ?>
-                                    </small>
-                                </td>
-
                                 <td class="p-4 border-b border-surface-light">
                                     <div class="w-max">
                                         <div
                                             class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 border-transparent text-green-500 shadow-none">
-                                            <?php if ($data['status'] === 'Available'): ?>
+                                            <?php if ($data['status'] === 'Visible'): ?>
                                             <div
                                                 class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
                                                 <div class="relative flex size-3.5 items-center justify-center">
-                                                    <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg" color="currentColor"
-                                                        class="h-5 w-5 text-green-600">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM7.53044 11.9697C7.23755 11.6768 6.76268 11.6768 6.46978 11.9697C6.17689 12.2626 6.17689 12.7374 6.46978 13.0303L9.46978 16.0303C9.76268 16.3232 10.2376 16.3232 10.5304 16.0303L17.5304 9.03033C17.8233 8.73744 17.8233 8.26256 17.5304 7.96967C17.2375 7.67678 16.7627 7.67678 16.4698 7.96967L10.0001 14.4393L7.53044 11.9697Z"
-                                                            fill="currentColor"></path>
-                                                    </svg>
+                                                    <i class='bx bx-show text-lg'></i>
                                                 </div>
-                                                <span>Available</span>
+                                                <span>Visible</span>
                                             </div>
-                                            <?php elseif ($data['status'] === 'Occupied'): ?>
+                                            <?php elseif ($data['status'] === 'Invisible'): ?>
                                             <div
                                                 class="flex items-center gap-2 text-red-500 border border-red-500 bg-red-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
                                                 <div class="relative flex size-3.5 items-center justify-center">
-                                                    <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg" color="currentColor"
-                                                        class="h-5 w-5 text-red-600">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM7.53033 7.46967C7.23744 7.17678 6.76256 7.17678 6.46967 7.46967C6.17678 7.76256 6.17678 8.23744 6.46967 8.53033L10.9393 13L6.46967 17.4697C6.17678 17.7626 6.17678 18.2374 6.46967 18.5303C6.76256 18.8232 7.23744 18.8232 7.53033 18.5303L12 14.0607L16.4697 18.5303C16.7626 18.8232 17.2374 18.8232 17.5303 18.5303C17.8232 18.2374 17.8232 17.7626 17.5303 17.4697L13.0607 13L17.5303 8.53033C17.8232 8.23744 17.8232 7.76256 17.5303 7.46967C17.2374 7.17678 16.7626 7.17678 16.4697 7.46967L12 11.9393L7.53033 7.46967Z"
-                                                            fill="currentColor"></path>
-                                                    </svg>
+                                                    <i class='bx bxs-low-vision text-lg'></i>
                                                 </div>
-                                                <span>Occupied</span>
+                                                <span>Invisible</span>
                                             </div>
-                                            <?php elseif ($data['status'] === 'Dirty'): ?>
-                                            <div
-                                                class="flex items-center gap-2 text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
-                                                <div class="relative flex size-3.5 items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M3 3h18M3 9h18M3 15h18M3 21h18" />
-                                                        <circle cx="8" cy="7" r="1" fill="currentColor" />
-                                                        <circle cx="12" cy="13" r="1" fill="currentColor" />
-                                                        <circle cx="16" cy="7" r="1" fill="currentColor" />
-                                                    </svg>
-                                                </div>
-                                                <span>Dirty</span>
-                                            </div>
-                                            <?php elseif ($data['status'] === 'Reserved'): ?>
-                                            <div
-                                                class="flex items-center gap-2 text-orange-500 border border-orange-500 bg-orange-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
-                                                <div class="relative flex size-3.5 items-center justify-center">
-                                                    <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg" color="currentColor"
-                                                        class="h-5 w-5 text-orange-600">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V7C11.25 6.58579 11.5858 6.25 12 6.25ZM12.5675 17.5008C12.8446 17.1929 12.8196 16.7187 12.5117 16.4416C12.2038 16.1645 11.7296 16.1894 11.4525 16.4973L11.4425 16.5084C11.1654 16.8163 11.1904 17.2905 11.4983 17.5676C11.8062 17.8447 12.2804 17.8197 12.5575 17.5119L12.5675 17.5008Z"
-                                                            fill="currentColor"></path>
-                                                    </svg>
-                                                </div>
-                                                <span>Reserved</span>
-                                            </div>
-                                            <?php elseif ($data['status'] === 'Blocked'): ?>
+                                            <?php elseif ($data['status'] === 'Deprecated'): ?>
                                             <div
                                                 class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
                                                 <div class="relative flex size-3.5 items-center justify-center">
@@ -226,7 +196,7 @@
                                                 href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($data['slug']) ?>">
                                                 <small
                                                     class="font-sans antialiased text-sm text-current capitalize hover:underline">
-                                                    <?php echo htmlspecialchars($data['name']); ?>
+                                                    <?php echo htmlspecialchars($data['branchName']); ?>
                                                 </small>
                                             </a>
                                             <?php if (!empty($data['address'])): ?>
@@ -257,7 +227,7 @@
                                             <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']); ?>"
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bx-show mr-2 text-lg'></i>
-                                                View Tables
+                                                View Categories
                                             </a>
                                             <button type="button" onclick='fillUpdateForm(
                                                 <?php echo json_encode($data["branchId"]); ?>,
@@ -327,9 +297,8 @@
                     </div>
                 </div>
             </div>
-
 </section>
-<script>
+<!--<script>
     const sidebar = document.getElementById('sidebar');
     const openSidebarButton = document.getElementById('open-sidebar');
 
@@ -360,4 +329,4 @@
 
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
     }
-</script>
+</script>-->

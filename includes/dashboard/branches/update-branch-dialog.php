@@ -238,9 +238,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="hidden" name="old_image"
                         value="<?php echo htmlspecialchars($branch['image'] ?? ''); ?>">
 
-                    <input type="file" class="bg-red-400 w-full text-center flex justify-center" name="image" id="updateImageFile" accept="image/png, image/jpeg, image/gif">
+                    <input type="file" class="bg-red-400 w-full text-center flex justify-center" name="image"
+                        id="updateImageFile" accept="image/png, image/jpeg, image/gif">
 
-                    <div class="text-sm text-secondaryForeground mt-5" >
+                    <div class="text-sm text-secondaryForeground mt-5">
                         Max file size: 2MB (JPG, PNG, GIF)
                     </div>
 
@@ -254,6 +255,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="mt-6">
                 <button type="submit"
                     class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">Update</button>
+                <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or
+                    tab 'ESC' key to close the dialog.</span>
             </div>
         </form>
     </div>
