@@ -46,7 +46,7 @@ $branchResult = $stmt->get_result();
 ?>
 
 <div class="w-full px-4 sm:px-6 lg:px-10">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4.5">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4.5">
         <!-- Card 1 -->
         <div
             class="flex items-center p-2 border border-green-500 bg-green-500/10 hover:border-green/20 transition-colors rounded-xl ">
@@ -101,65 +101,6 @@ $branchResult = $stmt->get_result();
                     <h1 class="text-lg font-bold text-red-900">Sold Out</h1>
                 </div>
                 <p class="text-3xl text-green-red mt-3 font-extrabold">
-                    -
-                </p>
-            </div>
-        </div>
-        <!-- Card 3 -->
-        <div
-            class="flex items-center p-2 border border-amber-500 bg-amber-500/10 hover:border-amber/20 transition-colors rounded-xl ">
-            <!---<div class="rounded-lg object-cover">
-                <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-25 w-25 text-green-500">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM7.53044 11.9697C7.23755 11.6768 6.76268 11.6768 6.46978 11.9697C6.17689 12.2626 6.17689 12.7374 6.46978 13.0303L9.46978 16.0303C9.76268 16.3232 10.2376 16.3232 10.5304 16.0303L17.5304 9.03033C17.8233 8.73744 17.8233 8.26256 17.5304 7.96967C17.2375 7.67678 16.7627 7.67678 16.4698 7.96967L10.0001 14.4393L7.53044 11.9697Z"
-                        fill="currentColor">
-                    </path>
-                </svg>
-            </div>--->
-            <div class="ml-4">
-                <div class="flex items-center gap-2.5">
-                    <div class="relative flex size-4 items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-600" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18M3 9h18M3 15h18M3 21h18" />
-                            <circle cx="8" cy="7" r="1" fill="currentColor" />
-                            <circle cx="12" cy="13" r="1" fill="currentColor" />
-                            <circle cx="16" cy="7" r="1" fill="currentColor" />
-                        </svg>
-                    </div>
-                    <h1 class="text-lg font-bold text-amber-900">Coming Soon</h1>
-                </div>
-                <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                    -
-                </p>
-            </div>
-        </div>
-        <!-- Card 4 -->
-        <div
-            class="flex items-center p-2 border border-orange-500 bg-orange-500/10 hover:border-orange/20 transition-colors rounded-xl ">
-            <!---<div class="rounded-lg object-cover">
-                <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-25 w-25 text-green-500">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM7.53044 11.9697C7.23755 11.6768 6.76268 11.6768 6.46978 11.9697C6.17689 12.2626 6.17689 12.7374 6.46978 13.0303L9.46978 16.0303C9.76268 16.3232 10.2376 16.3232 10.5304 16.0303L17.5304 9.03033C17.8233 8.73744 17.8233 8.26256 17.5304 7.96967C17.2375 7.67678 16.7627 7.67678 16.4698 7.96967L10.0001 14.4393L7.53044 11.9697Z"
-                        fill="currentColor">
-                    </path>
-                </svg>
-            </div>--->
-            <div class="ml-4">
-                <div class="flex items-center gap-2.5">
-                    <div class="relative flex size-4 items-center justify-center">
-                        <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5 text-orange-600">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V7C11.25 6.58579 11.5858 6.25 12 6.25ZM12.5675 17.5008C12.8446 17.1929 12.8196 16.7187 12.5117 16.4416C12.2038 16.1645 11.7296 16.1894 11.4525 16.4973L11.4425 16.5084C11.1654 16.8163 11.1904 17.2905 11.4983 17.5676C11.8062 17.8447 12.2804 17.8197 12.5575 17.5119L12.5675 17.5008Z"
-                                fill="currentColor"></path>
-                        </svg>
-                    </div>
-                    <h1 class="text-lg font-bold text-orange-900">Limited</h1>
-                </div>
-                <p class="text-3xl text-orange-950 mt-3 font-extrabold">
                     -
                 </p>
             </div>
@@ -282,3 +223,8 @@ $branchResult = $stmt->get_result();
         event.preventDefault();
     }
 </script>
+<span class="text-secondaryForeground relative ml-10">Showing
+    - of
+    -
+    categories
+</span>

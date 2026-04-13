@@ -171,14 +171,9 @@
                                             <div
                                                 class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
                                                 <div class="relative flex size-3.5 items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor" stroke-width="2.5">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
-                                                    </svg>
+                                                    <i class='bx bxs-x-circle text-lg'></i>
                                                 </div>
-                                                <span>Blocked</span>
+                                                <span>Deprecated</span>
                                             </div>
                                             <?php endif; ?>
                                         </div>
