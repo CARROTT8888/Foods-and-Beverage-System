@@ -69,9 +69,9 @@
                                 if (!is_array($branches)) {
                                     $branches = [$branches];
                                 }
-                                $escapedBranches = array_map(function ($id) use ($conn) {
+                                $escapedBranches = array_map(function ($id) {
                                     return (int) $id;
-                                }, $selectedBranches);
+                                }, $branches);
                                 $filter .= " AND seat_table.branchId IN (" . implode(',', $escapedBranches) . ")";
                             }
                             $limitRecords = 10;
@@ -260,25 +260,22 @@
                                                 View Tables
                                             </a>
                                             <button type="button" onclick='fillUpdateForm(
-                                                <?php echo json_encode($data["branchId"]); ?>,
-                                                <?php echo json_encode($data["name"]); ?>,
-                                                <?php echo json_encode($data["slug"]); ?>,
-                                                <?php echo json_encode($data["address"]); ?>,
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
                                                 <?php echo json_encode($data["status"]); ?>,
-                                                <?php echo json_encode($data["startTime"]); ?>,
-                                                <?php echo json_encode($data["endTime"]); ?>,
-                                                <?php echo json_encode($data["contactNumber"]); ?>,
-                                                <?php echo json_encode($data["state"]); ?>
+                                                <?php echo json_encode($data["branchId"]); ?>
                                                 )'
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
-                                                Update Branch
+                                                Update Table
                                             </button>
 
                                             <a href="sign-out.php"
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
                                                 <i class='bx bxs-trash mr-2 text-lg'></i>
-                                                Delete Branch
+                                                Delete Table
                                             </a>
                                         </div>
                                     </div>
@@ -324,10 +321,10 @@
                             Next
                         </button>
                         <?php endif; ?>
+                        <?php include 'update-table-dialog.php'; ?>
                     </div>
                 </div>
             </div>
-
 </section>
 <script>
     const sidebar = document.getElementById('sidebar');
@@ -345,19 +342,23 @@
         }
     });
 
-    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime, contactNumber, state) {
-        console.log(branchId, name);
+    function fillUpdateForm(tableId, tableName, totalSeat, availableSeat, status, branchId) {
+        //console.log(branchId, name);
 
-        document.getElementById("branchId").value = branchId;
-        document.getElementById("updateName").value = name;
-        document.getElementById("updateSlug").value = slug;
-        document.getElementById("updateAddress").value = address;
+        document.getElementById("tableId").value = tableId;
+        document.getElementById("updateTableName").value = tableName;
+        document.getElementById("updateTotalSeat").value = totalSeat;
+        document.getElementById("updateAvailableSeat").value = availableSeat;
         document.getElementById("updateStatus").value = status;
-        document.getElementById("updateStartTime").value = startTime;
-        document.getElementById("updateEndTime").value = endTime;
-        document.getElementById("updateContactNumber").value = contactNumber;
-        document.getElementById("updateState").value = state;
+        document.getElementById("updateBranch").value = branchId;
 
-        document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
+        document.getElementById("updateTableDialog").classList.remove("opacity-0", "pointer-events-none");
+
+        // ESC close
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                document.getElementById("updateTableDialog").classList.add("opacity-0", "pointer-events-none");
+            }
+        });
     }
 </script>

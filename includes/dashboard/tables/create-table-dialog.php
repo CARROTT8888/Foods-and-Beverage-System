@@ -1,3 +1,42 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tableName = $_POST['tableName'] ?? null;
+    $branchId = $_POST['branchId'] ?? null;
+    $totalSeat = $_POST['totalSeat'] ?? null;
+    $status = "Available";
+
+    // auto set available seat same as total seat
+    $availableSeat = $totalSeat;
+
+    // check for duplocate table code
+    $checkQuery = "SELECT tableId FROM seat_table WHERE tableName = ? AND branchId = ?";
+    $checkStmt = $conn->prepare($checkQuery);
+    $checkStmt->bind_param('si', $tableName, $branchId);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows > 0) {
+        $errorMessage = 'The table code has already exists.';
+        $checkStmt->close();
+    } else {
+        $checkStmt->close();
+        // insert new table (fixed column/value count)
+        $query = "INSERT INTO seat_table (tableName, branchId, totalSeat, availableSeat, status) VALUES (?, ?, ?, ?, ?)";
+        $addseatstmt = $conn->prepare($query);
+        //corrected bind_param types: s = string, i = integer, d = double/decimal\
+        $addseatstmt->bind_param('siiis', $tableName, $branchId, $totalSeat, $availableSeat, $status);
+        if ($addseatstmt->execute()) {
+            echo "<script>window.location.href='/web/dashboard/branches';</script>";
+            exit();
+        } else {
+            $errorMessage = "Error: " . $conn->error;
+        }
+        $addseatstmt->close();
+    }
+}
+;
+?>
+
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="seatTableDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-106 p-3 ">
@@ -44,7 +83,8 @@
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>
-            <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or tab 'ESC' key to close the dialog.</span>
+            <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or tab
+                'ESC' key to close the dialog.</span>
         </form>
     </div>
 </div>

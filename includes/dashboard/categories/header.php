@@ -62,17 +62,12 @@ $branchResult = $stmt->get_result();
             <div class="ml-4">
                 <div class="flex items-center gap-2.5">
                     <div class="relative flex size-4 items-center justify-center">
-                        <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5 text-green-600">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM7.53044 11.9697C7.23755 11.6768 6.76268 11.6768 6.46978 11.9697C6.17689 12.2626 6.17689 12.7374 6.46978 13.0303L9.46978 16.0303C9.76268 16.3232 10.2376 16.3232 10.5304 16.0303L17.5304 9.03033C17.8233 8.73744 17.8233 8.26256 17.5304 7.96967C17.2375 7.67678 16.7627 7.67678 16.4698 7.96967L10.0001 14.4393L7.53044 11.9697Z"
-                                fill="currentColor"></path>
-                        </svg>
+                        <i class='bx bx-show text-lg text-green-600'></i>
                     </div>
-                    <h1 class="text-lg font-bold text-green-900">Available</h1>
+                    <h1 class="text-lg font-bold text-green-900">Visible</h1>
                 </div>
                 <p class="text-3xl text-green-950 mt-3 font-extrabold">
-                    -
+                    <?php echo htmlspecialchars($totalStatusVisible); ?>
                 </p>
             </div>
         </div>
@@ -91,17 +86,12 @@ $branchResult = $stmt->get_result();
             <div class="ml-4">
                 <div class="flex items-center gap-2.5">
                     <div class="relative flex size-4 items-center justify-center">
-                        <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5 text-red-600">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM7.53033 7.46967C7.23744 7.17678 6.76256 7.17678 6.46967 7.46967C6.17678 7.76256 6.17678 8.23744 6.46967 8.53033L10.9393 13L6.46967 17.4697C6.17678 17.7626 6.17678 18.2374 6.46967 18.5303C6.76256 18.8232 7.23744 18.8232 7.53033 18.5303L12 14.0607L16.4697 18.5303C16.7626 18.8232 17.2374 18.8232 17.5303 18.5303C17.8232 18.2374 17.8232 17.7626 17.5303 17.4697L13.0607 13L17.5303 8.53033C17.8232 8.23744 17.8232 7.76256 17.5303 7.46967C17.2374 7.17678 16.7626 7.17678 16.4697 7.46967L12 11.9393L7.53033 7.46967Z"
-                                fill="currentColor"></path>
-                        </svg>
+                        <i class='bx bxs-low-vision text-lg text-red-600'></i>
                     </div>
-                    <h1 class="text-lg font-bold text-red-900">Sold Out</h1>
+                    <h1 class="text-lg font-bold text-red-900">Invisible</h1>
                 </div>
                 <p class="text-3xl text-green-red mt-3 font-extrabold">
-                    -
+                    <?php echo htmlspecialchars($totalStatusInvisible); ?>
                 </p>
             </div>
         </div>
@@ -120,16 +110,12 @@ $branchResult = $stmt->get_result();
             <div class="ml-4">
                 <div class="flex items-center gap-2.5">
                     <div class="relative flex size-4 items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-600" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
-                        </svg>
+                        <i class='bx bxs-x-circle text-lg text-slate-600'></i>
                     </div>
-                    <h1 class="text-lg font-bold text-slate-900">Discontinued</h1>
+                    <h1 class="text-lg font-bold text-slate-900">Deprecated</h1>
                 </div>
                 <p class="text-3xl text-slate-950 mt-3 font-extrabold">
-                    -
+                    <?php echo htmlspecialchars($totalStatusDeprecated); ?>
                 </p>
             </div>
         </div>
@@ -225,6 +211,6 @@ $branchResult = $stmt->get_result();
 </script>
 <span class="text-secondaryForeground relative ml-10">Showing
     - of
-    -
+    <?php echo htmlspecialchars($totalCategory); ?>
     categories
 </span>

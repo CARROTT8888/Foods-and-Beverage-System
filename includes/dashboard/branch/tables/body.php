@@ -26,14 +26,15 @@
                 $filter = " AND seat_table.branchId = ?";
                 $params = [$branchId];
                 $types = "i";
-                /*$search = $_GET['search'] ?? '';
+                $search = $_GET['search'] ?? '';
                 if (!empty($search)) {
-                    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
+                    $filter .= " AND seat_table.tableName LIKE ?";
                     $searchValue = "%" . $search . "%";
-                    $params = [$searchValue, $searchValue, $searchValue];
-                    $types = "sss";
+                    $params[] = $searchValue;
+                    $types .= "s";
                 }
-                ;*/
+                ;
+                // filtering status
                 if (!empty($_GET['status'])) {
                     $statuses = $_GET['status'];
                     if (!is_array($statuses)) {

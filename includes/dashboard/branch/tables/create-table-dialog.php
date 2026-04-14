@@ -27,11 +27,13 @@
                     class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
                     required />
             </div>
-            
+
             <button type="submit"
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>
+            <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or
+                tab 'ESC' key to close the dialog.</span>
         </form>
     </div>
 </div>

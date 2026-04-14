@@ -46,7 +46,7 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
     $stmt->close();
 } else {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        die("<div class='alert alert-danger'>Error: Invalid Request. <a href='Lab 09 Q1.php'>Go Back</a></div>");
+        die("<div class='alert alert-danger'>Error: Invalid Request.</div>");
     }
 }
 
@@ -85,6 +85,13 @@ $stmtcount = $conn->prepare($countstatusBlockedsql);
 $stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusBlocked);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatussql = "SELECT COUNT(*) FROM seat_table WHERE branchId = ?";
+$stmtcount = $conn->prepare($countstatussql);
+$stmtcount->bind_param("i", $branchId);
+$stmtcount->execute();
+$stmtcount->bind_result($totalTableNumber);
 $stmtcount->fetch();
 $stmtcount->close();
 

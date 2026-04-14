@@ -237,13 +237,13 @@
                                                 )'
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
-                                                Update Branch
+                                                Update Category
                                             </button>
 
                                             <a href="sign-out.php"
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
                                                 <i class='bx bxs-trash mr-2 text-lg'></i>
-                                                Delete Branch
+                                                Delete Category
                                             </a>
                                         </div>
                                     </div>
