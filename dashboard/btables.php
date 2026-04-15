@@ -95,7 +95,7 @@ $stmtcount->bind_result($totalTableNumber);
 $stmtcount->fetch();
 $stmtcount->close();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateTable'])) {
     $tableName = $_POST['tableName'];
     $branchId = $_POST['branchId'];
     $totalSeat = $_POST['totalSeat'];

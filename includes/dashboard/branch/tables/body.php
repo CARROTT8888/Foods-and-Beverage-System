@@ -58,7 +58,33 @@
                         <?php if ($data['status'] === 'Available'): ?>
                             <div
                                 class="relative min-h-60 w-auto flex flex-col justify-center items-center my-6 text-green-500  border border-green-500 bg-green-100 shadow-sm rounded-lg p-2">
-                                <i class='bx bx-dots-vertical-rounded absolute w-full flex justify-end text-2xl top-2'></i>
+                                <div class="dropdown absolute bottom-50 flex justify-end w-full">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded w-full text-2xl text-green-500'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="p-3 text-center">
                                     <div class="flex justify-center mb-4">
 
@@ -84,7 +110,33 @@
                         <?php elseif ($data['status'] === 'Occupied'): ?>
                             <div
                                 class="relative min-h-60 w-auto flex flex-col justify-center items-center my-6 text-red-500  border border-red-500 bg-red-100 shadow-sm rounded-lg p-2">
-                                <i class='bx bx-dots-vertical-rounded absolute w-full flex justify-end text-2xl top-2'></i>
+                                <div class="dropdown absolute bottom-50 flex justify-end w-full">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded w-full text-2xl text-red-500'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="p-3 text-center">
                                     <div class="flex justify-center mb-4">
                                         <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
@@ -107,7 +159,33 @@
                         <?php elseif ($data['status'] === 'Dirty'): ?>
                             <div
                                 class="relative min-h-60 w-auto flex flex-col justify-center items-center my-6 text-amber-500  border border-amber-500 bg-amber-100 shadow-sm rounded-lg p-2">
-                                <i class='bx bx-dots-vertical-rounded absolute w-full flex justify-end text-2xl top-2'></i>
+                                <div class="dropdown absolute bottom-50 flex justify-end w-full">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded w-full text-2xl text-amber-500'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="p-3 text-center">
                                     <div class="flex justify-center mb-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-amber-600" fill="none"
@@ -132,7 +210,33 @@
                         <?php elseif ($data['status'] === 'Reserved'): ?>
                             <div
                                 class="relative min-h-60 w-auto flex flex-col justify-center items-center my-6 text-orange-500  border border-orange-500 bg-orange-100 shadow-sm rounded-lg p-2">
-                                <i class='bx bx-dots-vertical-rounded absolute w-full flex justify-end text-2xl top-2'></i>
+                                <div class="dropdown absolute bottom-50 flex justify-end w-full">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded w-full text-2xl text-orange-500'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="p-3 text-center">
                                     <div class="flex justify-center mb-4">
                                         <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
@@ -156,7 +260,33 @@
                         <?php elseif ($data['status'] === 'Blocked'): ?>
                             <div
                                 class="relative min-h-60 w-auto flex flex-col justify-center items-center my-6 text-slate-500  border border-slate-500 bg-slate-100 shadow-sm rounded-lg p-2">
-                                <i class='bx bx-dots-vertical-rounded absolute w-full flex justify-end text-2xl top-2'></i>
+                                <div class="dropdown absolute bottom-50 flex justify-end w-full">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded w-full text-2xl text-slate-500'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="p-3 text-center">
                                     <div class="flex justify-center mb-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-slate-600" fill="none"
@@ -178,6 +308,7 @@
                         <?php endif ?>
                     <?php endwhile ?>
                 <?php endif ?>
+                <?php include 'update-table-dialog.php'; ?>
             </div>
 
 </section>
@@ -197,19 +328,23 @@
         }
     });
 
-    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime, contactNumber, state) {
-        console.log(branchId, name);
+    function fillUpdateForm(tableId, tableName, totalSeat, availableSeat, status, branchId) {
+        //console.log(branchId, name);
 
-        document.getElementById("branchId").value = branchId;
-        document.getElementById("updateName").value = name;
-        document.getElementById("updateSlug").value = slug;
-        document.getElementById("updateAddress").value = address;
+        document.getElementById("tableId").value = tableId;
+        document.getElementById("updateTableName").value = tableName;
+        document.getElementById("updateTotalSeat").value = totalSeat;
+        document.getElementById("updateAvailableSeat").value = availableSeat;
         document.getElementById("updateStatus").value = status;
-        document.getElementById("updateStartTime").value = startTime;
-        document.getElementById("updateEndTime").value = endTime;
-        document.getElementById("updateContactNumber").value = contactNumber;
-        document.getElementById("updateState").value = state;
+        document.getElementById("branchId").value = branchId;
 
-        document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
+        document.getElementById("updateTableDialog").classList.remove("opacity-0", "pointer-events-none");
+
+        // ESC close
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                document.getElementById("updateTableDialog").classList.add("opacity-0", "pointer-events-none");
+            }
+        });
     }
 </script>

@@ -4,7 +4,7 @@ $table = null;
 // 1. Load existing data for the form
 if (!empty($_GET['tableId'])) {
     $tableId = intval($_GET['tableId']);
-    $stmt = $conn->prepare("SELECT * FROM seat_table WHERE tableId = ?");
+    $stmt = $conn->prepare("SELECT * FROM seat_table WHERE tableId = ? AND branchId = ?");
     $stmt->bind_param("i", $tableId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -12,7 +12,7 @@ if (!empty($_GET['tableId'])) {
     $stmt->close();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST"  && isset($_POST['updateTable'])) {
     $tableId = intval($_POST['tableId']);
     $newTableName = trim($_POST['tableName'] ?? '');
     $newBranchId = intval($_POST['branchId'] ?? '');
@@ -104,11 +104,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </button>
             </div>
             <input type="hidden" name="tableId" id="tableId">
+            <input type="hidden" name="updateTable" value="1">
             <div class="">
                 <div class="">
                     <label for="tableName"
                         class="block text-sm font-medium text-foreground mb-1 text-start">Name</label>
-                    <input type="text" readonly name="tableName" id="updateTableName"
+                    <input type="text" name="tableName" id="updateTableName"
                         class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
                 </div>
 
@@ -139,8 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="mt-6">
-                    <label for="branchId"
-                        class="block text-sm font-medium text-foreground mb-1 text-start">Branch</label>
+                    <label for="branchId" class="block text-sm font-medium text-foreground mb-1 text-start">Status</label>
                     <select type="text" id="updateBranch" name="branchId" placeholder="Enter a table code."
                         class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
                         <option value="" selected disabled>Select Branch</option>

@@ -9,6 +9,32 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 ;
+
+$filter = "";
+$countstatusVisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Visible'";
+$stmtcount = $conn->prepare($countstatusVisiblesql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusVisible);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusInvisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Invisible'";
+$stmtcount = $conn->prepare($countstatusInvisiblesql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusInvisible);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusDeprecatedsql = "SELECT COUNT(*) FROM food_category WHERE status = 'Deprecated'";
+$stmtcount = $conn->prepare($countstatusDeprecatedsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusDeprecated1);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatussql = "SELECT COUNT(*) FROM food_category";
+$stmtcount = $conn->prepare($countstatussql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalCategory);
+$stmtcount->fetch();
+$stmtcount->close();
 ?>
 
 <!DOCTYPE html>
@@ -70,25 +96,78 @@ if (!isset($_SESSION['userId'])) {
                     link.setAttribute("aria-current", "page");
                 }
             });
-            const dialog = document.getElementById("seatTableDialog");
-            window.openDialog = function () {
+            const dialog = document.getElementById("categoryDialog");
+            window.openCategoryDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeDialog = function () {
+            window.closeCategoryDialog = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeCategoryDialog();
+                }
+            });
+            const dialog2 = document.getElementById("searchOrFilterDialog");
+            window.openDialog = function () {
+                dialog2.classList.remove("opacity-0", "pointer-events-none");
+                dialog2.classList.add("opacity-100");
+            };
+            window.closeDialog = function () {
+                dialog2.classList.remove("opacity-100");
+                dialog2.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDialog();
+                }
+            });
+            const drawer = document.getElementById("sidebarDrawer");
+            function openDrawerBranch() {
+                drawer.classList.remove("opacity-0", "pointer-events-none");
+                drawer.classList.add("opacity-100");
+            }
+            function closeDrawerBranch() {
+                drawer.classList.remove("opacity-100");
+                drawer.classList.add("opacity-0", "pointer-events-none");
+            }
         });
     </script>
 </head>
 
-<body class="flex">
+<body class="flex overflow-y-hidden">
     <div class="">
         <?php include '../includes/dashboard/sidebar.php'; ?>
     </div>
     <div class="min-h-screen w-full flex justify-center">
-        <?php include '../includes/dashboard/menu/body.php'; ?>
+        <div class="relative tab-group top-2">
+            <div class="flex p-0.5 relative rounded-lg" role="tablist">
+                <div
+                    class="absolute top-2 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
+                </div>
+
+                <a href="/web/dashboard/menu"
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                    data-tab-target="tab1-group">
+                    Categories
+                </a>
+                <a href="/web/dashboard/menu"
+                    class="tab-link text-lg active inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                    data-tab-target="tab2-group">
+                    Menu
+                </a>
+            </div>
+            <div class="tab-content-container ">
+                <div id="tab1-group" class="tab-content block">
+                    <?php include '../includes/dashboard/categories/body.php'; ?>
+                </div>
+                <div id="tab2-group" class="tab-content">
+                    <?php include '../includes/dashboard/menu/body.php'; ?>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>

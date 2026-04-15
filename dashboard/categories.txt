@@ -11,7 +11,7 @@ $errorMessage = '';
 include '../database/fnbdb.php';
 $branch = null;
 
-$filter = "";
+/*$filter = "";
 $countstatusVisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Visible'";
 $stmtcount = $conn->prepare($countstatusVisiblesql);
 $stmtcount->execute();
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $addcategorystmt->close();
     }
-}
+}*/
 ?>
 
 <!DOCTYPE html>

@@ -1,3 +1,37 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
+    $categoryName = $_POST['name'];
+    $branchId = $_POST['branchId'];
+    $status = $_POST['status'];
+
+    // check for duplocate table code
+    $checkQuery = "SELECT branchId FROM food_category WHERE name = ? AND branchId = ?";
+    $checkStmt = $conn->prepare($checkQuery);
+    $checkStmt->bind_param('si', $categoryName, $branchId);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows > 0) {
+        $errorMessage = 'The category name has already exists.';
+        $checkStmt->close();
+    } else {
+        $checkStmt->close();
+        // insert new table (fixed column/value count)
+        $query = "INSERT INTO food_category (name, branchId, status) VALUES (?, ?, ?)";
+        $addcategorystmt = $conn->prepare($query);
+        //corrected bind_param types: s = string, i = integer, d = double/decimal\
+        $addcategorystmt->bind_param('sis', $categoryName, $branchId, $status);
+        if($addcategorystmt->execute()) {
+            echo "<script>window.location.href='/web/dashboard/menu';</script>";
+            exit();
+        } else {
+            $errorMessage = "Error: " . $conn->error;
+        }
+        $addcategorystmt->close();
+    }
+}
+?>
+
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="categoryDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-106 p-3 ">

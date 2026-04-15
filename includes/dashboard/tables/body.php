@@ -28,6 +28,9 @@
                                     Table Code
                                 </th>
                                 <th class="px-2.5 py-2 text-start font-medium">
+                                    Total Seat(s)
+                                </th>
+                                <th class="px-2.5 py-2 text-start font-medium">
                                     Available Seat(s)
                                 </th>
                                 <th class="px-5 py-2 text-start font-medium">
@@ -128,6 +131,11 @@
                                             </small>
                                         </a>
                                     </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light gap-3">
+                                    <small class="font-sans antialiased text-sm text-current">
+                                        <?php echo htmlspecialchars($data['totalSeat']); ?>
+                                    </small>
                                 </td>
                                 <td class="p-4 border-b border-surface-light gap-3">
                                     <small class="font-sans antialiased text-sm text-current">

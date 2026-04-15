@@ -10,38 +10,17 @@
                 </path>
             </svg>
         </button>--->
-            <button type="button" data-toggle="modal" data-target="#sidebarDrawerBranch"
-                class="text-gray-500 hover:text-gray-600">
-                <span class="lg:hidden flex font-bold">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16">
-                        </path>
-                    </svg>
-                </span>
-            </button>
-            <?php include '../includes/dashboard/menu/drawer.php'; ?>
-            Menu
+            
+            Categories
         </h1>
-        <nav class="flex flex-wrap items-center gap-1 p-1px-4 sm:px-6 lg:px-8 relative bottom-4 ml-4">
-            <a href="/web/dashboard/categories"
-                class="menu-link inline-flex items-center gap-1.5 text-lg hover:text-primary hover:underline">Categories</a>
-            <span
-                class="inline-block mx-1 text-sm text-secondaryForeground opacity-50 pointer-events-none select-none">></span>
-            <a href="/web/dashboard/menu"
-                class="menu-link inline-flex items-center gap-1.5 text-lg text-slate-800a hover:text-primary hover:underline">Foods
-                and Beverages</a>
-        </nav>
     </div>
     <div class="flex sm:items-center flex-wrap gap-6">
-        <?php include '../includes/dashboard/categories/header.php'; ?>
         <!-- Dropdown Container -->
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
-
+            <?php include 'header.php'; ?>
             <div class="w-auto text-center max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <div class="w-full overflow-x-auto rounded-lg border border-slate-200 mt-4">
-                    <table class="w-full text-left">
+                    <table class="min-w-full table-auto text-left xl:w-screen w-full">
                         <thead
                             class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600 dark:bg-surface-dark">
                             <tr>
@@ -293,7 +272,7 @@
                 </div>
             </div>
 </section>
-<!--<script>
+<script>
     const sidebar = document.getElementById('sidebar');
     const openSidebarButton = document.getElementById('open-sidebar');
 
@@ -324,4 +303,4 @@
 
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
     }
-</script>-->
+</script>

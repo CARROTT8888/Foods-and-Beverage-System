@@ -9,31 +9,6 @@ if (!isset($_SESSION['userId'])) {
 }
 ;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
-    $slug = $_POST['slug'];
-
-    $checkNameQuery = $conn->prepare("SELECT branchId FROM branch WHERE name = ?");
-    $checkNameQuery->bind_param("s", $name);
-    $checkNameQuery->execute();
-    $checkNameQuery->store_result();
-    if ($checkNameQuery->num_rows > 0) {
-        $nameAlreadyExists = true;
-        $errorMessage = "The branch's name has already exist.";
-        $checkNameQuery->close();
-    } else {
-        $checkNameQuery->close();
-        $branchQuery = "INSERT INTO branch (name, slug) VALUES (?, ?)";
-        $checkNameQuery = $conn->prepare($branchQuery);
-        $checkNameQuery->bind_param("ss", $name, $slug);
-        if ($checkNameQuery->execute()) {
-            header("Location: /web/dashboard/branches.php");
-            exit();
-        }
-    }
-}
-;
-
 $filter = "";
 $countstatusOpeningsql = "SELECT COUNT(*) FROM branch WHERE status = 'Opening'";
 $stmtcount = $conn->prepare($countstatusOpeningsql);
@@ -69,7 +44,7 @@ $stmtcount->close();
 ?>
 
 <div class="fixed inset-0 bg-slate-950/50 opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
-    id="sidebarDrawerBranch" aria-hidden="true">
+    id="sidebarDrawer" aria-hidden="true">
     <div class="text-sm w-56 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium flex flex-col"
         onclick="event.stopPropagation()">
         <a href="/web/dashboard" class="rounded mt-3 mb-5 flex h-max items-center cursor-pointer">

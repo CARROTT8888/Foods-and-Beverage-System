@@ -115,7 +115,7 @@ $branchResult = $stmt->get_result();
                     <h1 class="text-lg font-bold text-slate-900">Deprecated</h1>
                 </div>
                 <p class="text-3xl text-slate-950 mt-3 font-extrabold">
-                    <?php echo htmlspecialchars($totalStatusDeprecated); ?>
+                    <?php echo htmlspecialchars($totalStatusDeprecated1); ?>
                 </p>
             </div>
         </div>
@@ -129,21 +129,58 @@ $branchResult = $stmt->get_result();
     ?>
     <div class="flex items-center justify-between flex-wrap w-full">
         <div class="flex gap-2 relative top-5">
+            <!-- Trigger Button -->
             <button id="dropdownBtn" type="button" onclick="openDialog()"
                 class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
                 <i class="bx bx-search text-lg"></i><span class="lg:flex hidden">Search or Filter</span>
             </button>
+            <div class="flex items-center mb-10 gap-2 justify-self-start">
+                <?php foreach ($selectedStatuses as $status):
+                    $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $status);
+                    $query = $_GET;
+                    $query['status'] = $newStatuses;
+                    if (empty($newStatuses)) {
+                        unset($query['status']);
+                    }
+                    $url = '?' . http_build_query($query);
+                    ?>
+                    <a href="<?= $url ?>" class="">
+                        <?php if ($status === 'Available'): ?>
+                            <div
+                                class="text-green-500  border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Occupied'): ?>
+                            <div
+                                class="text-red-500 border border-red-500 bg-red-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Reserved'): ?>
+                            <div
+                                class="text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Dirty'): ?>
+                            <div
+                                class="text-orange-500 border border-orange-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Blocked'): ?>
+                            <div
+                                class="text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php endif ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
         </div>
-        <div class="flex relative top-5a">
-            <button type="button" data-toggle="modal" onclick="openCategoryDialog()"
-                class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
-                <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
-            </button>
-            <?php include 'create-category-dialog.php'; ?>
-        </div>
+        <button type="button" data-toggle="modal" onclick="openCategoryDialog()"
+            class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
+            <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
+        </button>
+        <?php include 'create-category-dialog.php'; ?>
     </div>
-    <!---->
-</div>
 </div>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script>

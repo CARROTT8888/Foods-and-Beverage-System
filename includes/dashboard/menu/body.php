@@ -10,7 +10,7 @@
                 </path>
             </svg>
         </button>--->
-            <button type="button" data-toggle="modal" data-target="#sidebarDrawerBranch"
+            <button type="button" data-toggle="modal" data-target="#sidebarDrawer"
                 class="text-gray-500 hover:text-gray-600">
                 <span class="lg:hidden flex font-bold">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -24,40 +24,62 @@
             <?php include '../includes/dashboard/menu/drawer.php'; ?>
             Menu
         </h1>
-        <nav class="flex flex-wrap items-center gap-1 p-1px-4 sm:px-6 lg:px-8 relative bottom-4 ml-4">
-            <a href="/web/dashboard/categories"
-                class="menu-link inline-flex items-center gap-1.5 text-lg hover:text-primary hover:underline">Categories</a>
-            <span
-                class="inline-block mx-1 text-sm text-secondaryForeground opacity-50 pointer-events-none select-none">></span>
-            <a href="/web/dashboard/menu"
-                class="menu-link inline-flex items-center gap-1.5 text-lg text-slate-800a hover:text-primary hover:underline">Foods
-                and Beverages</a>
-        </nav>
     </div>
     <div class="flex sm:items-center flex-wrap gap-6">
         <!-- Dropdown Container -->
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
-            <?php include '../includes/dashboard/branch/menu/header.php'; ?>
+            <?php include 'header.php'; ?>
             <div
                 class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-full">
                     <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+                        <div
+                            class="flex items-center gap-2 text-red-500 border border-red-500 bg-red-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-2 right-2">
+                            <i class='bx bxs-no-entry'></i>
+                            <span>Closed</span>
+                        </div>
                         <img src="../assets/burger-sample.jpg" alt="card-image" />
                     </div>
-                    <div class="p-4">
-                        <div class="flex items-center mb-2">
+                    <div class="pl-4 pr-1">
+                        <div class="flex items-center">
                             <h6 class="text-slate-800 text-xl font-semibold">
-                                Wooden House, Florida
+                                Hamburger King
                             </h6>
 
                             <div class="flex items-center gap-0 5 ml-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-5 h-5 text-yellow-600">
-                                    <path fill-rule="evenodd"
-                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-slate-600 ml-1.5">5.0</span>
+                                <div class="dropdown">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+
+                                        <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']); ?>"
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bx-show mr-2 text-lg'></i>
+                                            View Tables
+                                        </a>
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -90,29 +112,60 @@
                             <button
                                 class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
                                 data-shape="default" data-width="full">
-                                Visit
+                                Learn More
                             </button>
                         </a>
                     </div>
                 </div>
                 <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-full">
                     <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+                        <div
+                            class="flex items-center gap-2 text-red-500 border border-red-500 bg-red-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-2 right-2">
+                            <i class='bx bxs-no-entry'></i>
+                            <span>Closed</span>
+                        </div>
                         <img src="../assets/burger-sample.jpg" alt="card-image" />
                     </div>
-                    <div class="p-4">
-                        <div class="flex items-center mb-2">
+                    <div class="pl-4 pr-1">
+                        <div class="flex items-center">
                             <h6 class="text-slate-800 text-xl font-semibold">
-                                Wooden House, Florida
+                                Hamburger King
                             </h6>
 
                             <div class="flex items-center gap-0 5 ml-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-5 h-5 text-yellow-600">
-                                    <path fill-rule="evenodd"
-                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-slate-600 ml-1.5">5.0</span>
+                                <div class="dropdown">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+
+                                        <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']); ?>"
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bx-show mr-2 text-lg'></i>
+                                            View Tables
+                                        </a>
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -145,29 +198,60 @@
                             <button
                                 class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
                                 data-shape="default" data-width="full">
-                                Visit
+                                Learn More
                             </button>
                         </a>
                     </div>
                 </div>
                 <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-full">
                     <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+                        <div
+                            class="flex items-center gap-2 text-red-500 border border-red-500 bg-red-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-2 right-2">
+                            <i class='bx bxs-no-entry'></i>
+                            <span>Closed</span>
+                        </div>
                         <img src="../assets/burger-sample.jpg" alt="card-image" />
                     </div>
-                    <div class="p-4">
-                        <div class="flex items-center mb-2">
+                    <div class="pl-4 pr-1">
+                        <div class="flex items-center">
                             <h6 class="text-slate-800 text-xl font-semibold">
-                                Wooden House, Florida
+                                Hamburger King
                             </h6>
 
                             <div class="flex items-center gap-0 5 ml-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-5 h-5 text-yellow-600">
-                                    <path fill-rule="evenodd"
-                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-slate-600 ml-1.5">5.0</span>
+                                <div class="dropdown">
+                                    <button data-toggle="dropdown" aria-expanded="false"
+                                        class="inline-grid place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                    </button>
+                                    <div data-role="menu"
+                                        class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
+
+                                        <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']); ?>"
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bx-show mr-2 text-lg'></i>
+                                            View Tables
+                                        </a>
+                                        <button type="button" onclick='fillUpdateForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["tableName"]); ?>,
+                                                <?php echo json_encode($data["totalSeat"]); ?>,
+                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["status"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
+                                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                            <i class='bx bxs-edit mr-2 text-lg'></i>
+                                            Update Table
+                                        </button>
+
+                                        <a href="sign-out.php"
+                                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                                            <i class='bx bxs-trash mr-2 text-lg'></i>
+                                            Delete Table
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -200,14 +284,14 @@
                             <button
                                 class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
                                 data-shape="default" data-width="full">
-                                Visit
+                                Learn More
                             </button>
                         </a>
                     </div>
                 </div>
             </div>
 </section>
-<!--<script>
+<script>
     const sidebar = document.getElementById('sidebar');
     const openSidebarButton = document.getElementById('open-sidebar');
 
@@ -238,4 +322,4 @@
 
         document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
     }
-</script>-->
+</script>

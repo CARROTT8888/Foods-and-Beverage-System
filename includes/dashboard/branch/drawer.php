@@ -9,7 +9,7 @@ if (!isset($_SESSION['userId'])) {
 }
 ;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['name'], $_POST['slug'])) {
     $name = $_POST['name'];
     $slug = $_POST['slug'];
 

@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateTable'])) {
     $tableName = $_POST['tableName'] ?? null;
     $branchId = $_POST['branchId'] ?? null;
     $totalSeat = $_POST['totalSeat'] ?? null;
