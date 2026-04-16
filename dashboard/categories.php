@@ -1,17 +1,16 @@
 <?php
 session_start();
+include '../database/fnbdb.php';
+$errorMessage = "";
+
 // check if the session variable is exist
 if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
     exit();
 }
+;
 
-// Initialize variables to prevent "Undefined variable" notices
-$errorMessage = '';
-include '../database/fnbdb.php';
-$branch = null;
-
-/*$filter = "";
+$filter = "";
 $countstatusVisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Visible'";
 $stmtcount = $conn->prepare($countstatusVisiblesql);
 $stmtcount->execute();
@@ -27,7 +26,7 @@ $stmtcount->close();
 $countstatusDeprecatedsql = "SELECT COUNT(*) FROM food_category WHERE status = 'Deprecated'";
 $stmtcount = $conn->prepare($countstatusDeprecatedsql);
 $stmtcount->execute();
-$stmtcount->bind_result($totalStatusDeprecated);
+$stmtcount->bind_result($totalStatusDeprecated1);
 $stmtcount->fetch();
 $stmtcount->close();
 $countstatussql = "SELECT COUNT(*) FROM food_category";
@@ -36,38 +35,6 @@ $stmtcount->execute();
 $stmtcount->bind_result($totalCategory);
 $stmtcount->fetch();
 $stmtcount->close();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $categoryName = $_POST['name'];
-    $branchId = $_POST['branchId'];
-    $status = $_POST['status'];
-
-    // check for duplocate table code
-    $checkQuery = "SELECT branchId FROM food_category WHERE name = ? AND branchId = ?";
-    $checkStmt = $conn->prepare($checkQuery);
-    $checkStmt->bind_param('si', $categoryName, $branchId);
-    $checkStmt->execute();
-    $checkStmt->store_result();
-
-    if ($checkStmt->num_rows > 0) {
-        $errorMessage = 'The category name has already exists.';
-        $checkStmt->close();
-    } else {
-        $checkStmt->close();
-        // insert new table (fixed column/value count)
-        $query = "INSERT INTO food_category (name, branchId, status) VALUES (?, ?, ?)";
-        $addcategorystmt = $conn->prepare($query);
-        //corrected bind_param types: s = string, i = integer, d = double/decimal\
-        $addcategorystmt->bind_param('sis', $categoryName, $branchId, $status);
-        if($addcategorystmt->execute()) {
-            header("Location: /web/dashboard/categories");
-            exit();
-        } else {
-            $errorMessage = "Error: " . $conn->error;
-        }
-        $addcategorystmt->close();
-    }
-}*/
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Floudemo - Dashboard Tables</title>
+    <title>Floudemo - Dashboard Food Categories</title>
     <link rel="Icon" href="../assets/logo.png" sizes="64x64">
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -157,8 +124,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     closeDialog();
                 }
             });
-            
-            const drawer = document.getElementById("sidebarDrawerBranch");
+            const dialog3 = document.getElementById("updateCategoryDialog");
+            window.openUpdateCategoryDialog = function () {
+                dialog3.classList.remove("opacity-0", "pointer-events-none");
+                dialog3.classList.add("opacity-100");
+            };
+            window.closeUpdateCategoryDialog = function () {
+                dialog3.classList.remove("opacity-100");
+                dialog3.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeUpdateCategoryDialog();
+                }
+            });
+            const drawer = document.getElementById("sidebarDrawer");
             function openDrawerBranch() {
                 drawer.classList.remove("opacity-0", "pointer-events-none");
                 drawer.classList.add("opacity-100");
@@ -169,16 +149,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
     </script>
-    <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />
-
 </head>
 
-<body class="flex">
+<body class="flex overflow-y-hidden">
     <div class="">
         <?php include '../includes/dashboard/sidebar.php'; ?>
     </div>
     <div class="min-h-screen w-full flex justify-center">
-        <?php include '../includes/dashboard/categories/body.php'; ?>
+        <div class="relative tab-group top-2">
+            <div class="flex p-0.5 relative rounded-lg" role="tablist">
+                <div
+                    class="absolute top-2 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
+                </div>
+
+                <a href="/web/dashboard/categories"
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Categories
+                </a>
+                <a href="/web/dashboard/menu"
+                    class="text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Menu
+                </a>
+            </div>
+            <?php include '../includes/dashboard/categories/body.php'; ?>
+        </div>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>

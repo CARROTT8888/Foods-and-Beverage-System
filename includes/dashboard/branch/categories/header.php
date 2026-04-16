@@ -1,39 +1,27 @@
 <?php
-$filter = "";
-$params = [];
-$types = "";
+$branchId = $branch['branchId'];
+$filter = " AND food_category.branchId = ?";
+$params = [$branchId];
+$types = "i";
 $search = $_GET['search'] ?? '';
 if (!empty($search)) {
-    $filter = " AND (food_category.name LIKE ?)";
+    $filter .= " AND food_category.name LIKE ?";
     $searchValue = "%" . $search . "%";
-    $params = [$searchValue];
-    $types = "s";
+    $params[] = $searchValue;
+    $types .= "s";
 }
 ;
 // filtering status
-$selectedStatuses = $_GET['status'] ?? [];
-if (!is_array($selectedStatuses)) {
-    $selectedStatuses = [$selectedStatuses];
-}
-if (!empty($selectedStatuses)) {
+if (!empty($_GET['status'])) {
+    $statuses = $_GET['status'];
+    if (!is_array($statuses)) {
+        $statuses = [$statuses];
+    }
     $escapedStatuses = array_map(function ($status) use ($conn) {
         return "'" . $conn->real_escape_string($status) . "'";
-    }, $selectedStatuses);
+    }, $statuses);
     $filter .= " AND food_category.status IN (" . implode(',', $escapedStatuses) . ")";
 }
-
-$selectedBranches = $_GET['branch'] ?? [];
-if (!is_array($selectedBranches)) {
-    $selectedBranches = [$selectedBranches];
-}
-
-if (!empty($selectedBranches)) {
-    $escapedBranches = array_map(function ($id) use ($conn) {
-        return (int) $id;
-    }, $selectedBranches);
-    $filter .= " AND food_category.branchId IN (" . implode(',', $escapedBranches) . ")";
-}
-
 // final query with filter
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/

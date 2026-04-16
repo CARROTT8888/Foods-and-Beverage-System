@@ -9,32 +9,6 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 ;
-
-$filter = "";
-$countstatusVisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Visible'";
-$stmtcount = $conn->prepare($countstatusVisiblesql);
-$stmtcount->execute();
-$stmtcount->bind_result($totalStatusVisible);
-$stmtcount->fetch();
-$stmtcount->close();
-$countstatusInvisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Invisible'";
-$stmtcount = $conn->prepare($countstatusInvisiblesql);
-$stmtcount->execute();
-$stmtcount->bind_result($totalStatusInvisible);
-$stmtcount->fetch();
-$stmtcount->close();
-$countstatusDeprecatedsql = "SELECT COUNT(*) FROM food_category WHERE status = 'Deprecated'";
-$stmtcount = $conn->prepare($countstatusDeprecatedsql);
-$stmtcount->execute();
-$stmtcount->bind_result($totalStatusDeprecated1);
-$stmtcount->fetch();
-$stmtcount->close();
-$countstatussql = "SELECT COUNT(*) FROM food_category";
-$stmtcount = $conn->prepare($countstatussql);
-$stmtcount->execute();
-$stmtcount->bind_result($totalCategory);
-$stmtcount->fetch();
-$stmtcount->close();
 ?>
 
 <!DOCTYPE html>
@@ -148,25 +122,16 @@ $stmtcount->close();
                     class="absolute top-2 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
                 </div>
 
-                <a href="/web/dashboard/menu"
-                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1"
-                    data-tab-target="tab1-group">
+                <a href="/web/dashboard/categories"
+                    class="text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
                     Categories
                 </a>
                 <a href="/web/dashboard/menu"
-                    class="tab-link text-lg active inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1"
-                    data-tab-target="tab2-group">
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
                     Menu
                 </a>
             </div>
-            <div class="tab-content-container ">
-                <div id="tab1-group" class="tab-content block">
-                    <?php include '../includes/dashboard/categories/body.php'; ?>
-                </div>
-                <div id="tab2-group" class="tab-content">
-                    <?php include '../includes/dashboard/menu/body.php'; ?>
-                </div>
-            </div>
+            <?php include '../includes/dashboard/menu/body.php'; ?>
         </div>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>

@@ -11,18 +11,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
     $checkStmt->execute();
     $checkStmt->store_result();
 
+    // check for category's data based on slug from branch
+    $slugQuery = "SELECT slug FROM branch WHERE branchId = ?";
+    $slugStmt = $conn->prepare($slugQuery);
+    $slugStmt->bind_param("i", $branchId);
+    $slugStmt->execute();
+    $slugResult = $slugStmt->get_result();
+    $row = $slugResult->fetch_assoc();
+    $slug = $row['slug'];
+    $slugStmt->close();
+
     if ($checkStmt->num_rows > 0) {
         $errorMessage = 'The category name has already exists.';
         $checkStmt->close();
     } else {
         $checkStmt->close();
-        // insert new table (fixed column/value count)
+        // insert new category (fixed column/value count)
         $query = "INSERT INTO food_category (name, branchId, status) VALUES (?, ?, ?)";
         $addcategorystmt = $conn->prepare($query);
         //corrected bind_param types: s = string, i = integer, d = double/decimal\
         $addcategorystmt->bind_param('sis', $categoryName, $branchId, $status);
-        if($addcategorystmt->execute()) {
-            echo "<script>window.location.href='/web/dashboard/categories';</script>";
+        if ($addcategorystmt->execute()) {
+            echo "<script>window.location.href = 'bcategories?slug=" . $branch['slug'] . "';</script>";
             exit();
         } else {
             $errorMessage = "Error: " . $conn->error;
@@ -48,25 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
                     </svg>
                 </button>
             </div>
+            <input type="hidden" name="branchId" value="<?php echo $branch['branchId']; ?>">
             <div>
                 <label for="name" class="block text-sm font-medium text-foreground mb-1">Name</label>
                 <input type="text" name="name" placeholder="Enter a tcategory name"
                     class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
                     required />
-            </div>
-            <div>
-                <label for="branchId" class="block text-sm font-medium text-foreground mb-1">Branch</label>
-                <select type="text" id="branchId" name="branchId" placeholder="Enter a table code."
-                    class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
-                    <option value="" selected disabled>Select Branch</option>
-                    <?php
-                    $branchQuery = "SELECT branchId, name FROM branch";
-                    $result = $conn->query($branchQuery);
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='{$row['branchId']}'>{$row['name']}</option>";
-                    }
-                    ?>
-                </select>
             </div>
             <div>
                 <label for="status" class="block text-sm font-medium text-foreground mb-1">Status</label>
@@ -82,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>
-            <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or tab 'ESC' key to close the dialog.</span>
+            <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or tab
+                'ESC' key to close the dialog.</span>
         </form>
     </div>
 </div>

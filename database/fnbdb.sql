@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2026 at 07:07 PM
+-- Generation Time: Apr 16, 2026 at 04:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,11 +47,11 @@ CREATE TABLE `branch` (
 
 INSERT INTO `branch` (`branchId`, `name`, `slug`, `image`, `createdAt`, `address`, `status`, `contactNumber`, `startTime`, `endTime`, `state`) VALUES
 (1, 'Multimedia University', '111', NULL, '2026-04-01 16:42:42', NULL, 'Closed', NULL, NULL, NULL, NULL),
-(2, 'Treble Clef', 'tc', NULL, '2026-04-01 16:42:33', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Opening', '0123456789', '08:00', '17:00', 'Melaka'),
+(2, 'Treble Clef', 'tc', 'branch_1776004568_9232.jpg', '2026-04-01 16:42:33', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Opening', '0123456789', '08:00', '17:00', 'Melaka'),
 (3, 'GPA 3.78', 'gpa', NULL, '2026-03-25 21:14:55', 'abc123', 'Opening', NULL, '', '', 'Kelantan'),
 (4, '???', 'tc2121', NULL, '2026-03-30 15:51:00', 'where is treble clef', 'Deprecated', NULL, NULL, NULL, NULL),
-(5, 'Treble Clef 2', 'tc1121', NULL, '2026-03-31 00:42:30', '', 'Closed', NULL, '', '', NULL),
-(8, 'testing', '123', NULL, '2026-03-31 01:26:35', 'i am testing header location', 'Setup', '0106553599', '', '', NULL);
+(5, 'Treble Clef 2', 'tc1121', 'branch_1776004374_5356.jpeg', '2026-03-31 00:42:30', 'Kampung Lapan, Treble Clef, 75000, Melaka', 'Setup', '043838238', '01:00', '18:00', 'Melaka'),
+(8, 'testing', '123', '', '2026-03-31 01:26:35', 'i am testing header location', 'Setup', '0106553599', '09:00', '23:00', 'Perlis');
 
 -- --------------------------------------------------------
 
@@ -93,9 +93,24 @@ CREATE TABLE `food` (
 CREATE TABLE `food_category` (
   `categoryId` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
-  `status` enum('Visible','Invisible','Duplicated') NOT NULL,
+  `status` enum('Visible','Invisible','Deprecated') NOT NULL,
   `branchId` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `food_category`
+--
+
+INSERT INTO `food_category` (`categoryId`, `name`, `status`, `branchId`) VALUES
+(6, 'Alcohol ', 'Visible', 2),
+(8, 'Normal Drink', 'Visible', 1),
+(9, 'no44 mud dust', 'Invisible', 2),
+(10, 'Burgers', 'Deprecated', 1),
+(11, 'Rice', 'Deprecated', 2),
+(12, 'Noodles ', 'Invisible', 3),
+(13, 'Whisky', 'Visible', 2),
+(14, 'Gintini', 'Visible', 3),
+(15, 'Eshley', 'Visible', 3);
 
 -- --------------------------------------------------------
 
@@ -233,12 +248,33 @@ CREATE TABLE `seat_table` (
 --
 
 INSERT INTO `seat_table` (`tableId`, `tableName`, `totalSeat`, `availableSeat`, `status`, `branchId`) VALUES
-(1, 'B02', 3, 3, 'Available', 1),
-(2, 'A01', 4, 4, 'Available', 2),
-(11, 'A02', 2, 2, 'Available', 2),
-(12, 'A03', 4, 4, 'Available', 2),
-(13, 'B01', 2, 2, 'Dirty', 1),
-(14, 'D12', 3, 3, 'Available', 3);
+(31, 'T30', 3, 2, 'Available', 2),
+(32, 'T30', 4, 4, 'Reserved', 3),
+(33, 'T31', 3, 3, 'Occupied', 3),
+(34, 'T32', 3, 3, 'Available', 4),
+(35, 'T3A', 4, 4, 'Occupied', 3),
+(37, 'T3A', 3, 3, 'Available', 2),
+(38, 'T3B', 4, 4, 'Blocked', 3),
+(39, 'T32', 3, 3, 'Available', 1),
+(40, 'D3W', 2, 2, 'Available', 2),
+(41, 'D22', 3, 3, 'Available', 1),
+(42, 'D20', 3, 3, 'Available', 1),
+(43, 'D23', 3, 3, 'Available', 1),
+(44, 'D24', 3, 2, 'Dirty', 1),
+(45, 'D25', 3, 3, 'Available', 1),
+(46, 'D24', 2, 2, 'Reserved', 4),
+(47, 'D2A', 2, 2, 'Occupied', 4),
+(48, 'D2A', 3, 2, 'Occupied', 1),
+(49, 'D2A', 3, 1, 'Dirty', 2),
+(50, 'T30', 3, 3, 'Available', 0),
+(51, '2', 0, 0, 'Available', 0),
+(52, 'D2C', 3, 3, 'Available', 2),
+(53, 'T3H', 2, 1, 'Available', 2),
+(54, 'T3A', 2, 2, 'Available', 8),
+(55, 'D2Z', 2, 2, 'Occupied', 4),
+(56, 'D2D', 3, 3, 'Dirty', 8),
+(57, 'A30', 4, 4, 'Reserved', 8),
+(58, 'A84', 2, 2, 'Available', 8);
 
 -- --------------------------------------------------------
 
@@ -296,8 +332,7 @@ ALTER TABLE `food`
 -- Indexes for table `food_category`
 --
 ALTER TABLE `food_category`
-  ADD PRIMARY KEY (`categoryId`),
-  ADD UNIQUE KEY `branchId` (`branchId`);
+  ADD PRIMARY KEY (`categoryId`);
 
 --
 -- Indexes for table `food_option_group`
@@ -399,7 +434,7 @@ ALTER TABLE `food`
 -- AUTO_INCREMENT for table `food_category`
 --
 ALTER TABLE `food_category`
-  MODIFY `categoryId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `categoryId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `food_option_group`
@@ -453,7 +488,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `seat_table`
 --
 ALTER TABLE `seat_table`
-  MODIFY `tableId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `tableId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `user`

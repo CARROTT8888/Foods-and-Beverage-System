@@ -1,11 +1,11 @@
 <div
     class="text-sm w-61.5 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium lg:flex hidden flex-col">
-    <a href="/web/dashboard/branches">
-        <button
-            class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in items-center disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-transparent text-primaryForeground hover:bg-accent hover:text-accentForeground">
-            <i class='bx bx-arrow-back mr-2'></i>Back to All Branches
+    <div class="">
+        <button onclick="window.history.back()"
+            class="inline-flex font-sans font-medium text-center transition-all duration-300 ease-in items-center disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py- px-2 hover:shadow bg-transparent text-primaryForeground hover:bg-accent hover:text-accentForeground  ">
+            <i class='bx bx-chevron-left mr-2a text-3xl'></i>Back
         </button>
-    </a>
+    </div>
     <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
         class="rounded mt-3 mb-5 flex h-max items-center cursor-pointer">
         <img src="../assets/logo.png" alt="brand"

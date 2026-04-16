@@ -1,3 +1,51 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateTable'])) {
+    $tableName = $_POST['tableName'];
+    $branchId = $_POST['branchId'];
+    $totalSeat = $_POST['totalSeat'];
+    $status = "Available";
+
+    // auto set available seat same as total seat
+    $availableSeat = $totalSeat;
+
+    // check for duplicate table code
+    $checkQuery = "SELECT tableId FROM seat_table WHERE tableName = ? AND branchId = ?";
+    $checkStmt = $conn->prepare($checkQuery);
+    $checkStmt->bind_param('si', $tableName, $branchId);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    // check for table's data based on slug from branch
+    $slugQuery = "SELECT slug FROM branch WHERE branchId = ?";
+    $slugStmt = $conn->prepare($slugQuery);
+    $slugStmt->bind_param("i", $branchId);
+    $slugStmt->execute();
+    $slugResult = $slugStmt->get_result();
+    $row = $slugResult->fetch_assoc();
+    $slug = $row['slug'];
+    $slugStmt->close();
+
+    if ($checkStmt->num_rows > 0) {
+        $errorMessage = 'The table code has already exists.';
+        $checkStmt->close();
+    } else {
+        $checkStmt->close();
+        // insert new table (fixed column/value count)
+        $query = "INSERT INTO seat_table (tableName, branchId, totalSeat, availableSeat, status) VALUES (?, ?, ?, ?, ?)";
+        $addseatstmt = $conn->prepare($query);
+        //corrected bind_param types: s = string, i = integer, d = double/decimal\
+        $addseatstmt->bind_param('siiis', $tableName, $branchId, $totalSeat, $availableSeat, $status);
+        if ($addseatstmt->execute()) {
+            echo "<script>window.location.href = 'btables?slug=" . $branch['slug'] . "';</script>";
+            exit();
+        } else {
+            $errorMessage = "Error: " . $conn->error;
+        }
+        $addseatstmt->close();
+    }
+}
+?>
+
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="seatTableDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-106 p-3 ">

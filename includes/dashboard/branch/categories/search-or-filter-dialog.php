@@ -24,8 +24,8 @@
                 </div>
             </div>
             <div class="relative w-full">
-
-                <input placeholder="Search a name, state, or address" name="search" value=""
+                <input type="hidden" name="slug" value="<?= htmlspecialchars($_GET['slug'] ?? '') ?>">
+                <input placeholder="Search a name" name="search" value=""
                     class="w-full aria-disabled:cursor-not-allowed outline-none focus:outline-none placeholder:text-slate-black bg-transparent ring-transparent border border-slate-200 transition-all duration-300 ease-in disabled:opacity-50 disabled:pointer-events-none data-[error=true]:border-error data-[success=true]:border-success select-none data-[shape=pill]:rounded-full text-sm rounded-md py-2 px-2.5 ring shadow-sm data-[icon-placement=start]:ps-9 data-[icon-placement=end]:pe-9 hover:border-primary-800 hover:ring-primary-800/10 focus:border-primary peer"
                     data-error="false" data-success="false" data-shape="default" data-icon-placement="end" type="text"
                     data-tabindex="" />
@@ -121,44 +121,6 @@
                                 <span
                                     class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatusDeprecated1; ?></span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Collapse Item -->
-                <div>
-                    <button class="w-full flex justify-between items-center py-2 text-slate-600 text-sm font-sans"
-                        type="button" onclick="toggleCollapse(event, 'collapseTables2')"> Branch <span
-                            class="transform transition-transform duration-300" id="iconTables2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </span>
-                    </button>
-                    <div id="collapseTables2"
-                        class="hidden transition-all duration-300 ease-in-out text-slate-500 text-sm">
-                        <!-- Checkbox List -->
-                        <?php
-                        $branchQuery = "SELECT branchId, name FROM branch ORDER BY name ASC";
-                        $branchResult = $conn->query($branchQuery);
-                        ?>
-
-                        <div class="flex flex-col gap-3 my-2">
-                            <?php while ($branchRow = $branchResult->fetch_assoc()): ?>
-                                <div class="inline-flex items-center">
-                                    <label class="flex items-center cursor-pointer relative"
-                                        for="branch<?= $branchRow['branchId']; ?>">
-                                        <input type="checkbox" id="branch<?= $branchRow['branchId']; ?>" name="branch[]"
-                                            value="<?= $branchRow['branchId']; ?>" <?= in_array($branchRow['branchId'], $selectedBranches) ? 'checked' : '' ?>
-                                            class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
-                                    </label>
-
-                                    <label class="cursor-pointer ml-2 text-sm text-slate-700 flex-1"
-                                        for="branch<?= $branchRow['branchId']; ?>">
-                                        <?= htmlspecialchars($branchRow['name']); ?>
-                                    </label>
-                                </div>
-                            <?php endwhile; ?>
                         </div>
                     </div>
                 </div>

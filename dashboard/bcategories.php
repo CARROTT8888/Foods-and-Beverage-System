@@ -6,6 +6,8 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 
+// Initialize variables to prevent "Undefined variable" notices
+$errorMessage = '';
 include '../database/fnbdb.php';
 $branch = null;
 if (isset($_GET['slug']) && is_string($_GET['slug'])) {
@@ -52,46 +54,32 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
 
 $filter = "";
 $branchId = $branch['branchId'];
-$countstatusAvailablesql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Available' AND branchId = ?";
-$stmtcount = $conn->prepare($countstatusAvailablesql);
+$countstatusVisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Visible' AND branchId = ?";
+$stmtcount = $conn->prepare($countstatusVisiblesql);
 $stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
-$stmtcount->bind_result($totalStatusAvailable);
+$stmtcount->bind_result($totalStatusVisible);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusOccupiedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Occupied' AND branchId = ?";
-$stmtcount = $conn->prepare($countstatusOccupiedsql);
+$countstatusInvisiblesql = "SELECT COUNT(*) FROM food_category WHERE status = 'Invisible' AND branchId = ?";
+$stmtcount = $conn->prepare($countstatusInvisiblesql);
 $stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
-$stmtcount->bind_result($totalStatusOccupied);
+$stmtcount->bind_result($totalStatusInvisible);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusReservedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Reserved' AND branchId = ?";
-$stmtcount = $conn->prepare($countstatusReservedsql);
+$countstatusDeprecatedsql = "SELECT COUNT(*) FROM food_category WHERE status = 'Deprecated' AND branchId = ?";
+$stmtcount = $conn->prepare($countstatusDeprecatedsql);
 $stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
-$stmtcount->bind_result($totalStatusReserved);
+$stmtcount->bind_result($totalStatusDeprecated1);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatusDirtysql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Dirty' AND branchId = ?";
-$stmtcount = $conn->prepare($countstatusDirtysql);
-$stmtcount->bind_param("i", $branchId);
-$stmtcount->execute();
-$stmtcount->bind_result($totalStatusDirty);
-$stmtcount->fetch();
-$stmtcount->close();
-$countstatusBlockedsql = "SELECT COUNT(*) FROM seat_table WHERE status = 'Blocked' AND branchId = ?";
-$stmtcount = $conn->prepare($countstatusBlockedsql);
-$stmtcount->bind_param("i", $branchId);
-$stmtcount->execute();
-$stmtcount->bind_result($totalStatusBlocked);
-$stmtcount->fetch();
-$stmtcount->close();
-$countstatussql = "SELECT COUNT(*) FROM seat_table WHERE branchId = ?";
+$countstatussql = "SELECT COUNT(*) FROM food_category WHERE branchId = ?";
 $stmtcount = $conn->prepare($countstatussql);
 $stmtcount->bind_param("i", $branchId);
 $stmtcount->execute();
-$stmtcount->bind_result($totalTableNumber);
+$stmtcount->bind_result($totalCategory);
 $stmtcount->fetch();
 $stmtcount->close();
 ?>
@@ -104,7 +92,7 @@ $stmtcount->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Tables - <?php echo htmlspecialchars($branch['name']) ?> - Floudemo</title>
+    <title>Categories - <?php echo htmlspecialchars($branch['name']) ?> - Floudemo</title>
     <link rel="Icon" href="../assets/logo.png" sizes="64x64">
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -148,39 +136,18 @@ $stmtcount->close();
                     link.setAttribute("aria-current", "page");
                 }
             });
-            /*const dialog = document.getElementById("seatTableDialog");
-            window.openDrawer = function () {
+            const dialog = document.getElementById("categoryDialog");
+            window.openCategoryDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeDrawer = function () {
-                dialog.classList.remove("opacity-100");
-                dialog.classList.add("opacity-0", "pointer-events-none");
-            };*/
-            const drawer = document.getElementById("sidebarDrawerBranch");
-
-            function openDrawerBranch() {
-                drawer.classList.remove("opacity-0", "pointer-events-none");
-                drawer.classList.add("opacity-100");
-            }
-
-            function closeDrawerBranch() {
-                drawer.classList.remove("opacity-100");
-                drawer.classList.add("opacity-0", "pointer-events-none");
-            }
-
-            const dialog = document.getElementById("seatTableDialog");
-            window.openTableDialog = function () {
-                dialog.classList.remove("opacity-0", "pointer-events-none");
-                dialog.classList.add("opacity-100");
-            };
-            window.closeTableDialog = function () {
+            window.closeCategoryDialog = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeTableDialog();
+                    closeCategoryDialog();
                 }
             });
             const dialog2 = document.getElementById("searchOrFilterDialog");
@@ -197,18 +164,43 @@ $stmtcount->close();
                     closeDialog();
                 }
             });
+            const drawer = document.getElementById("sidebarDrawerBranch");
+            function openDrawerBranch() {
+                drawer.classList.remove("opacity-0", "pointer-events-none");
+                drawer.classList.add("opacity-100");
+            }
+            function closeDrawerBranch() {
+                drawer.classList.remove("opacity-100");
+                drawer.classList.add("opacity-0", "pointer-events-none");
+            }
         });
     </script>
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />
 
 </head>
 
-<body class="flex">
+<body class="flex overflow-y-hidden">
     <div class="">
         <?php include '../includes/dashboard/branch/sidebar.php'; ?>
     </div>
     <div class="min-h-screen w-full flex justify-center">
-        <?php include '../includes/dashboard/branch/tables/body.php'; ?>
+        <div class="relative tab-group top-2">
+            <div class="flex p-0.5 relative rounded-lg" role="tablist">
+                <div
+                    class="absolute top-2 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
+                </div>
+
+                <a href="/web/dashboard/bcategories?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Categories
+                </a>
+                <a href="/web/dashboard/bmenu?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
+                    class="text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Menu
+                </a>
+            </div>
+            <?php include '../includes/dashboard/branch/categories/body.php'; ?>
+        </div>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>
