@@ -180,7 +180,7 @@ $branchResult = $stmt->get_result();
                 <?php endforeach; ?>
             </div>
         </div>
-        <button type="button" onclick="openBranchDialog()" data-toggle="modal"
+        <button type="button" onclick="openMenuDialog()" data-toggle="modal"
             class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
             <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
         </button>

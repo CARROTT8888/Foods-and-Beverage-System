@@ -96,18 +96,18 @@ $stmtcount->close();
                     link.setAttribute("aria-current", "page");
                 }
             });
-            const dialog = document.getElementById("categoryDialog");
-            window.openCategoryDialog = function () {
+            const dialog = document.getElementById("menuDialog");
+            window.openMenuDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
             };
-            window.closeCategoryDialog = function () {
+            window.closeMenuDialog = function () {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeCategoryDialog();
+                    closeMenuDialog();
                 }
             });
             const dialog2 = document.getElementById("searchOrFilterDialog");
