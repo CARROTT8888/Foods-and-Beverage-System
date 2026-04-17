@@ -123,12 +123,28 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
     
 </head>
 
-<body class="flex">
+<body class="flex overflow-y-hidden">
     <div class="">
         <?php include '../includes/dashboard/branch/sidebar.php'; ?>
     </div>
     <div class="min-h-screen w-full flex justify-center">
-        <?php include '../includes/dashboard/branch/menu/body.php'; ?>
+        <div class="relative tab-group top-2">
+            <div class="flex p-0.5 relative rounded-lg" role="tablist">
+                <div
+                    class="absolute top-2 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
+                </div>
+
+                <a href="/web/dashboard/bcategories?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
+                    class="text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Categories
+                </a>
+                <a href="/web/dashboard/bmenu?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Menu
+                </a>
+            </div>
+            <?php include '../includes/dashboard/branch/menu/body.php'; ?>
+        </div>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>

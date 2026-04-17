@@ -9,6 +9,32 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 ;
+
+$filter = "";
+$countstatusAvailableFromFoodsql = "SELECT COUNT(*) FROM food WHERE status = 'Available'";
+$stmtcount = $conn->prepare($countstatusAvailableFromFoodsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusAvailableFromFood);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusSoldoutsql = "SELECT COUNT(*) FROM food WHERE status = 'Sold Out'";
+$stmtcount = $conn->prepare($countstatusSoldoutsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusSoldout);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatusDiscontinuedsql = "SELECT COUNT(*) FROM food WHERE status = 'Discontinued'";
+$stmtcount = $conn->prepare($countstatusDiscontinuedsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatusDiscontinued);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatussql = "SELECT COUNT(*) FROM food";
+$stmtcount = $conn->prepare($countstatussql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalFood);
+$stmtcount->fetch();
+$stmtcount->close();
 ?>
 
 <!DOCTYPE html>

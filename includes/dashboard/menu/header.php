@@ -72,7 +72,7 @@ $branchResult = $stmt->get_result();
                     <h1 class="text-lg font-bold text-green-900">Available</h1>
                 </div>
                 <p class="text-3xl text-green-950 mt-3 font-extrabold">
-                    -
+                    <?php echo htmlspecialchars($totalStatusAvailableFromFood); ?>
                 </p>
             </div>
         </div>
@@ -101,11 +101,11 @@ $branchResult = $stmt->get_result();
                     <h1 class="text-lg font-bold text-red-900">Sold Out</h1>
                 </div>
                 <p class="text-3xl text-green-red mt-3 font-extrabold">
-                    -
+                    <?php echo htmlspecialchars($totalStatusSoldout); ?>
                 </p>
             </div>
         </div>
-        
+
         <!-- Card 5 -->
         <div
             class="flex items-center p-2 border border-slate-500 bg-slate-500/10 hover:border-green/20 transition-colors rounded-xl ">
@@ -130,7 +130,7 @@ $branchResult = $stmt->get_result();
                     <h1 class="text-lg font-bold text-slate-900">Discontinued</h1>
                 </div>
                 <p class="text-3xl text-slate-950 mt-3 font-extrabold">
-                    -
+                    <?php echo htmlspecialchars($totalStatusDiscontinued); ?>
                 </p>
             </div>
         </div>
@@ -143,37 +143,51 @@ $branchResult = $stmt->get_result();
     }
     ?>
     <div class="flex items-center justify-between flex-wrap w-full">
-        <div class="flex gap-2 relative top-5 ">
-            <div class="w-full max-w-sm min-w-[200px]">
-                <div class="relative flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                        class="absolute w-5 h-5 top-2.5 left-2.5 text-slate-600">
-                        <path fill-rule="evenodd"
-                            d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
-                            clip-rule="evenodd" />
-                    </svg>
-
-                    <input
-                        class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-10 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                        placeholder="UI Kits, Dashboards..." />
-
-                    <button
-                        class="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
-                        type="button">
-                        Search
-                    </button>
-                </div>
+        <div class="flex gap-2 relative top-5">
+            <!-- Trigger Button -->
+            <button id="dropdownBtn" type="button" onclick="openDialog()"
+                class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
+                <i class="bx bx-search text-lg"></i><span class="lg:flex hidden">Search or Filter</span>
+            </button>
+            <div class="flex items-center mb-10 gap-2 justify-self-start">
+                <?php foreach ($selectedStatuses as $status):
+                    $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $status);
+                    $query = $_GET;
+                    $query['status'] = $newStatuses;
+                    if (empty($newStatuses)) {
+                        unset($query['status']);
+                    }
+                    $url = '?' . http_build_query($query);
+                    ?>
+                    <a href="<?= $url ?>" class="">
+                        <?php if ($status === 'Available'): ?>
+                            <div
+                                class="text-green-500  border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Sold Out'): ?>
+                            <div
+                                class="text-red-500 border border-red-500 bg-red-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($status === 'Discontinued'): ?>
+                            <div
+                                class="text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php endif ?>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
-        <div class="flex relative top-5">
-            <button type="button" data-toggle="modal" data-target="#createBranchDialog"
-                class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
-                <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
-            </button>
-        </div>
+        <button type="button" onclick="openBranchDialog()" data-toggle="modal"
+            class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary text-foreground hover:bg-amber-300 hover:text-secondaryForeground">
+            <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
+        </button>
+        <?php include 'create-menu-dialog.php'; ?>
+
+        <!---->
     </div>
-    <!---->
-</div>
 </div>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script>
