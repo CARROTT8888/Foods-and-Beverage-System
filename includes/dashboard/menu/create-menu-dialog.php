@@ -1,47 +1,48 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
-    $foodName = $_POST['name'];
-    $description = $_POST['description'];
-    $basePrice = $_POST['basePrice'];
+$errorMessage = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
+
+    $foodName = trim($_POST['name'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $basePrice = $_POST['basePrice'] ?? '';
     $visibleStatus = "Invisible";
-    $categoryId = $_POST['categoryId'];
-    $branchId = $_POST['branchId'];
-    $status = $_POST['status'];
+    $categoryId = intval($_POST['categoryId'] ?? 0);
+    $branchId = intval($_POST['branchId'] ?? 0);
+    $status = "Available";
 
-    // check for duplocate menu name
-    $checkQuery = "SELECT branchId FROM food WHERE name = ? AND branchId = ?";
-    $checkStmt = $conn->prepare($checkQuery);
-    $checkStmt->bind_param('si', $foodName, $branchId);
-    $checkStmt->execute();
-    $checkStmt->store_result();
-
-    // check for duplocate menu name
-    $checkQuery1 = "SELECT categoryId FROM food WHERE name = ? AND categoryId = ?";
-    $checkStmt1 = $conn->prepare($checkQuery);
-    $checkStmt1->bind_param('si', $foodName, $categoryId);
-    $checkStmt1->execute();
-    $checkStmt1->store_result();
-
-    if ($checkStmt->num_rows > 0) {
-        $errorMessage = 'The name has already exists.';
-        $checkStmt->close();
-    } else if ($checkStmt1->num_rows > 0) {
-        $errorMessage = 'The name has already exists.';
-        $checkStmt1->close();
+    // Validation
+    if (empty($foodName) || empty($basePrice) || $categoryId == 0 || $branchId == 0) {
+        $errorMessage = "Please fill in all required fields.";
     } else {
-        $checkStmt->close();
-        // insert new menu (fixed column/value count)
-        $query = "INSERT INTO food (name, description, basePrice, status, visibleStatus, categoryId, branchId) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $addcategorystmt = $conn->prepare($query);
-        //corrected bind_param types: s = string, i = integer, d = double/decimal\
-        $addcategorystmt->bind_param('ssdsii', $foodName, $description, $basePrice, $status, $categoryId, $branchId);
-        if ($addcategorystmt->execute()) {
-            echo "<script>window.location.href='/web/dashboard/menu';</script>";
-            exit();
+
+        // check duplicate menu name based on branch + category
+        $checkQuery = "SELECT foodId FROM food WHERE name = ? AND branchId = ? AND categoryId = ?";
+        $checkStmt = $conn->prepare($checkQuery);
+        $checkStmt->bind_param("sii", $foodName, $branchId, $categoryId);
+        $checkStmt->execute();
+        $checkStmt->store_result();
+
+        if ($checkStmt->num_rows > 0) {
+            $errorMessage = "This menu name already exists in the selected branch & category.";
+            $checkStmt->close();
         } else {
-            $errorMessage = "Error: " . $conn->error;
+            $checkStmt->close();
+
+            $query = "INSERT INTO food (name, description, basePrice, status, visibleStatus, categoryId, branchId)
+                      VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ssdssii", $foodName, $description, $basePrice, $status, $visibleStatus, $categoryId, $branchId);
+
+            if ($stmt->execute()) {
+                echo "<script>window.location.href='/web/dashboard/menu';</script>";
+                exit();
+            } else {
+                $errorMessage = "Error: " . $stmt->error;
+            }
+
+            $stmt->close();
         }
-        $addcategorystmt->close();
     }
 }
 ?>
@@ -75,18 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
             </div>
             <div>
                 <label for="basePrice" class="block text-sm font-medium text-foreground mb-1">Base Price (RM)</label>
-                <input type="number" name="description" placeholder="Enter a price"
+                <input type="number" name="basePrice" placeholder="Enter a price" step="0.01"
                     class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition" />
-            </div>
-            <div>
-                <label for="status" class="block text-sm font-medium text-foreground mb-1">Status</label>
-                <select type="text" id="status" name="status"
-                    class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
-                    <option value="" selected disabled>Select Status</option>
-                    <option value="Available">Available</option>
-                    <option value="Sold Out">Sold Out</option>
-                    <option value="Discontinued">Discontinued</option>
-                </select>
             </div>
             <div>
                 <label for="branchId" class="block text-sm font-medium text-foreground mb-1">Branch</label>
@@ -106,17 +97,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
                 <label for="categoryId" class="block text-sm font-medium text-foreground mb-1">Category</label>
                 <select type="text" id="categoryId" name="categoryId" placeholder="Enter a table code."
                     class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
-                    <option value="" selected disabled>Select Category</option>
-                    <?php
-                    $categoryQuery = "SELECT categoryId, name FROM food_category";
-                    $result = $conn->query($categoryQuery);
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='{$row['categoryId']}'>{$row['name']}</option>";
-                    }
-                    ?>
+                    <option value="" selected disabled>Please Select a Branch First.</option>
                 </select>
             </div>
-            <button type="submit"
+            <?php if (!empty($errorMessage)): ?>
+                <p class="text-red-500 text-sm text-center"><?= $errorMessage ?></p>
+            <?php endif; ?>
+            <button type="submit" name="createMenu"
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>
@@ -125,3 +112,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
         </form>
     </div>
 </div>
+<script>
+    document.getElementById("branchId").addEventListener("change", function () {
+        const branchId = this.value;
+        const categoryDropdown = document.getElementById("categoryId");
+
+        // reset category dropdown
+        categoryDropdown.innerHTML = `<option value="" selected disabled>Loading...</option>`;
+
+        fetch("/web/includes/dashboard/menu/get_categories_from_branch.php?branchId=" + branchId)
+            .then(response => response.json())
+            .then(data => {
+                categoryDropdown.innerHTML = `<option value="" selected disabled>Select Category</option>`;
+
+                if (data.length === 0) {
+                    categoryDropdown.innerHTML = `<option value="" disabled>No categories available</option>`;
+                    return;
+                }
+
+                data.forEach(category => {
+                    const option = document.createElement("option");
+                    option.value = category.categoryId;
+                    option.textContent = category.name;
+                    categoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error loading categories:", error);
+                categoryDropdown.innerHTML = `<option value="" disabled>Error loading categories</option>`;
+            });
+    });
+</script>

@@ -124,6 +124,20 @@ $stmtcount->close();
                     closeDialog();
                 }
             });
+            const dialog4 = document.getElementById("updateFoodVisibleStatusDialog");
+            window.openUpdateVisibleStatusDialog = function () {
+                dialog4.classList.remove("opacity-0", "pointer-events-none");
+                dialog2.classList.add("opacity-100");
+            };
+            window.closeUpdateVisibleStatusDialog = function () {
+                dialog4.classList.remove("opacity-100");
+                dialog4.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeUpdateVisibleStatusDialog();
+                }
+            });
             const drawer = document.getElementById("sidebarDrawer");
             function openDrawerBranch() {
                 drawer.classList.remove("opacity-0", "pointer-events-none");

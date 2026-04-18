@@ -261,10 +261,14 @@
                                         </button>
                                         <div data-role="menu"
                                             class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
-
+                                            <a href=""
+                                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                <i class='bx bx-table mr-2 text-lg'></i>
+                                                View Details
+                                            </a>
                                             <a href="/web/dashboard/btables?slug=<?php echo htmlspecialchars($data['slug']); ?>"
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
-                                                <i class='bx bx-show mr-2 text-lg'></i>
+                                                <i class='bx bxs-door-open mr-2 text-lg'></i>
                                                 View Tables
                                             </a>
                                             <button type="button" onclick='fillUpdateForm(

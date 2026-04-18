@@ -201,7 +201,7 @@
 
                                             <a href="/web/dashboard/bcategories?slug=<?php echo htmlspecialchars($data['slug']); ?>"
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
-                                                <i class='bx bx-show mr-2 text-lg'></i>
+                                                <i class='bx bxs-door-open mr-2 text-lg'></i>
                                                 View Categories
                                             </a>
                                             <button type="button" onclick='fillUpdateForm(
