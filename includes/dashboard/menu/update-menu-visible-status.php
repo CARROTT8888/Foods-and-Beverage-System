@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateFoodVisibleStatu
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-115 p-5 ">
         <form method="POST">
             <div class="flex justify-between mb-4">
-                <h1 class="text-lg text-slate-800 font-semibold">Let's Update a Category</h1>
+                <h1 class="text-lg text-slate-800 font-semibold">Let's Update Visible Status</h1>
                 <button type="button" data-dismiss="modal" aria-label="Close"
                     class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-red-500 hover:bg-red-200/10 hover:border-red-200/10 shadow-none hover:shadow-none outline-none">
                     <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"

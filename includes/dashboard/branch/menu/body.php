@@ -30,7 +30,15 @@
                 class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-full">
                     <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-                        <img src="../assets/burger-sample.jpg" alt="card-image" />
+                        <?php if ($data['image']): ?>
+                            <img class=""
+                                src="/Foods-and-Beverage-System/uploads/menus/<?php echo htmlspecialchars($data['image']); ?>"
+                                alt="test" />
+                        <?php else: ?>
+                            <img class=""
+                                src="../assets/burger-sample.jpg"
+                                alt="ui/ux review check" />
+                        <?php endif; ?>
                     </div>
                     <div class="p-4">
                         <div class="flex items-center mb-2">

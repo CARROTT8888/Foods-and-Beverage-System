@@ -124,10 +124,24 @@ $stmtcount->close();
                     closeDialog();
                 }
             });
+            const dialog3 = document.getElementById("updateMenuDialog");
+            window.openUpdateMenuDialog = function () {
+                dialog3.classList.remove("opacity-0", "pointer-events-none");
+                dialog3.classList.add("opacity-100");
+            };
+            window.closeUpdateMenuDialog = function () {
+                dialog3.classList.remove("opacity-100");
+                dialog3.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeUpdateMenuDialog();
+                }
+            });
             const dialog4 = document.getElementById("updateFoodVisibleStatusDialog");
             window.openUpdateVisibleStatusDialog = function () {
                 dialog4.classList.remove("opacity-0", "pointer-events-none");
-                dialog2.classList.add("opacity-100");
+                dialog4.classList.add("opacity-100");
             };
             window.closeUpdateVisibleStatusDialog = function () {
                 dialog4.classList.remove("opacity-100");
@@ -136,6 +150,20 @@ $stmtcount->close();
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
                     closeUpdateVisibleStatusDialog();
+                }
+            });
+            const dialog5 = document.getElementById("foodOptionDialog");
+            window.openFoodOptionDialog = function () {
+                dialog5.classList.remove("opacity-0", "pointer-events-none");
+                dialog5.classList.add("opacity-100");
+            };
+            window.closeFoodOptionDialog = function () {
+                dialog5.classList.remove("opacity-100");
+                dialog5.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeFoodOptionDialog();
                 }
             });
             const drawer = document.getElementById("sidebarDrawer");
@@ -156,7 +184,7 @@ $stmtcount->close();
         <?php include '../includes/dashboard/sidebar.php'; ?>
     </div>
     <div class="min-h-screen w-full flex justify-center">
-        <div class="relative tab-group top-2">
+        <div class="relative tab-group top-2 ">
             <div class="flex p-0.5 relative rounded-lg" role="tablist">
                 <div
                     class="absolute top-2 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">

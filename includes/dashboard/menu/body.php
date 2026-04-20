@@ -30,7 +30,7 @@
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
             <?php include 'header.php'; ?>
             <div
-                class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 space-y-0 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
+                class="w-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 space-y-0 max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8 mb-10">
                 <?php
                 $filter = "";
                 $params = [];
@@ -52,6 +52,16 @@
                         return "'" . $conn->real_escape_string($status) . "'";
                     }, $statuses);
                     $filter .= " AND food.status IN (" . implode(',', $escapedStatuses) . ")";
+                }
+                if (!empty($_GET['branch'])) {
+                    $branches = $_GET['branch'] ?? [];
+                    if (!is_array($branches)) {
+                        $branches = [$branches];
+                    }
+                    $escapedBranches = array_map(function ($id) {
+                        return (int) $id;
+                    }, $branches);
+                    $filter .= " AND food.branchId IN (" . implode(',', $escapedBranches) . ")";
                 }
                 $menuQuery = "
                             SELECT food.*, food_category.name AS categoryName
@@ -115,13 +125,23 @@
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <img src="../assets/burger-sample.jpg" alt="card-image" />
+                                    <?php if ($data['image']): ?>
+                                        <img class="h-full object-cover w-full"
+                                            src="/Foods-and-Beverage-System/uploads/menus/<?php echo htmlspecialchars($data['image']); ?>"
+                                            alt="test" />
+                                    <?php else: ?>
+                                        <img class="h-full object-cover w-full"
+                                            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
+                                            alt="ui/ux review check" />
+                                    <?php endif; ?>
                                 </div>
                                 <div class="pl-4 pr-1">
                                     <div class="flex items-center">
                                         <h6 class="text-slate-800 text-xl font-semibold">
-                                            <?php echo htmlspecialchars($data['name']); ?> <i
-                                                class='bx bxs-low-vision text-secondaryForeground'></i>
+                                            <?php echo htmlspecialchars($data['name']); ?>
+                                            <button type="button" onclick="fillUpdateForm2(<?= $data['foodId'] ?>, 'Visible')"
+                                                class="cursor-pointer"><i
+                                                    class='bx bxs-low-vision text-secondaryForeground'></i></button>
                                         </h6>
 
                                         <div class="flex items-center gap-0 5 ml-auto">
@@ -144,16 +164,18 @@
                                                         View Menu
                                                     </a>
                                                     <button type="button" onclick='fillUpdateForm(
-                                                <?php echo json_encode($data["tableId"]); ?>,
-                                                <?php echo json_encode($data["tableName"]); ?>,
-                                                <?php echo json_encode($data["totalSeat"]); ?>,
-                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["foodId"]); ?>,
+                                                <?php echo json_encode($data["name"]); ?>,
+                                                <?php echo json_encode($data["description"]); ?>,
+                                                <?php echo json_encode($data["basePrice"]); ?>,
                                                 <?php echo json_encode($data["status"]); ?>,
-                                                <?php echo json_encode($data["branchId"]); ?>
+                                                <?php echo json_encode($data["branchId"]); ?>,
+                                                <?php echo json_encode($data["categoryId"]); ?>,
+                                                <?php echo json_encode($data["image"]); ?>
                                                 )'
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-edit mr-2 text-lg'></i>
-                                                        Update Table
+                                                        Update Menu
                                                     </button>
                                                     <?php if ($data['visibleStatus'] === 'Invisible'): ?>
                                                         <button type="button"
@@ -188,12 +210,7 @@
                                         </div>
                                         <div data-open="true" data-shape="pill"
                                             class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Learn More</span>
-                                            <div
-                                                class="grid place-items-center shrink-0 rounded-full p-px -translate-x-1 ms-1 w-5 h-5 stroke-2">
-                                                <i class='bx bx-plus '></i>
-                                            </div>
+                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Learn More...</span>
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +230,7 @@
                                     <div class="flex justify-between">
                                         <div
                                             class="flex items-center gap-2 text-secondaryForeground border border-secondaryForeground bg-secondary rounded-lg text-xs w-auto mx-auto absolute p-1 px-2 top-2 left-2">
-                                            <span>Hamburger</span>
+                                            <span><?php echo htmlspecialchars($data['categoryName']); ?></span>
                                         </div>
                                         <?php if ($data['status'] === 'Available'): ?>
                                             <div
@@ -251,13 +268,24 @@
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <img src="../assets/burger-sample.jpg" alt="card-image" />
+                                    <?php if ($data['image']): ?>
+                                        <img class="h-full object-cover w-full"
+                                            src="/Foods-and-Beverage-System/uploads/menus/<?php echo htmlspecialchars($data['image']); ?>"
+                                            alt="test" />
+                                    <?php else: ?>
+                                        <img class="h-full object-cover w-full"
+                                            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
+                                            alt="ui/ux review check" />
+                                    <?php endif; ?>
                                 </div>
                                 <div class="pl-4 pr-1">
                                     <div class="flex items-center">
                                         <h6 class="text-slate-800 text-xl font-semibold">
-                                            <?php echo htmlspecialchars($data['name']); ?> <i
-                                                class='bx bxs-show text-secondaryForeground'></i>
+                                            <?php echo htmlspecialchars($data['name']); ?>
+                                            <button type="button" onclick="fillUpdateForm2(<?= $data['foodId'] ?>, 'Invisible')"
+                                                class="cursor-pointer">
+                                                <i class='bx bxs-show text-secondaryForeground'></i>
+                                            </button>
                                         </h6>
 
                                         <div class="flex items-center gap-0 5 ml-auto">
@@ -279,12 +307,13 @@
                                                         View Menu
                                                     </a>
                                                     <button type="button" onclick='fillUpdateForm(
-                                                <?php echo json_encode($data["tableId"]); ?>,
-                                                <?php echo json_encode($data["tableName"]); ?>,
-                                                <?php echo json_encode($data["totalSeat"]); ?>,
-                                                <?php echo json_encode($data["availableSeat"]); ?>,
+                                                <?php echo json_encode($data["foodId"]); ?>,
+                                                <?php echo json_encode($data["name"]); ?>,
+                                                <?php echo json_encode($data["description"]); ?>,
+                                                <?php echo json_encode($data["basePrice"]); ?>,
                                                 <?php echo json_encode($data["status"]); ?>,
-                                                <?php echo json_encode($data["branchId"]); ?>
+                                                <?php echo json_encode($data["branchId"]); ?>,
+                                                <?php echo json_encode($data["categoryId"]); ?>
                                                 )'
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-edit mr-2 text-lg'></i>
@@ -309,27 +338,10 @@
                                         </div>
                                     </div>
                                     <div class="flex gap-2 overflow-hidden flex-nowrap">
-                                        <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Cucumber</span>
-                                        </div>
-                                        <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Spicy Level</span>
-                                        </div>
-                                        <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Size Level</span>
-                                        </div>
-                                        <div data-open="true" data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Learn More</span>
-                                            <div
-                                                class="grid place-items-center shrink-0 rounded-full p-px -translate-x-1 ms-1 w-5 h-5 stroke-2">
-                                                <i class='bx bx-plus '></i>
-                                            </div>
-                                        </div>
+                                        <button type="button" onclick="openFoodOptionDialog()" data-toggle="modal"
+                                            class="text-secondaryForeground text-sm">Not included food options, tab here to
+                                            create.</button>
+                                            <?php include 'create-food-option-dialog.php'; ?>
                                     </div>
                                 </div>
                                 <div class="px-4 pb-4 pt-0 mt-2">
@@ -345,6 +357,7 @@
                         <?php endif; ?>
                     <?php endwhile; ?>
                 <?php endif; ?>
+                <?php include 'update-menu-dialog.php'; ?>
                 <?php include 'update-menu-visible-status.php'; ?>
             </div>
 </section>
@@ -364,20 +377,43 @@
         }
     });
 
-    function fillUpdateForm(branchId, name, slug, address, status, startTime, endTime, contactNumber, state) {
-        console.log(branchId, name);
-
-        document.getElementById("branchId").value = branchId;
+    function fillUpdateForm(foodId, name, description, basePrice, status, branchId, categoryId, image) {
+        document.getElementById("updateFoodId").value = foodId;
         document.getElementById("updateName").value = name;
-        document.getElementById("updateSlug").value = slug;
-        document.getElementById("updateAddress").value = address;
+        document.getElementById("updateDescription").value = description;
+        document.getElementById("updateBasePrice").value = basePrice;
         document.getElementById("updateStatus").value = status;
-        document.getElementById("updateStartTime").value = startTime;
-        document.getElementById("updateEndTime").value = endTime;
-        document.getElementById("updateContactNumber").value = contactNumber;
-        document.getElementById("updateState").value = state;
+        document.getElementById("updateBranch").value = branchId;
 
-        document.getElementById("updateBranchDialog").classList.remove("opacity-0", "pointer-events-none");
+        if (image) {
+            document.getElementById("previewImage").src =
+                "/Foods-and-Beverage-System/uploads/menus/" + image;
+        } else {
+            document.getElementById("previewImage").src =
+                "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18";
+        }
+
+        document.querySelector("input[name='old_image']").value = image ?? "";
+
+
+        const categoryDropdown = document.getElementById("updateCategory");
+        categoryDropdown.innerHTML = `<option value="" selected disabled>Loading...</option>`;
+
+        fetch("/web/includes/dashboard/menu/get_categories_from_branch.php?branchId=" + branchId)
+            .then(response => response.json())
+            .then(data => {
+                categoryDropdown.innerHTML = `<option value="" disabled>Select Category</option>`;
+                data.forEach(category => {
+                    const option = document.createElement("option");
+                    option.value = category.categoryId;
+                    option.textContent = category.name;
+                    if (category.categoryId == categoryId) {
+                        option.selected = true;
+                    }
+                    categoryDropdown.appendChild(option);
+                });
+            });
+        document.getElementById("updateMenuDialog").classList.remove("opacity-0", "pointer-events-none");
     }
     function fillUpdateForm2(foodId, visibleStatus) {
         //console.log(branchId, name);

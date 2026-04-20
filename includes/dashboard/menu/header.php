@@ -19,33 +19,57 @@ if (!empty($selectedStatuses)) {
     $escapedStatuses = array_map(function ($status) use ($conn) {
         return "'" . $conn->real_escape_string($status) . "'";
     }, $selectedStatuses);
-    $filter .= " AND branch.status IN (" . implode(',', $escapedStatuses) . ")";
+    $filter .= " AND food.status IN (" . implode(',', $escapedStatuses) . ")";
 }
-// filtering state
-$selectedStates = $_GET['state'] ?? [];
-if (!is_array($selectedStates)) {
-    $selectedStates = [$selectedStates];
+
+$selectedBranches = $_GET['branch'] ?? [];
+if (!is_array($selectedBranches)) {
+    $selectedBranches = [$selectedBranches];
 }
-if (!empty($selectedStates)) {
-    $escapedStates = array_map(function ($state) use ($conn) {
-        return "'" . $conn->real_escape_string($state) . "'";
-    }, $selectedStates);
-    $filter .= " AND branch.state IN (" . implode(',', $escapedStates) . ")";
+
+if (!empty($selectedBranches)) {
+    $escapedBranches = array_map(function ($id) use ($conn) {
+        return (int) $id;
+    }, $selectedBranches);
+    $filter .= " AND food.branchId IN (" . implode(',', $escapedBranches) . ")";
 }
+
 // final query with filter
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/
 
-$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
-$stmt = $conn->prepare($branchQuery);
+$menuQuery = "SELECT * FROM food WHERE 1" . $filter . " ORDER BY foodId DESC";
+$stmt = $conn->prepare($menuQuery);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
 }
 $stmt->execute();
-$branchResult = $stmt->get_result();
+$menuResult = $stmt->get_result();
 ?>
 
 <div class="w-full px-4 sm:px-6 lg:px-10">
+    <script>
+        function toggleCollapse(event, id) {
+            event.preventDefault();
+
+            const container = document.getElementById('collapsibleContainer');
+            const allContents = container.querySelectorAll('[id^="collapse"]');
+            const allIcons = container.querySelectorAll('[id^="icon"]');
+
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`icon${id.replace('collapse', '')}`);
+
+            const isCurrentlyVisible = !content.classList.contains('hidden');
+
+            allContents.forEach((c) => c.classList.add('hidden'));
+            allIcons.forEach((i) => i.classList.remove('rotate-180'));
+
+            if (!isCurrentlyVisible) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            }
+        };
+    </script>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5">
         <!-- Card 1 -->
         <div
@@ -141,6 +165,10 @@ $branchResult = $stmt->get_result();
     if (!is_array($selectedStatuses)) {
         $selectedStatuses = [$selectedStatuses];
     }
+    $selectedBranches = $_GET['branch'] ?? [];
+    if (!is_array($selectedBranches)) {
+        $selectedBranches = [$selectedBranches];
+    }
     ?>
     <div class="flex items-center justify-between flex-wrap w-full">
         <div class="flex gap-2 relative top-5">
@@ -149,6 +177,7 @@ $branchResult = $stmt->get_result();
                 class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
                 <i class="bx bx-search text-lg"></i><span class="lg:flex hidden">Search or Filter</span>
             </button>
+            <?php include 'search-or-filter-dialog.php'; ?>
             <div class="flex items-center mb-10 gap-2 justify-self-start">
                 <?php foreach ($selectedStatuses as $status):
                     $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $status);
@@ -185,7 +214,6 @@ $branchResult = $stmt->get_result();
             <i class='bx bx-plus-circle text-xl'></i> <span class="lg:flex hidden font-bold">Create</span>
         </button>
         <?php include 'create-menu-dialog.php'; ?>
-
         <!---->
     </div>
 </div>
@@ -233,23 +261,8 @@ $branchResult = $stmt->get_result();
         }
     });
 </script>
-<script>
-    function toggleCollapse(id) {
-        const container = document.getElementById('collapsibleContainer');
-        const allContents = container.querySelectorAll('[id^="collapse"]');
-        const allIcons = container.querySelectorAll('[id^="icon"]');
-        const content = document.getElementById(id);
-        const icon = document.getElementById(`icon${id.replace('collapse', '')}`);
-        // Check if the clicked section is already expanded
-        const isCurrentlyVisible = !content.classList.contains('hidden');
-        // Collapse all sections first
-        allContents.forEach((c) => c.classList.add('hidden'));
-        allIcons.forEach((i) => i.classList.remove('rotate-180'));
-        // If the clicked section was not already expanded, expand it
-        if (!isCurrentlyVisible) {
-            content.classList.remove('hidden');
-            icon.classList.add('rotate-180');
-        }
-        event.preventDefault();
-    }
-</script>
+<span class="text-secondaryForeground relative left-5 lg:left-10">Showing
+    <?php echo $menuResult->num_rows; ?> of
+    <?php echo $totalFood; ?>
+    foods and beverages
+</span>

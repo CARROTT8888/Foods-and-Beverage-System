@@ -228,10 +228,6 @@ $seatResult = $stmt->get_result();
     if (!is_array($selectedBranches)) {
         $selectedBranches = [$selectedBranches];
     }
-
-    if (!empty($selectedBranches)) {
-        //
-    }
     ?>
     <div class="flex items-center justify-between flex-wrap w-full">
         <div class="flex gap-2 relative top-5">

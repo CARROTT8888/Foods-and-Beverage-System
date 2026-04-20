@@ -11,10 +11,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
     $branchId = intval($_POST['branchId'] ?? 0);
     $status = "Available";
 
+    // IMAGE UPLOAD (optional)
+    $imageName = null;
+
+    if (!empty($_FILES['image']['name'])) {
+
+        $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/Foods-and-Beverage-System/uploads/menus/";
+
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileType = $_FILES['image']['type'];
+        $fileSize = $_FILES['image']['size'];
+
+        if (!in_array($fileType, $allowedTypes)) {
+            $errorMessage = "Only JPG, PNG, GIF files are allowed.";
+        } elseif ($fileSize > 2 * 1024 * 1024) {
+            $errorMessage = "File size must be less than 2MB.";
+        } else {
+            $fileExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $newFileName = "menu_" . time() . "_" . rand(1000, 9999) . "." . $fileExt;
+
+            $targetFile = $targetDir . $newFileName;
+
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+                $imageName = $newFileName;
+            } else {
+                $errorMessage = "Image upload failed.";
+            }
+        }
+    }
+
     // Validation
-    if (empty($foodName) || empty($basePrice) || $categoryId == 0 || $branchId == 0) {
-        $errorMessage = "Please fill in all required fields.";
-    } else {
+    if (empty($errorMessage)) {
+        if (empty($foodName) || empty($basePrice) || $categoryId == 0 || $branchId == 0) {
+            $errorMessage = "Please fill in all required fields.";
+        }
+    }
+
+    // Insert only if no error
+    if (empty($errorMessage)) {
 
         // check duplicate menu name based on branch + category
         $checkQuery = "SELECT foodId FROM food WHERE name = ? AND branchId = ? AND categoryId = ?";
@@ -25,14 +63,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
 
         if ($checkStmt->num_rows > 0) {
             $errorMessage = "This menu name already exists in the selected branch & category.";
-            $checkStmt->close();
         } else {
-            $checkStmt->close();
 
-            $query = "INSERT INTO food (name, description, basePrice, status, visibleStatus, categoryId, branchId)
-                      VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // if DB requires image not null, set default image if empty
+            if (empty($imageName)) {
+                $imageName = "default-menu.jpg"; // make sure this file exists
+            }
+
+            $query = "INSERT INTO food (name, description, basePrice, status, visibleStatus, image, categoryId, branchId)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("ssdssii", $foodName, $description, $basePrice, $status, $visibleStatus, $categoryId, $branchId);
+            $stmt->bind_param("ssdsssii", $foodName, $description, $basePrice, $status, $visibleStatus, $imageName, $categoryId, $branchId);
 
             if ($stmt->execute()) {
                 echo "<script>window.location.href='/web/dashboard/menu';</script>";
@@ -43,6 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
 
             $stmt->close();
         }
+
+        $checkStmt->close();
     }
 }
 ?>
@@ -50,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="menuDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-106 p-3 ">
-        <form method="POST" action="" class="p-2 space-y-5">
+        <form method="POST" action="" class="p-2 space-y-5" enctype="multipart/form-data">
             <div class="flex justify-between items-center">
                 <h1 class="text-lg text-slate-800 font-semibold">Let's Create a Food or Beverage</h1>
                 <button type="button" data-dismiss="modal" aria-label="Close"
@@ -100,6 +143,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
                     <option value="" selected disabled>Please Select a Branch First.</option>
                 </select>
             </div>
+            <div class="">
+                    <label for="image" class="block text-sm font-medium text-foreground mb-1 text-start">Upload
+                        Image (Optional)</label>
+                    <input type="hidden" name="old_image"
+                        value="<?php echo htmlspecialchars($branch['image'] ?? ''); ?>">
+
+                    <input type="file" class="bg-red-400 w-full text-center flex justify-center" name="image"
+                        id="updateImageFile" accept="image/png, image/jpeg, image/gif">
+
+                    <div class="text-sm text-secondaryForeground mt-5">
+                        Max file size: 2MB (JPG, PNG, GIF)
+                    </div>
+
+                    <div class="mt-[10px]">
+                        <p style="margin: 0; font-weight: bold;">Current Image:</p>
+                        <img id="previewImage" src="" class="rounded w-full h-48 object-cover">
+                    </div>
+                </div>
             <?php if (!empty($errorMessage)): ?>
                 <p class="text-red-500 text-sm text-center"><?= $errorMessage ?></p>
             <?php endif; ?>
@@ -142,4 +203,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createMenu'])) {
                 categoryDropdown.innerHTML = `<option value="" disabled>Error loading categories</option>`;
             });
     });
+</script>
+<script>
+document.getElementById("updateImageFile").addEventListener("change", function () {
+    const file = this.files[0];
+    const preview = document.getElementById("previewImage");
+
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+    } else {
+        preview.src = "";
+    }
+});
 </script>
