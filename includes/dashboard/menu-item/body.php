@@ -140,6 +140,13 @@
                                 <?php echo count($group['items']); ?>
                                 option<?php echo count($group['items']) !== 1 ? 's' : ''; ?>
                             </span>
+                            <button type="button" onclick='openUpdateFoodOptionDialog(
+                                <?= (int) $group["optionGroupId"] ?>,
+                                <?= json_encode($group["groupName"]) ?>,
+                                <?= htmlspecialchars(json_encode($group["items"]), ENT_QUOTES, 'UTF-8') ?>
+                            )' class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-primary hover:bg-amber-200/10 hover:border-amber-200/10 shadow-none hover:shadow-none outline-none">
+                                <i class="bx bxs-tag-alt"></i>
+                            </button>
                         </div>
 
                         <div class="flex flex-col divide-y divide-stone-100">
@@ -165,12 +172,14 @@
             <?php else: ?>
                 <div
                     class="bg-white border border-dashed border-stone-200 rounded-2xl p-7 text-center text-slate-400 text-sm">
-                    <i class='bx bx-package text-4xl block mb-2 text-stone-200'></i>
+                    <i class='bx bxs-plus-square text-4xl block mb-2 text-secondaryForeground'></i>
                     No customization options added yet.
                 </div>
             <?php endif; ?>
             <?php include 'update-menu-visible-status.php'; ?>
             <?php include 'update-menu-dialog.php'; ?>
+            <?php include 'create-food-option-dialog.php'; ?>
+            <?php include 'update-food-option-dialog.php'; ?>
         </div>
     </div>
 </div>
@@ -239,5 +248,63 @@
             "Are you sure you want to change visible status to " + visibleStatus + "?";
 
         document.getElementById("updateFoodVisibleStatusDialog").classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function handleEditFoodOption(btn) {
+        const optionGroupId = btn.dataset.groupid;
+        const groupName = btn.dataset.groupname;
+        const items = JSON.parse(btn.dataset.items);
+
+        openUpdateFoodOptionDialog(optionGroupId, groupName, items);
+    }
+    function openUpdateFoodOptionDialog(optionGroupId, groupName, items) {
+        document.getElementById("updateOptionGroupId").value = optionGroupId;
+        document.getElementById("updateGroupName").value = groupName;
+
+        const container = document.getElementById("updateItemContainer");
+        container.innerHTML = "";
+
+        items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "flex gap-2 items-center";
+
+            div.innerHTML = `
+            <input type="hidden" name="itemId[]" value="${item.optionItemId}">
+            <input type="text" name="itemName[]" value="${item.itemName}"
+                class="w-full border px-4 py-2 rounded-md" required>
+            <input type="number" name="extraPrice[]" step="0.01" value="${item.extraPrice}"
+                class="w-full border px-4 py-2 rounded-md" required>
+            <button type="button" onclick="this.parentElement.remove()"
+                class="text-red-400 hover:text-red-600 text-lg font-bold px-1">✕</button>
+        `;
+            container.appendChild(div);
+        });
+
+        document.getElementById("updateFoodOptionDialog")
+            .classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function closeUpdateFoodOptionDialog() {
+        document.getElementById("updateFoodOptionDialog")
+            .classList.add("opacity-0", "pointer-events-none");
+    }
+
+    // Add NEW row (no itemId)
+    function addNewUpdateItemRow() {
+        const container = document.getElementById("updateItemContainer");
+
+        const div = document.createElement("div");
+        div.className = "flex gap-2 items-center";
+
+        div.innerHTML = `
+        <input type="hidden" name="itemId[]" value="">
+        <input type="text" name="itemName[]" placeholder="New Item"
+            class="w-full border px-4 py-2 rounded-md" required>
+        <input type="number" name="extraPrice[]" step="0.01" placeholder="0.00"
+            class="w-full border px-4 py-2 rounded-md" required>
+        <button type="button" onclick="this.parentElement.remove()"
+            class="text-red-400 hover:text-red-600 text-lg font-bold px-1">✕</button>
+    `;
+        container.appendChild(div);
     }
 </script>

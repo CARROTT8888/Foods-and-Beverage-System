@@ -145,7 +145,7 @@
                                 <div class="pl-4 pr-1">
                                     <div class="flex items-center">
                                         <h6 class="text-slate-800 text-xl font-semibold">
-                                            <?php echo htmlspecialchars($data['name']); ?>
+                                            <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>" class="hover:underline"><?php echo htmlspecialchars($data['name']); ?></a>
                                             <button type="button" onclick="fillUpdateForm2(<?= $data['foodId'] ?>, 'Visible')"
                                                 class="cursor-pointer"><i
                                                     class='bx bxs-low-vision text-secondaryForeground'></i></button>
@@ -305,7 +305,7 @@
                                 <div class="pl-4 pr-1">
                                     <div class="flex items-center">
                                         <h6 class="text-slate-800 text-xl font-semibold">
-                                            <?php echo htmlspecialchars($data['name']); ?>
+                                            <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>" class="hover:underline"><?php echo htmlspecialchars($data['name']); ?></a>
                                             <button type="button" onclick="fillUpdateForm2(<?= $data['foodId'] ?>, 'Invisible')"
                                                 class="cursor-pointer">
                                                 <i class='bx bxs-show text-secondaryForeground'></i>

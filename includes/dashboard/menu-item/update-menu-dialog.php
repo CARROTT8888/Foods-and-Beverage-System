@@ -184,8 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateMenu'])) {
 
                 <div class="mt-6">
                     <label for="branchId"
-                        class="block text-sm font-medium text-foreground mb-1 text-start">Status</label>
-                    <select type="text" id="updateBranch" name="branchId" placeholder="Enter a table code."
+                        class="hidden text-sm font-medium text-foreground mb-1 text-start">Branch</label>
+                    <select hidden type="text" id="updateBranch" name="branchId" placeholder="Enter a table code."
                         class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition">
                         <option value="" selected disabled>Select Branch</option>
                         <?php

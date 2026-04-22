@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createFoodOption'])) 
 
             foreach ($itemName as $index => $name) {
                 $name = trim($name);
-                if ($name === '') continue; // 跳过空行
+                if ($name === '') continue; // skip this step
 
                 $price = (isset($extraPrice[$index]) && $extraPrice[$index] !== '') ? floatval($extraPrice[$index]) : 0;
                 

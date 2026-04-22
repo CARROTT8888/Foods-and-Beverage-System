@@ -163,8 +163,8 @@
 
                                             <a href="sign-out.php"
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
-                                                <i class='bx bxs-trash mr-2 text-lg'></i>
-                                                Delete Branch
+                                                <i class='bx bxs-low-vision mr-2 text-lg'></i>
+                                                Set Inactive
                                             </a>
                                         </div>
                                     </div>

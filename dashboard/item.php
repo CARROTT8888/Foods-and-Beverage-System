@@ -69,12 +69,14 @@ while ($row = $groupResult->fetch_assoc()) {
     $gId = $row['optionGroupId'];
     if (!isset($optionGroups[$gId])) {
         $optionGroups[$gId] = [
+            'optionGroupId' => $gId,
             'groupName' => $row['groupName'],
             'items' => []
         ];
     }
     if ($row['optionItemId']) {
         $optionGroups[$gId]['items'][] = [
+            'optionItemId' => $row['optionItemId'],
             'itemName' => $row['itemName'],
             'extraPrice' => $row['extraPrice']
         ];
@@ -156,7 +158,40 @@ while ($row = $groupResult->fetch_assoc()) {
                     closeUpdateVisibleStatusDialog();
                 }
             });
-            
+            const dialog5 = document.getElementById("updateFoodOptionDialog");
+            window.openUpdateFoodOptionDialog = function (optionGroupId, groupName, items) {
+                document.getElementById("updateOptionGroupId").value = optionGroupId;
+                document.getElementById("updateGroupName").value = groupName;
+
+                const container = document.getElementById("updateItemContainer");
+                container.innerHTML = "<label class='block text-sm font-medium mb-1'>Items</label>";
+
+                items.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "flex gap-2 items-center";
+                    div.innerHTML = `
+                <input type="hidden" name="itemId[]" value="${item.optionItemId ?? ''}">
+                <input type="text" name="itemName[]" value="${item.itemName}"
+                    class="w-full border px-4 py-2 rounded-md" required>
+                <input type="number" name="extraPrice[]" step="0.01" value="${item.extraPrice}"
+                    class="w-full border px-4 py-2 rounded-md" required>
+                <button type="button" onclick="this.parentElement.remove()"
+                    class="text-red-400 hover:text-red-600 text-lg font-bold px-1">✕</button>
+            `;
+                    container.appendChild(div);
+                });
+                dialog5.classList.remove("opacity-0", "pointer-events-none");
+                dialog5.classList.add("opacity-100");
+            };
+            window.closeUpdateFoodOptionsDialog = function () {
+                dialog5.classList.remove("opacity-100");
+                dialog5.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeUpdateFoodOptionDialog();
+                }
+            });
         });
     </script>
 </head>

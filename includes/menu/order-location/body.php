@@ -99,8 +99,8 @@ $stmtcount->close();
                         <div
                             class="rounded-lg border text-start overflow-hidden bg-white border-slate-200 shadow-slate-950/5 w-full max-w-[26rem] shadow-lg">
                             <div class="p-2 h-max rounded relative">
-                                <img class="w-full h-full rounded"
-                                    src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
+                                <img class="w-full h-48 object-cover rounded"
+                                    src="/Foods-and-Beverage-System/uploads/branches/<?php echo htmlspecialchars($data['image']); ?>"
                                     alt="ui/ux review check" />
                                 <?php if ($data['status'] === 'Opening'): ?>
                                     <div

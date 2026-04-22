@@ -1,7 +1,7 @@
 <section
   class="relative h-screen bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8 max-w-7xl w-full">
   <div
-    class="rounded-lg border shadow-sm overflow-hidden bg-white border-slate-200 shadow-slate-950/5 flex h-full w-full max-w-7xl flex-row">
+    class="rounded-lg border shadow-sm overflow-hidden bg-white border-slate-200 shadow-slate-950/5 h-full w-full max-w-7xl grid grid-cols-2">
     <img class="w-2/5 object-cover" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
       alt="card-image" />
     <div class="p-4 h-max w-full">
@@ -162,74 +162,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col items-center justify-center py-20 px-4">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4.5">
-          <!-- Card 1 -->
-          <div
-            class="flex items-center p-2 border border-black/10 hover:border-black/20 transition-colors rounded-xl w-auto">
-            <img src="https://assets.prebuiltui.com/images/components/card/card-houseImage1.png" alt="House"
-              class="w-full max-w-[118px] rounded-lg object-cover" />
-            <div class="ml-4">
-              <h3 class="text-lg text-zinc-900">The Ridgewood Apartment</h3>
-              <p class="text-base text-zinc-600">Aspen, Colorado</p>
-              <p class="text-lg text-zinc-900 mt-3">$2.5 M</p>
-              <div class="text-sm text-zinc-600 flex items-center gap-1.5">
-                4 Bed
-                <div class='size-1 rounded-full bg-[#777777]'></div>
-                3 Bath
-              </div>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div
-            class="flex items-center p-2 border border-black/10 hover:border-black/20 transition-colors rounded-xl w-auto">
-            <img src="https://assets.prebuiltui.com/images/components/card/card-houseImage2.png" alt="House"
-              class="w-full max-w-[118px] rounded-lg object-cover" />
-            <div class="ml-4">
-              <h3 class="text-lg text-zinc-900">The Amethyst Arbour</h3>
-              <p class="text-base text-zinc-600">Aspen, Colorado</p>
-              <p class="text-lg text-zinc-900 mt-3">$3.2 M</p>
-              <div class="text-sm text-zinc-600 flex items-center gap-1.5">
-                3 Bed
-                <div class='size-1 rounded-full bg-[#777777]'></div>
-                2 Bath
-              </div>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div
-            class="flex items-center p-2 border border-black/10 hover:border-black/20 transition-colors rounded-xl w-auto">
-            <img src="https://assets.prebuiltui.com/images/components/card/card-houseImage2.png" alt="House"
-              class="w-full max-w-[118px] rounded-lg object-cover" />
-            <div class="ml-4">
-              <h3 class="text-lg text-zinc-900">The Amethyst Arbour</h3>
-              <p class="text-base text-zinc-600">Aspen, Colorado</p>
-              <p class="text-lg text-zinc-900 mt-3">$3.2 M</p>
-              <div class="text-sm text-zinc-600 flex items-center gap-1.5">
-                3 Bed
-                <div class='size-1 rounded-full bg-[#777777]'></div>
-                2 Bath
-              </div>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div
-            class="flex items-center p-2 border border-black/10 hover:border-black/20 transition-colors rounded-xl w-auto">
-            <img src="https://assets.prebuiltui.com/images/components/card/card-houseImage1.png" alt="House"
-              class="w-full max-w-[118px] rounded-lg object-cover" />
-            <div class="ml-4">
-              <h3 class="text-lg text-zinc-900">The Ridgewood Apartment</h3>
-              <p class="text-base text-zinc-600">Aspen, Colorado</p>
-              <p class="text-lg text-zinc-900 mt-3">$2.5 M</p>
-              <div class="text-sm text-zinc-600 flex items-center gap-1.5">
-                4 Bed
-                <div class='size-1 rounded-full bg-[#777777]'></div>
-                3 Bath
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
     </div>
   </div>
