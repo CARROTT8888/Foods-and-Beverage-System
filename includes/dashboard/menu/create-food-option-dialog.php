@@ -2,44 +2,63 @@
 $errorMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createFoodOption'])) {
-    $foodId = intval($_POST['foodId']);
+
+    $foodId = intval($_POST['foodId'] ?? 0);
     $groupName = trim($_POST['groupName'] ?? '');
-    $itemName = trim($_POST['itemName'] ?? []);
+    $itemName = $_POST['itemName'] ?? [];
     $extraPrice = $_POST['extraPrice'] ?? [];
 
-    if (empty($groupName) || empty($foodId)) {
+    // 1. 验证：至少要有一个有效的项目名称
+    $validItems = false;
+    foreach ($itemName as $name) {
+        if (trim($name) !== '') {
+            $validItems = true;
+            break;
+        }
+    }
+
+    if (empty($groupName) || empty($foodId) || !$validItems) {
         $errorMessage = "Please fill in all required fields.";
     }
 
-    // Insert only if no error
     if (empty($errorMessage)) {
         $conn->begin_transaction();
 
         try {
-            // Insert group
-            $groupQuery = "INSERT INTO food_option_group (groupName, foodId) VALUES (?, ?)";
-            $stmt = $conn->prepare($groupQuery);
-            $stmt->bind_param("si", $groupName, $foodId);
-            $stmt->execute();
-            $newGroupId = $conn->insert_id;
-            $stmt->close();
+            $existingGroupId = null;
+            $checkQuery = "SELECT optionGroupId FROM food_option_group WHERE groupName = ? AND foodId = ?";
+            $checkStmt = $conn->prepare($checkQuery);
+            $checkStmt->bind_param("si", $groupName, $foodId);
+            $checkStmt->execute();
+            $checkStmt->bind_result($existingGroupId);
+            $checkStmt->fetch();
+            $checkStmt->close();
 
-            // Insert items
+            if ($existingGroupId) {
+                $newGroupId = $existingGroupId;
+            } else {
+                $groupQuery = "INSERT INTO food_option_group (groupName, foodId) VALUES (?, ?)";
+                $stmt = $conn->prepare($groupQuery);
+                $stmt->bind_param("si", $groupName, $foodId);
+                $stmt->execute();
+                $newGroupId = $conn->insert_id;
+                $stmt->close();
+            }
+
             $itemQuery = "INSERT INTO food_option_item (itemName, extraPrice, optionGroupId) VALUES (?, ?, ?)";
             $itemStmt = $conn->prepare($itemQuery);
 
             foreach ($itemName as $index => $name) {
-                if (!empty($name)) {
-                    $price = isset($extraPrice[$index]) ? floatval($extraPrice[$index]) : 0.00;
+                $name = trim($name);
+                if ($name === '') continue; // 跳过空行
 
-                    $itemStmt->bind_param("sdi", $name, $price, $newGroupId);
-                    $itemStmt->execute();
-                }
+                $price = (isset($extraPrice[$index]) && $extraPrice[$index] !== '') ? floatval($extraPrice[$index]) : 0;
+                
+                $itemStmt->bind_param("sdi", $name, $price, $newGroupId);
+                $itemStmt->execute();
             }
 
             $itemStmt->close();
-
-            // commit
             $conn->commit();
 
             echo "<script>window.location.href='/web/dashboard/menu';</script>";
@@ -78,13 +97,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createFoodOption'])) 
                     required />
             </div>
             <div class="space-y-2" id="itemContainer">
-                <label for="totalSeat" class="block text-sm font-medium text-foreground mb-1">Items' Name and Extra
+                <label for="" class="block text-sm font-medium text-foreground mb-1">Items' Name and Extra
                     Prices</label>
-                <div>
+                <div class="flex gap-2">
                     <input type="text" name="itemName[]" placeholder="Item (e.g. Normal)"
                         class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
                         required />
-                    <input type="number" name="extraPrice[]" step="0.01" placeholder="Enter a total seat number"
+                    <input type="number" name="extraPrice[]" step="0.01" placeholder="Extra Prices (RM)"
                         class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
                         required />
                 </div>
@@ -104,13 +123,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createFoodOption'])) 
 
 <script>
     function addNewItemRow() {
-    const container = document.getElementById('itemContainer');
-    const div = document.createElement('div');
-    div.className = 'flex gap-2';
-    div.innerHTML = `
-        <input type="text" name="itemName[]" placeholder="Item" class="flex-1 border rounded px-2 py-1 text-sm">
-        <input type="number" step="0.01" name="extraPrice[]" placeholder="0.00" class="w-20 border rounded px-2 py-1 text-sm">
+        const container = document.getElementById('itemContainer');
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 items-center';
+        div.innerHTML = `
+        <input type="text" name="itemName[]" placeholder="Item (e.g. Normal)"
+            class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition" />
+        <input type="number" name="extraPrice[]" step="0.01" min="0" placeholder="Extra Price (RM)"
+            class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition" />
+        <button type="button" onclick="this.parentElement.remove()"
+            class="text-red-400 hover:text-red-600 text-lg font-bold px-1">✕</button>
     `;
-    container.appendChild(div);
-}
+        container.appendChild(div);
+    }
 </script>

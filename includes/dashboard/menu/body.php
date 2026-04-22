@@ -75,6 +75,13 @@
                 if (!empty($params)) {
                     $stmt->bind_param($types, ...$params);
                 }
+                $optionQuery = "SELECT foodId, groupName FROM food_option_group";
+                $optionResult = $conn->query($optionQuery);
+                $foodOptions = [];
+                while ($optRow = $optionResult->fetch_assoc()) {
+                    $foodOptions[$optRow['foodId']][] = $optRow['groupName'];
+                }
+                $optionResult->free();
                 $stmt->execute();
                 $menuResult = $stmt->get_result();
                 if ($menuResult->num_rows > 0):
@@ -153,7 +160,7 @@
                                                 <div data-role="menu"
                                                     class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
 
-                                                    <a href=""
+                                                    <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>"
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-bowl-rice mr-2 text-lg'></i>
                                                         View Details
@@ -175,7 +182,14 @@
                                                 )'
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-edit mr-2 text-lg'></i>
-                                                        Update Menu
+                                                        Edit Menu
+                                                    </button>
+                                                    <button type="button"
+                                                        onclick="openFoodOptionDialog(<?php echo $data['foodId']; ?>)"
+                                                        data-toggle="modal"
+                                                        class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                        <i class='bx bxs-select-multiple mr-2 text-lg'></i>
+                                                        Create Options
                                                     </button>
                                                     <?php if ($data['visibleStatus'] === 'Invisible'): ?>
                                                         <button type="button"
@@ -196,26 +210,36 @@
                                         </div>
                                     </div>
                                     <div class="flex gap-2 overflow-hidden flex-nowrap">
-                                        <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Cucumber</span>
-                                        </div>
-                                        <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Spicy Level</span>
-                                        </div>
-                                        <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Size Level</span>
-                                        </div>
-                                        <div data-open="true" data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
-                                            <span class="font-sans text-current leading-none my-0.5 mx-1.5">Learn More...</span>
-                                        </div>
+                                        <?php if (!empty($foodOptions[$data['foodId']])): ?>
+                                            <?php
+                                            $options = $foodOptions[$data['foodId']];
+                                            $maxVisible = 3;
+                                            $shown = array_slice($options, 0, $maxVisible);
+                                            $remaining = count($options) - $maxVisible;
+                                            foreach ($shown as $optionName): ?>
+                                                <div data-shape="pill"
+                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                                    <span
+                                                        class="font-sans text-current leading-none my-0.5 mx-1.5"><?php echo htmlspecialchars($optionName); ?></span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                            <?php if ($remaining > 0): ?>
+                                                <div data-open="true" data-shape="pill"
+                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                                    <span class="font-sans text-current leading-none my-0.5 mx-1.5">+
+                                                        <?php echo $remaining; ?> more...</span>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <button type="button" onclick="openFoodOptionDialog(<?php echo $data['foodId']; ?>)"
+                                                data-toggle="modal" class="text-secondaryForeground text-sm">Not included food options,
+                                                tab here to
+                                                create.</button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="px-4 pb-4 pt-0 mt-2">
-                                    <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>">
+                                    <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>">
                                         <button
                                             class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
                                             data-shape="default" data-width="full">
@@ -296,7 +320,7 @@
                                                 </button>
                                                 <div data-role="menu"
                                                     class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
-                                                    <a href=""
+                                                    <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>"
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-bowl-rice mr-2 text-lg'></i>
                                                         View Details
@@ -317,7 +341,14 @@
                                                 )'
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-edit mr-2 text-lg'></i>
-                                                        Update Menu
+                                                        Edit Menu
+                                                    </button>
+                                                    <button type="button"
+                                                        onclick="openFoodOptionDialog(<?php echo $data['foodId']; ?>)"
+                                                        data-toggle="modal"
+                                                        class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                        <i class='bx bxs-select-multiple mr-2 text-lg'></i>
+                                                        Create Options
                                                     </button>
                                                     <?php if ($data['visibleStatus'] === 'Visible'): ?>
                                                         <button type="button"
@@ -338,14 +369,36 @@
                                         </div>
                                     </div>
                                     <div class="flex gap-2 overflow-hidden flex-nowrap">
-                                        <button type="button" onclick="openFoodOptionDialog()" data-toggle="modal"
-                                            class="text-secondaryForeground text-sm">Not included food options, tab here to
-                                            create.</button>
-                                            <?php include 'create-food-option-dialog.php'; ?>
+                                        <?php if (!empty($foodOptions[$data['foodId']])): ?>
+                                            <?php
+                                            $options = $foodOptions[$data['foodId']];
+                                            $maxVisible = 3;
+                                            $shown = array_slice($options, 0, $maxVisible);
+                                            $remaining = count($options) - $maxVisible;
+                                            foreach ($shown as $optionName): ?>
+                                                <div data-shape="pill"
+                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                                    <span
+                                                        class="font-sans text-current leading-none my-0.5 mx-1.5"><?php echo htmlspecialchars($optionName); ?></span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                            <?php if ($remaining > 0): ?>
+                                                <div data-open="true" data-shape="pill"
+                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                                    <span class="font-sans text-current leading-none my-0.5 mx-1.5">+
+                                                        <?php echo $remaining; ?> more...</span>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <button type="button" onclick="openFoodOptionDialog(<?php echo $data['foodId']; ?>)"
+                                                data-toggle="modal" class="text-secondaryForeground text-sm">Not included food options,
+                                                tab here to
+                                                create.</button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="px-4 pb-4 pt-0 mt-2">
-                                    <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>">
+                                    <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>">
                                         <button
                                             class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
                                             data-shape="default" data-width="full">
@@ -359,6 +412,7 @@
                 <?php endif; ?>
                 <?php include 'update-menu-dialog.php'; ?>
                 <?php include 'update-menu-visible-status.php'; ?>
+                <?php include 'create-food-option-dialog.php'; ?>
             </div>
 </section>
 <script>

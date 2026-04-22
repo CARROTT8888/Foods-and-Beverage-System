@@ -4,10 +4,10 @@ $params = [];
 $types = "";
 $search = $_GET['search'] ?? '';
 if (!empty($search)) {
-    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
+    $filter = " AND (food.name LIKE ?)";
     $searchValue = "%" . $search . "%";
-    $params = [$searchValue, $searchValue, $searchValue];
-    $types = "sss";
+    $params = [$searchValue];
+    $types = "s";
 }
 ;
 // filtering status

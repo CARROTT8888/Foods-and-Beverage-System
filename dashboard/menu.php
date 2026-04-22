@@ -153,7 +153,8 @@ $stmtcount->close();
                 }
             });
             const dialog5 = document.getElementById("foodOptionDialog");
-            window.openFoodOptionDialog = function () {
+            window.openFoodOptionDialog = function (foodId) {
+                document.getElementById("modalFoodId").value = foodId;
                 dialog5.classList.remove("opacity-0", "pointer-events-none");
                 dialog5.classList.add("opacity-100");
             };
