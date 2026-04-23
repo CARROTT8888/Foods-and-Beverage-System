@@ -183,7 +183,7 @@ while ($row = $groupResult->fetch_assoc()) {
                 dialog5.classList.remove("opacity-0", "pointer-events-none");
                 dialog5.classList.add("opacity-100");
             };
-            window.closeUpdateFoodOptionsDialog = function () {
+            window.closeUpdateFoodOptionDialog = function () {
                 dialog5.classList.remove("opacity-100");
                 dialog5.classList.add("opacity-0", "pointer-events-none");
             };

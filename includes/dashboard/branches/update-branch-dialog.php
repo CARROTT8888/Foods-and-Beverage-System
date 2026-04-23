@@ -14,7 +14,7 @@ if (!empty($_GET['branchId'])) {
     $stmt->close();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateBranch'])) {
     $branchId = intval($_POST['branchId']);
     $fields = [];
     $params = [];
@@ -253,7 +253,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="mt-6">
-                <button type="submit"
+                <button type="submit" name="updateBranch"
                     class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">Update</button>
                 <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or
                     tab 'ESC' key to close the dialog.</span>

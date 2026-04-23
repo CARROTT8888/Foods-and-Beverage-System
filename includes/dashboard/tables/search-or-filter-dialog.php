@@ -7,8 +7,8 @@
                 <small class="font-sans antialiased text-sm mx-2 font-semibold text-slate-600">Search or
                     Filter</small>
                 <div class="flex items-center">
-                    <a href="order-location.php">
-                        <button
+                    <a href="/web/dashboard/tables">
+                        <button type="button"
                             class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none"
                             data-shape="default" data-width="default">Clear All</button>
                     </a>

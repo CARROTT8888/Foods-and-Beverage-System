@@ -1,3 +1,31 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createBranch'])) {
+    $name = $_POST['name'];
+    $slug = $_POST['slug'];
+
+    $checkNameQuery = $conn->prepare("SELECT branchId FROM branch WHERE name = ?");
+    $checkNameQuery->bind_param("s", $name);
+    $checkNameQuery->execute();
+    $checkNameQuery->store_result();
+    if ($checkNameQuery->num_rows > 0) {
+        $nameAlreadyExists = true;
+        $errorMessage = "The branch's name has already exist.";
+        $checkNameQuery->close();
+    } else {
+        $checkNameQuery->close();
+        $branchQuery = "INSERT INTO branch (name, slug) VALUES (?, ?)";
+        $checkNameQuery = $conn->prepare($branchQuery);
+        $checkNameQuery->bind_param("ss", $name, $slug);
+        if ($checkNameQuery->execute()) {
+            echo "<script>window.location.href='/web/dashboard/branches';</script>";
+            exit();
+        }
+        ;
+    }
+}
+;
+?>
+
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="branchDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-106 p-3 ">
@@ -26,18 +54,19 @@
                     class="w-full border border-secondary rounded-custom px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
                     required />
             </div>
-            <button type="submit"
+            <button type="submit" name="createBranch"
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>
             <div class="mt-4 text-center">
-            <?php if (!empty($errorMessage)): ?>
-                <div class="text-destructive text-sm">
-                    <?php echo htmlspecialchars($errorMessage) ?>
-                </div>
-            <?php endif; ?>
-            <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or tab 'ESC' key to close the dialog.</span>
-        </div>
+                <?php if (!empty($errorMessage)): ?>
+                    <div class="text-destructive text-sm">
+                        <?php echo htmlspecialchars($errorMessage) ?>
+                    </div>
+                <?php endif; ?>
+                <span class="text-center text-sm mt-4 w-full flex justify-center text-secondaryForeground">Click 'X' or
+                    tab 'ESC' key to close the dialog.</span>
+            </div>
         </form>
     </div>
 </div>

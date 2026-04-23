@@ -58,6 +58,20 @@ if (!isset($_SESSION['userId'])) {
                     link.setAttribute("aria-current", "page");
                 }
             });
+            const dialog2 = document.getElementById("searchOrFilterDialog");
+            window.openDialog = function () {
+                dialog2.classList.remove("opacity-0", "pointer-events-none");
+                dialog2.classList.add("opacity-100");
+            };
+            window.closeDialog = function () {
+                dialog2.classList.remove("opacity-100");
+                dialog2.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDialog();
+                }
+            });
         });
     </script>
 </head>

@@ -10,32 +10,6 @@ if (!isset($_SESSION['userId'])) {
 }
 ;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
-    $slug = $_POST['slug'];
-
-    $checkNameQuery = $conn->prepare("SELECT branchId FROM branch WHERE name = ?");
-    $checkNameQuery->bind_param("s", $name);
-    $checkNameQuery->execute();
-    $checkNameQuery->store_result();
-    if ($checkNameQuery->num_rows > 0) {
-        $nameAlreadyExists = true;
-        $errorMessage = "The branch's name has already exist.";
-        $checkNameQuery->close();
-    } else {
-        $checkNameQuery->close();
-        $branchQuery = "INSERT INTO branch (name, slug) VALUES (?, ?)";
-        $checkNameQuery = $conn->prepare($branchQuery);
-        $checkNameQuery->bind_param("ss", $name, $slug);
-        if ($checkNameQuery->execute()) {
-            header("Location: /web/dashboard/branches.php");
-            exit();
-        }
-        ;
-    }
-}
-;
-
 $filter = "";
 $countstatusOpeningsql = "SELECT COUNT(*) FROM branch WHERE status = 'Opening'";
 $stmtcount = $conn->prepare($countstatusOpeningsql);
@@ -59,6 +33,84 @@ $countstatusDeprecatedsql = "SELECT COUNT(*) FROM branch WHERE status = 'Depreca
 $stmtcount = $conn->prepare($countstatusDeprecatedsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusDeprecated);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateJohorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Johor'";
+$stmtcount = $conn->prepare($countstateJohorsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateJohor);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateKedahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Kedah'";
+$stmtcount = $conn->prepare($countstateKedahsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateKedah);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateKelantansql = "SELECT COUNT(*) FROM branch WHERE state = 'Kelantan'";
+$stmtcount = $conn->prepare($countstateKelantansql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateKelantan);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateMelakasql = "SELECT COUNT(*) FROM branch WHERE state = 'Melaka'";
+$stmtcount = $conn->prepare($countstateMelakasql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateMelaka);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateNegeriSembilansql = "SELECT COUNT(*) FROM branch WHERE state = 'Negeri Sembilan'";
+$stmtcount = $conn->prepare($countstateNegeriSembilansql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateNegeriSembilan);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePahangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pahang'";
+$stmtcount = $conn->prepare($countstatePahangsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePahang);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePeraksql = "SELECT COUNT(*) FROM branch WHERE state = 'Perak'";
+$stmtcount = $conn->prepare($countstatePeraksql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePerak);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePerlissql = "SELECT COUNT(*) FROM branch WHERE state = 'Perlis'";
+$stmtcount = $conn->prepare($countstatePerlissql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePerlis);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePulauPinangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pulau Pinang'";
+$stmtcount = $conn->prepare($countstatePulauPinangsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePulauPinang);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateSabahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Sabah'";
+$stmtcount = $conn->prepare($countstateSabahsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateSabah);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateSarawaksql = "SELECT COUNT(*) FROM branch WHERE state = 'Sarawak'";
+$stmtcount = $conn->prepare($countstateSarawaksql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateSarawak);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateSelangorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Selangor'";
+$stmtcount = $conn->prepare($countstateSelangorsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateSelangor);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateTerengganusql = "SELECT COUNT(*) FROM branch WHERE state = 'Terengganu'";
+$stmtcount = $conn->prepare($countstateTerengganusql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateTerengganu);
 $stmtcount->fetch();
 $stmtcount->close();
 $countnobranchsql = "SELECT COUNT(*) FROM branch";
@@ -147,6 +199,20 @@ $stmtcount->close();
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
                     closeDialog();
+                }
+            });
+            const dialog4 = document.getElementById("updateBranchVisibleStatusDialog");
+            window.openUpdateVisibleStatusDialog = function () {
+                dialog4.classList.remove("opacity-0", "pointer-events-none");
+                dialog4.classList.add("opacity-100");
+            };
+            window.closeUpdateVisibleStatusDialog = function () {
+                dialog4.classList.remove("opacity-100");
+                dialog4.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeUpdateVisibleStatusDialog();
                 }
             });
         });

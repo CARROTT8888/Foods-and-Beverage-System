@@ -1,5 +1,83 @@
 <?php
 $filter = "";
+$countstateJohorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Johor'";
+$stmtcount = $conn->prepare($countstateJohorsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateJohor);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateKedahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Kedah'";
+$stmtcount = $conn->prepare($countstateKedahsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateKedah);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateKelantansql = "SELECT COUNT(*) FROM branch WHERE state = 'Kelantan'";
+$stmtcount = $conn->prepare($countstateKelantansql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateKelantan);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateMelakasql = "SELECT COUNT(*) FROM branch WHERE state = 'Melaka'";
+$stmtcount = $conn->prepare($countstateMelakasql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateMelaka);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateNegeriSembilansql = "SELECT COUNT(*) FROM branch WHERE state = 'Negeri Sembilan'";
+$stmtcount = $conn->prepare($countstateNegeriSembilansql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateNegeriSembilan);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePahangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pahang'";
+$stmtcount = $conn->prepare($countstatePahangsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePahang);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePeraksql = "SELECT COUNT(*) FROM branch WHERE state = 'Perak'";
+$stmtcount = $conn->prepare($countstatePeraksql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePerak);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePerlissql = "SELECT COUNT(*) FROM branch WHERE state = 'Perlis'";
+$stmtcount = $conn->prepare($countstatePerlissql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePerlis);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstatePulauPinangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pulau Pinang'";
+$stmtcount = $conn->prepare($countstatePulauPinangsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStatePulauPinang);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateSabahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Sabah'";
+$stmtcount = $conn->prepare($countstateSabahsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateSabah);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateSarawaksql = "SELECT COUNT(*) FROM branch WHERE state = 'Sarawak'";
+$stmtcount = $conn->prepare($countstateSarawaksql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateSarawak);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateSelangorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Selangor'";
+$stmtcount = $conn->prepare($countstateSelangorsql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateSelangor);
+$stmtcount->fetch();
+$stmtcount->close();
+$countstateTerengganusql = "SELECT COUNT(*) FROM branch WHERE state = 'Terengganu'";
+$stmtcount = $conn->prepare($countstateTerengganusql);
+$stmtcount->execute();
+$stmtcount->bind_result($totalStateTerengganu);
+$stmtcount->fetch();
+$stmtcount->close();
 $params = [];
 $types = "";
 $search = $_GET['search'] ?? '';
@@ -60,7 +138,7 @@ $branchResult = $stmt->get_result();
     ?>
     <div class="flex items-center flex-wrap gap-4 ">
         <!-- Trigger Button -->
-        <button id="dropdownBtn" type="button" data-toggle="modal" data-target="#searchORFilterDialog"
+        <button id="dropdownBtn" type="button" onclick="openDialog()"
             class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
             <i class="bx bx-search text-lg"></i><span class="lg:flex hidden">Search or Filter</span>
         </button>

@@ -141,11 +141,18 @@
                                             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
                                             alt="ui/ux review check" />
                                     <?php endif; ?>
+                                    <?php if ($data['visibleStatus'] === 'Invisible'): ?>
+                                        <div
+                                            class="absolute inset-0 bg-stone-900/50 flex items-center justify-center gap-2 text-white text-sm font-medium tracking-wide">
+                                            <i class='bx bxs-low-vision'></i> Hidden from customers
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="pl-4 pr-1">
                                     <div class="flex items-center">
                                         <h6 class="text-slate-800 text-xl font-semibold">
-                                            <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>" class="hover:underline"><?php echo htmlspecialchars($data['name']); ?></a>
+                                            <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>"
+                                                class="hover:underline"><?php echo htmlspecialchars($data['name']); ?></a>
                                             <button type="button" onclick="fillUpdateForm2(<?= $data['foodId'] ?>, 'Visible')"
                                                 class="cursor-pointer"><i
                                                     class='bx bxs-low-vision text-secondaryForeground'></i></button>
@@ -305,7 +312,8 @@
                                 <div class="pl-4 pr-1">
                                     <div class="flex items-center">
                                         <h6 class="text-slate-800 text-xl font-semibold">
-                                            <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>" class="hover:underline"><?php echo htmlspecialchars($data['name']); ?></a>
+                                            <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($data['name']); ?>"
+                                                class="hover:underline"><?php echo htmlspecialchars($data['name']); ?></a>
                                             <button type="button" onclick="fillUpdateForm2(<?= $data['foodId'] ?>, 'Invisible')"
                                                 class="cursor-pointer">
                                                 <i class='bx bxs-show text-secondaryForeground'></i>

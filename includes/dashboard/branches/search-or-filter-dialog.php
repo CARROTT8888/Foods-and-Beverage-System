@@ -7,8 +7,8 @@
                 <small class="font-sans antialiased text-sm mx-2 font-semibold text-slate-600">Search or
                     Filter</small>
                 <div class="flex items-center">
-                    <a href="order-location.php">
-                        <button
+                    <a href="/web/dashboard/branches">
+                        <button type="button"
                             class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none"
                             data-shape="default" data-width="default">Clear All</button>
                     </a>
@@ -163,9 +163,9 @@
 
                             <!-- Checkbox Item -->
                             <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Melaka">
-                                    <input type="checkbox" id="Melaka" name="state[]" value="Melaka"
-                                        <?= in_array('Melaka', $selectedStates) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Johor">
+                                    <input type="checkbox" id="Johor" name="state[]" value="Johor"
+                                        <?= in_array('Johor', $selectedStates) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -177,9 +177,47 @@
                                         </svg>
                                     </span>
                                 </label>
-                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
-                                    for="Melaka"> Melaka</label>
-                                <span class="font-sans antialiased text-sm text-green-600 ml-6">-</span>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Johor">Johor</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateJohor; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Kedah">
+                                    <input type="checkbox" id="Kedah" name="state[]" value="Kedah"
+                                        <?= in_array('Kedah', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Kedah">Kedah</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateKedah; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Kelantan">
+                                    <input type="checkbox" id="Kelantan" name="state[]" value="Kelantan"
+                                        <?= in_array('Kelantan', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Kelantan">Kelantan</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateKelantan; ?></span>
                             </div>
                             <div class="inline-flex items-center justify-between">
                                 <label class="flex items-center cursor-pointer relative" for="Melaka">
@@ -196,9 +234,180 @@
                                         </svg>
                                     </span>
                                 </label>
-                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
-                                    for="Melaka"> Melaka</label>
-                                <span class="font-sans antialiased text-sm text-green-600 ml-6">-</span>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Melaka">Melaka</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateMelaka; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Negeri Sembilan">
+                                    <input type="checkbox" id="Negeri Sembilan" name="state[]" value="Negeri Sembilan"
+                                        <?= in_array('Negeri Sembilan', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Negeri Sembilan">Negeri Sembilan</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateNegeriSembilan; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Pahang">
+                                    <input type="checkbox" id="Pahang" name="state[]" value="Pahang"
+                                        <?= in_array('Pahang', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Pahang">Pahang</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatePahang; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Perak">
+                                    <input type="checkbox" id="Perak" name="state[]" value="Perak"
+                                        <?= in_array('Perak', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Perak">Perak</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatePerak; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Perlis">
+                                    <input type="checkbox" id="Perlis" name="state[]" value="Perlis"
+                                        <?= in_array('Perlis', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Perlis">Perlis</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatePerlis; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Pulau Pinang">
+                                    <input type="checkbox" id="Pulau Pinang" name="state[]" value="Pulau Pinang"
+                                        <?= in_array('Pulau Pinang', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Pulau Pinang">Pulau Pinang</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatePulauPinang; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Sabah">
+                                    <input type="checkbox" id="Sabah" name="state[]" value="Sabah"
+                                        <?= in_array('Sabah', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Sabah">Sabah</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateSabah; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Sarawak">
+                                    <input type="checkbox" id="Sarawak" name="state[]" value="Sarawak"
+                                        <?= in_array('Sarawak', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Sarawak">Sarawak</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateSarawak; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Selangor">
+                                    <input type="checkbox" id="Selangor" name="state[]" value="Selangor"
+                                        <?= in_array('Selangor', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Selangor">Selangor</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateSelangor; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Terengganu">
+                                    <input type="checkbox" id="Terengganu" name="state[]" value="Terengganu"
+                                        <?= in_array('Terengganu', $selectedStates) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
+                                    for="Terengganu">Terengganu</label>
+                                <span class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStateTerengganu; ?></span>
                             </div>
                         </div>
                     </div>

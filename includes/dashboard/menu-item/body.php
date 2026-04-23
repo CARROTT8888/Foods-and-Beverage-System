@@ -145,7 +145,7 @@
                                 <?= json_encode($group["groupName"]) ?>,
                                 <?= htmlspecialchars(json_encode($group["items"]), ENT_QUOTES, 'UTF-8') ?>
                             )' class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-primary hover:bg-amber-200/10 hover:border-amber-200/10 shadow-none hover:shadow-none outline-none">
-                                <i class="bx bxs-tag-alt"></i>
+                                <i class="bx bxs-edit"></i>
                             </button>
                         </div>
 
