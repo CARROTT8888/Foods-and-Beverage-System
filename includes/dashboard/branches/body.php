@@ -95,6 +95,12 @@
                                             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sopandai.com%2Fwp-content%2Fuploads%2F2023%2F01%2FMMU.png.webp&f=1&nofb=1&ipt=ed618de2de637fb9769308656bab69713f756476ef4ce6bd2ae83063b07b3f18"
                                             alt="ui/ux review check" />
                                     <?php endif; ?>
+                                    <?php if ($data['visibleStatus'] === 'Invisible'): ?>
+                                        <div
+                                            class="absolute inset-0 bg-stone-900/50 flex items-center justify-center gap-2 text-white text-sm font-medium tracking-wide">
+                                            <i class='bx bxs-low-vision'></i> Hidden from customers
+                                        </div>
+                                    <?php endif; ?>
                                     <?php if ($data['status'] === 'Opening'): ?>
                                         <div
                                             class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto absolute p-1 px-2 top-5 right-5">

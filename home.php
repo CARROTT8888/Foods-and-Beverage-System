@@ -1,5 +1,6 @@
 <?php
 session_start();
+include './database/fnbdb.php';
 
 // check if the session variable is exist
 if (!isset($_SESSION['userId'])) {

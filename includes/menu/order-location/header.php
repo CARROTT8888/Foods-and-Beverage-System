@@ -1,78 +1,78 @@
 <?php
 $filter = "";
-$countstateJohorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Johor'";
+$countstateJohorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Johor' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateJohorsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateJohor);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateKedahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Kedah'";
+$countstateKedahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Kedah' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateKedahsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateKedah);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateKelantansql = "SELECT COUNT(*) FROM branch WHERE state = 'Kelantan'";
+$countstateKelantansql = "SELECT COUNT(*) FROM branch WHERE state = 'Kelantan' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateKelantansql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateKelantan);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateMelakasql = "SELECT COUNT(*) FROM branch WHERE state = 'Melaka'";
+$countstateMelakasql = "SELECT COUNT(*) FROM branch WHERE state = 'Melaka' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateMelakasql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateMelaka);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateNegeriSembilansql = "SELECT COUNT(*) FROM branch WHERE state = 'Negeri Sembilan'";
+$countstateNegeriSembilansql = "SELECT COUNT(*) FROM branch WHERE state = 'Negeri Sembilan' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateNegeriSembilansql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateNegeriSembilan);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatePahangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pahang'";
+$countstatePahangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pahang' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstatePahangsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatePahang);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatePeraksql = "SELECT COUNT(*) FROM branch WHERE state = 'Perak'";
+$countstatePeraksql = "SELECT COUNT(*) FROM branch WHERE state = 'Perak' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstatePeraksql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatePerak);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatePerlissql = "SELECT COUNT(*) FROM branch WHERE state = 'Perlis'";
+$countstatePerlissql = "SELECT COUNT(*) FROM branch WHERE state = 'Perlis' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstatePerlissql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatePerlis);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstatePulauPinangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pulau Pinang'";
+$countstatePulauPinangsql = "SELECT COUNT(*) FROM branch WHERE state = 'Pulau Pinang' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstatePulauPinangsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatePulauPinang);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateSabahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Sabah'";
+$countstateSabahsql = "SELECT COUNT(*) FROM branch WHERE state = 'Sabah' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateSabahsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateSabah);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateSarawaksql = "SELECT COUNT(*) FROM branch WHERE state = 'Sarawak'";
+$countstateSarawaksql = "SELECT COUNT(*) FROM branch WHERE state = 'Sarawak' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateSarawaksql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateSarawak);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateSelangorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Selangor'";
+$countstateSelangorsql = "SELECT COUNT(*) FROM branch WHERE state = 'Selangor' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateSelangorsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateSelangor);
 $stmtcount->fetch();
 $stmtcount->close();
-$countstateTerengganusql = "SELECT COUNT(*) FROM branch WHERE state = 'Terengganu'";
+$countstateTerengganusql = "SELECT COUNT(*) FROM branch WHERE state = 'Terengganu' AND visibleStatus = 'Visible'";
 $stmtcount = $conn->prepare($countstateTerengganusql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStateTerengganu);
@@ -82,7 +82,7 @@ $params = [];
 $types = "";
 $search = $_GET['search'] ?? '';
 if (!empty($search)) {
-    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?)";
+    $filter = " AND (branch.name LIKE ? OR branch.address LIKE ? OR branch.state LIKE ?) AND visibleStatus = 'Visible'";
     $searchValue = "%" . $search . "%";
     $params = [$searchValue, $searchValue, $searchValue];
     $types = "sss";
@@ -114,7 +114,7 @@ if (!empty($selectedStates)) {
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/
 
-$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
+$branchQuery = "SELECT * FROM branch WHERE 1 AND visibleStatus = 'Visible'" . $filter . " ORDER BY branchId DESC";
 $stmt = $conn->prepare($branchQuery);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
@@ -244,7 +244,7 @@ $branchResult = $stmt->get_result();
         event.preventDefault();
     }
 </script>
-<span class="text-secondaryForeground relative left-5 lg:left-10 bottom-2">Showing
+<span class="text-secondaryForeground relative left-5 lg:left-10 bottom-5">Showing
     <?php echo $branchResult->num_rows; ?> of
     <?php echo $totalBranchNumber; ?>
     branches

@@ -85,7 +85,7 @@ $stmtcount->close();
             <p class="font-sans antialiased text-2xl text-current font-extrabold">Branch</p>
         </a>
         <ul class="flex flex-col gap-2 flex-1 overflow-y-auto">
-            <a href="/web/dashboard"
+            <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>"
                 class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
                 <i class='bx bxs-dashboard mr-2 text-xl'></i>
                 <span>Dashboard</span>

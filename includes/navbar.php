@@ -1,3 +1,10 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include './database/fnbdb.php';
+?>
+
 <div>
     <nav
         class="rounded-lg border shadow-lg overflow-hidden p-2 bg-white border-slate-200 shadow-slate-950/5 mx-auto w-full max-w-7xl ">
@@ -67,11 +74,13 @@
                             <i class='bx bxs-cog mr-2 text-lg'></i>
                             Settings
                         </a>
-                        <a href="/web/dashboard/"
-                            class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
-                            <i class='bx bxs-dashboard mr-2 text-lg'></i>
-                            Dashboard
-                        </a>
+                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'employee'): ?>
+                            <a href="/web/dashboard/"
+                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                <i class='bx bxs-dashboard mr-2 text-lg'></i>
+                                Dashboard
+                            </a>
+                        <?php endif; ?>
                         <hr class="!my-1 -mx-1 border-slate-200">
                         <a href="menu"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
