@@ -1,9 +1,32 @@
 <?php
 session_start();
 
-// check if the session variable is exist
 if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $branchId = $_POST['branchId'] ?? null;
+
+    if (!$branchId) {
+        header("Location: order-location.php");
+        exit();
+    }
+
+    $_SESSION['branchId'] = $branchId;
+
+    header("Location: order-method.php");
+    exit();
+}
+
+if (isset($_GET['updateLocation'])) {
+    unset($_SESSION['branchId']);
+    //unset($_SESSION['orderId']);
+}
+
+if (isset($_SESSION['branchId']) && !isset($_GET['updateLocation'])) {
+    header("Location: order-method.php");
     exit();
 }
 ?>

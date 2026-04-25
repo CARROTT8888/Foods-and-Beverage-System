@@ -82,7 +82,7 @@ include './database/fnbdb.php';
                             </a>
                         <?php endif; ?>
                         <hr class="!my-1 -mx-1 border-slate-200">
-                        <a href="menu"
+                        <a href="/web/order-location"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bxs-food-menu mr-2 text-lg'></i>
                             Menu

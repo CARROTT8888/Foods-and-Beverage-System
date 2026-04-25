@@ -1,9 +1,16 @@
 <?php
 session_start();
 
-// check if the session variable is exist
 if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
+    exit();
+}
+
+$userId = $_SESSION['userId'];
+$branchId = $_SESSION['branchId'] ?? null;
+
+if (!$branchId) {
+    header("Location: order-location.php");
     exit();
 }
 ?>
@@ -78,9 +85,9 @@ if (!isset($_SESSION['userId'])) {
 </head>
 
 <body class="flex justify-center h-screen flex-col">
-    <div class="h-screen w-full overflow-scroll">
+    <div class="h-screen w-full overflow-y-scroll">
         <?php include_once './includes/navbar.php' ?>
-        <?php include './includes/menu/order-method.php' ?>
+        <?php include './includes/menu/order-method/body.php' ?>
     </div>
 </body>
 

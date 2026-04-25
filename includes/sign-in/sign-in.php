@@ -25,6 +25,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['userId'] = $row['userId'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['name'] = $row['name'];
+                $_SESSION['role'] = $row['role'];
 
                 header("Location: home.php");
                 exit();

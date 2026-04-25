@@ -189,9 +189,22 @@ $stmtcount->close();
                                         </span>
                                     </div>
                                 </div>
-                                <div class="w-full px-3.5 pb-3.5 rounded pt-3"><button
-                                        class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
-                                        data-shape="default" data-width="full">Order</button></div>
+                                <div class="w-full px-3.5 pb-3.5 rounded pt-3">
+                                    <?php if ($data['status'] === 'Opening'): ?>
+                                        <form action="order-location.php" method="POST">
+                                            <input type="hidden" name="branchId" value="<?php echo $data['branchId']; ?>">
+                                            <button type="submit"
+                                                class="inline-flex items-center justify-center border align-middle select-none font-sans text-center transition-all duration-300 ease-in text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary font-bold text-foreground hover:bg-amber-400 hover:text-secondaryForeground w-full">
+                                                Order
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <button type="button"
+                                            class="inline-flex items-center cursor-not-allowed justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-amber-600 text-foreground border-secondary text-foreground w-full">
+                                            Order
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         <?php endif; ?>
                         <?php

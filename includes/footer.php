@@ -78,7 +78,7 @@
       </ul>
       <ul>
         <p class="font-sans antialiased text-base text-current mb-2 font-semibold opacity-50">
-          Products
+          Foods and Beverages
         </p>
         <li>
           <a href="#" class="font-sans antialiased text-base text-current py-1 hover:text-slate-800">
