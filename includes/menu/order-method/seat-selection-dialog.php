@@ -1,3 +1,24 @@
+<?php
+$branch = null;
+
+if (isset($_SESSION['branchId'])) {
+    $branchId = $_SESSION['branchId'];
+
+    $stmtBranch = $conn->prepare("SELECT * FROM branch WHERE branchId=?");
+    $stmtBranch->bind_param("i", $branchId);
+    $stmtBranch->execute();
+    $branchResult = $stmtBranch->get_result();
+    $branch = $branchResult->fetch_assoc();
+    $stmtBranch->close();
+}
+
+if (!$branch) {
+    return;
+}
+
+$branchId = $branch['branchId'];
+?>
+
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="seatTableDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 w-auto scale-95">
@@ -31,7 +52,7 @@
             if ($tableResult->num_rows > 0):
                 while ($data = $tableResult->fetch_assoc()):
                     ?>
-                    <div>www</div>
+                    <div>test</div>
                 <?php endwhile; ?>
             <?php endif; ?>
             <div role="alert"

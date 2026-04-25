@@ -18,8 +18,8 @@ $orderId = $_SESSION['orderId'];
 ?>
 
 <section
-    class="relative overflow-auto bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8">
-    <div class="items-center">
+    class="relative overflow-x-hidden bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8">
+    <div class="items-center max-w-7xl mx-auto w-screen">
         <button onclick="window.location.href='order-location.php?updateLocation=1'"
             class="flex w-auto gap-2 justify-center items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full focus:shadow-none text-sm rounded-md py-2 px-4 bg-transparent border-transparent text-slate-800 hover:bg-accent hover:text-accentForeground shadow-none hover:shadow-none">
             <i class='bx bx-chevron-left text-2xl'></i>
@@ -28,7 +28,8 @@ $orderId = $_SESSION['orderId'];
     </div>
     <h1 class="max-w-7xl mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8">What do you prefer to
         order?</h1>
-    <div class="flex lg:flex-row flex-col justify-center gap-4 mx-auto items-center px-4 sm:px-6 lg:px-8 min-w-full">
+    <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto items-center px-4 sm:px-6 lg:px-8 max-w-7xl">
 
         <button type="button" onclick="openDialog()"
             class="cursor-pointer rounded-lg hover:h-[31rem] hover:shadow-amber-400 hover:shadow-2xl transition-all duration-300 xl:hover:w-[400px] border shadow-sm bg-white border-slate-200 shadow-slate-950/5 relative flex h-[30rem] w-full max-w-md flex-col items-end justify-center overflow-hidden text-center pb-12 pt-20">
@@ -45,6 +46,8 @@ $orderId = $_SESSION['orderId'];
                 <h4 class="font-sans antialiased font-bold text-xl md:text-2xl lg:text-3xl text-black">
                     Book A Seat
                 </h4>
+                <p class="mt-4 max-w-[26rem] text-left text-base/6 text-secondaryForeground">Reserve a table to eat
+                    inside the branch.</p>
             </div>
         </button>
         <?php include 'seat-selection-dialog.php'; ?>
@@ -64,6 +67,8 @@ $orderId = $_SESSION['orderId'];
                 <h4 class="font-sans antialiased font-bold text-xl md:text-2xl lg:text-3xl text-black">
                     Take-Away
                 </h4>
+                <p class="mt-4 max-w-[26rem] text-left text-base/6 text-secondaryForeground">Order your food and pick it
+                    up at the restaurant. Save your time wating.</p>
             </div>
         </div>
         <div
@@ -81,6 +86,8 @@ $orderId = $_SESSION['orderId'];
                 <h4 class="font-sans antialiased font-bold text-xl md:text-2xl lg:text-3xl text-black">
                     Delivery
                 </h4>
+                 <p class="mt-4 max-w-[26rem] text-left  text-base/6 text-secondaryForeground">Enjoy your meals at home
+                    with our reliable delivery service, right to your location.</p>
             </div>
         </div>
     </div>

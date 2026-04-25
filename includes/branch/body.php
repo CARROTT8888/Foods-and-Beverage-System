@@ -16,20 +16,8 @@ $stmtcount->fetch();
 $stmtcount->close();
 ?>
 
-<div class="max-w-7xl mx-auto mt-10a px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-    <div class="md:sticky flex flex-col gap-4">
-        <!-- Sidebar -->
-        <button type="button" data-toggle="modal" data-target="#sidebarDrawerBranch"
-            class="text-gray-500 hover:text-gray-600">
-            <span class="lg:hidden flex font-bold">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
-            </span>
-        </button>
-        <?php include 'drawer.php'; ?>
+<div class="max-w-7xl mx-auto mt-10 px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+    <div class="md:sticky md:top-20 flex flex-col gap-4">
         <div class="image-hover rounded-2xl overflow-hidden aspect-[4/3] bg-stone-200 shadow-lg relative">
             <?php if ($branch['image']): ?>
                 <img class="w-full h-full object-cover block hover:scale-[1.03] transition ease-in"
@@ -51,22 +39,10 @@ $stmtcount->close();
 
         <div class="flex justify-between">
             <div class="flex gap-2 flex-wrap">
-                <button
+                <button onclick="window.history.back()"
                     class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
-                    <i class='bx bxs-edit text-lg'></i> <span class="lg:flex hidden">Edit Branch</span>
+                    <i class='bx bx-chevron-left text-lg'></i> <span class="lg:flex hidden">Back to Branch Menu</span>
                 </button>
-                <?php if ($branch['visibleStatus'] === 'Visible'): ?>
-                    <button id="dropdownBtn" type="button"
-                        onclick="fillUpdateForm2(<?= $branch['branchId'] ?>, 'Invisible')"
-                        class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
-                        <i class='bx bxs-show text-lg'></i>Set Invisible</span>
-                    </button>
-                <?php elseif ($branch['visibleStatus'] === 'Invisible'): ?>
-                    <button id="dropdownBtn" type="button" onclick="fillUpdateForm2(<?= $branch['branchId'] ?>,  'Visible')"
-                        class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
-                        <i class='bx bxs-show text-lg'></i>Set Visible</span>
-                    </button>
-                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -148,7 +124,7 @@ $stmtcount->close();
                     </p>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4.5">
+            <div class="grid grid-cols-2 gap-4.5 space-y-0.5">
                 <div
                     class="flex items-center p-2 border border-amber-500 bg-amber-500/10 hover:border-amber/20 transition-colors rounded-xl ">
                     <div class="ml-1">
@@ -177,62 +153,9 @@ $stmtcount->close();
                         </p>
                     </div>
                 </div>
-                <div
-                    class="flex items-center p-2 border border-amber-500 bg-amber-500/10 hover:border-green/20 transition-colors rounded-xl ">
-                    <div class="ml-1">
-                        <div class="flex items-center gap-2.5">
-                            <div class="relative flex size-4 items-center justify-center">
-                                <i class='bx bxs-bowl-hot mr-2 text-xl text-amber-600'></i>
-                            </div>
-                            <h1 class="text-lg font-bold text-amber-900">Order(s)</h1>
-                        </div>
-                        <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                            0
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="flex items-center p-2 border border-amber-500 bg-amber-500/10 hover:border-green/20 transition-colors rounded-xl ">
-                    <div class="ml-1">
-                        <div class="flex items-center gap-2.5">
-                            <div class="relative flex size-4 items-center justify-center">
-                                <i class='bx bx-dollar mr-2 text-xl text-amber-600'></i>
-                            </div>
-                            <h1 class="text-lg font-bold text-amber-900">Revenue(s)</h1>
-                        </div>
-                        <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                            0
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="flex items-center p-2 border border-amber-500 bg-amber-500/10 hover:border-green/20 transition-colors rounded-xl ">
-                    <div class="ml-1">
-                        <div class="flex items-center gap-2.5">
-                            <div class="relative flex size-4 items-center justify-center">
-                                <i class='bx bxs-user mr-2 text-xl text-amber-600'></i>
-                            </div>
-                            <h1 class="text-lg font-bold text-amber-900">Employee(s)</h1>
-                        </div>
-                        <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                            0
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="flex items-center p-2 border border-amber-500 bg-amber-500/10 hover:border-green/20 transition-colors rounded-xl ">
-                    <div class="ml-1">
-                        <div class="flex items-center gap-2.5">
-                            <div class="relative flex size-4 items-center justify-center">
-                                <i class='bx bxs-star mr-2 text-xl text-amber-600'></i>
-                            </div>
-                            <h1 class="text-lg font-bold text-amber-900">Review(s)</h1>
-                        </div>
-                        <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                            0
-                        </p>
-                    </div>
-                </div>
+                <div class="w-full h-px bg-mutedForeground my-2 col-span-2"></div>
+                <span class="col-span-2 pt-2a font-bold">Table Seat(s):</span>
+                <?php include 'seat-table.php'; ?>
             </div>
         </div>
     </div>
