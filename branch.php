@@ -97,7 +97,7 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
                     link.setAttribute("aria-current", "page");
                 }
             });
-            const dialog = document.getElementById("seatTableDialog");
+            const dialog = document.getElementById("seatTableInfoDialog");
             window.openDialog = function () {
                 dialog.classList.remove("opacity-0", "pointer-events-none");
                 dialog.classList.add("opacity-100");
@@ -106,6 +106,11 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDialog();
+                }
+            });
         });
     </script>
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />

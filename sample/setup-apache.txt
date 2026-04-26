@@ -1,0 +1,6 @@
+Alias /aliasname "Folder Location"
+<Directory "Folder Location">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Require all granted
+</Directory>

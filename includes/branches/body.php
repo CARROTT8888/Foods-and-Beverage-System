@@ -135,10 +135,12 @@ $stmtcount->close();
                                 </div>
                                 <div class="w-full h-max rounded px-3.5 py-2.5 ">
                                     <div class="mb-2 flex items-center justify-between">
-                                        <h6
-                                            class="font-sans antialiased font-bold text-base md:text-lg lg:text-xl text-current line-clamp-1">
-                                            <?php echo htmlspecialchars($data['name']) ?>
-                                        </h6>
+                                        <a href="/web/branch?slug=<?php echo htmlspecialchars($data['slug']); ?>">
+                                            <h6
+                                                class="font-sans hover:underline antialiased font-bold text-base md:text-lg lg:text-xl text-current line-clamp-1">
+                                                <?php echo htmlspecialchars($data['name']) ?>
+                                            </h6>
+                                        </a>
                                         <p class="font-sans antialiased text-base text-current flex items-center gap-1.5"><svg
                                                 width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg" color="currentColor"

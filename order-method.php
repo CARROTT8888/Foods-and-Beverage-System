@@ -1,5 +1,6 @@
 <?php
 session_start();
+include './database/fnbdb.php';
 
 if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
@@ -86,7 +87,7 @@ if (!$branchId) {
 
 <body class="flex justify-center h-screen flex-col">
     <div class="h-screen w-full overflow-y-scroll">
-        <?php include_once './includes/navbar.php' ?>
+        <div class="hidden"><?php include_once './includes/navbar.php' ?></div>
         <?php include './includes/menu/order-method/body.php' ?>
     </div>
 </body>

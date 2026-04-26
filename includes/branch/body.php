@@ -154,8 +154,12 @@ $stmtcount->close();
                     </div>
                 </div>
                 <div class="w-full h-px bg-mutedForeground my-2 col-span-2"></div>
-                <span class="col-span-2 pt-2a font-bold">Table Seat(s):</span>
+                <span class="col-span-2 flex items-center font-bold text-md">
+                    <button type="button" onclick="openDialog()">
+                        <i class='bx bx-info-circle text-2xl mr-2'></i>
+                    </button>Table Seat(s):</span>
                 <?php include 'seat-table.php'; ?>
+                <?php include 'seat-table-info-dialog.php'; ?>
             </div>
         </div>
     </div>
