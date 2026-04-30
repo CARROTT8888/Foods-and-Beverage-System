@@ -53,10 +53,10 @@
             </div>
         </li>
         <div class="w-full h-px bg-gray-300/70 my-2"></div>
-        <a href="/web/dashboard/order"
+        <a href="/web/dashboard/orders"
             class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
             <i class='bx bxs-dashboard mr-2 text-xl'></i>
-            <span>Order</span>
+            <span>Orders</span>
         </a>
         <a href="/web/dashboard/menu"
             class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">

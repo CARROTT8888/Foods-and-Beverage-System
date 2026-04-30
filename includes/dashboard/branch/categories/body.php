@@ -1,5 +1,5 @@
 <section
-    class="relative overflow-y-scroll h-screen flex flex-col bg-linear-to-b from-blue-50 via-transparent to-transparent pb-12 pt-8 w-full">
+    class="relative overflow-y-scroll h-screen bg-linear-to-b flex flex-col from-blue-50 via-transparent to-transparent pb-12 pt-8 max-w-7xl w-full">
     <div class="w-full px-4 sm:px-6 lg:px-8">
         <h1 class="max-w-7xl mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8 w-full">
             <!-- Sidebar -->

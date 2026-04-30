@@ -45,8 +45,7 @@ $stmtcount->close();
 
 <div class="fixed inset-0 bg-slate-950/50 opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
     id="sidebarDrawer" aria-hidden="true">
-    <div class="text-sm w-56 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium flex flex-col"
-        onclick="event.stopPropagation()">
+    <div class="text-sm w-56 p-4 bg-white border h-screen border-gray-300/30 rounded-md font-medium flex flex-col">
         <a href="/web/dashboard" class="rounded mt-3 mb-5 flex h-max items-center cursor-pointer">
             <img src="../assets/logo.png" alt="brand"
                 class="inline-block object-cover object-center w-10 h-10 rounded-sm" />
@@ -58,29 +57,7 @@ $stmtcount->close();
                 <i class='bx bxs-dashboard mr-2 text-xl'></i>
                 <span>Dashboard</span>
             </a>
-            <div class="w-full h-px bg-gray-300/70 my-2"></div>
-            <li class="">
-                <div class="flex justify-between items-center">
-                    <div data-toggle="collapse" data-target="#sidebarCollapseList2" aria-expanded="false"
-                        aria-controls="sidebarCollapseList2"
-                        class="flex items-center hover:text-mutedForeground min-w-40 cursor-pointer py-1.5 px-2.5 rounded-md align-middle transition-all duration-300 ease-in ">
-                        <div class="flex items-center gap-1">
-                            <a href="/web/dashboard/branches"
-                                class="sidebar-link hover:text-primary hover:underline">Branches</a>
-                            <span data-icon
-                                class="grid place-items-center shrink-0 transition-transform duration-300 ease-in-out">
-                                <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg" color="currentColor"
-                                    class="h-4 w-4 stroke-[1.5] ">
-                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-linecap="round"
-                                        stroke-linejoin="round"></path>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
+            <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
                     id="createBranchDialog2" aria-hidden="true">
                     <div
                         class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-106 p-3 ">
@@ -105,35 +82,18 @@ $stmtcount->close();
                         </form>
                     </div>
                 </div>
-                <div class="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0"
-                    id="sidebarCollapseList2">
-                    <ul class="flex flex-col gap-0.5 min-w-60 mt-2">
-                        <?php
-                        $branchQuery = "SELECT * FROM branch WHERE 1 ORDER BY branchId DESC";
-                        $branchResult = $conn->query($branchQuery);
-                        if ($branchResult->num_rows > 0):
-                            while ($data = $branchResult->fetch_assoc()):
-                                ?>
-                                <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($data['slug']); ?>">
-                                    <li
-                                        class="pl-10 flex items-center cursor-pointer py-0.5 px-2 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent w-47 hover:bg-accent hover:text-accentForeground">
-                                        <i class='bx bxs-building mr-3 text-xl'></i>
-                                        <p class="line-clamp-1 w-50"><?php echo htmlspecialchars($data['name']); ?></p>
-                                    </li>
-                                </a>
-                            <?php endwhile; ?>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </li>
-            <div class="w-full h-px bg-gray-300/70 my-2"></div>
+            <a href="/web/dashboard/branches"
+                class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
+                <i class='bx bxs-building mr-2 text-xl'></i>
+                <span>Branches</span>
+            </a>
             <a href="/web/dashboard/orders"
-                class="flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
+                class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
                 <i class='bx bxs-bowl-hot mr-2 text-xl'></i>
                 <span>Orders</span>
             </a>
             <a href="/web/dashboard/menu"
-                class="flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
+                class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
                 <i class='bx bxs-food-menu mr-2 text-xl'></i>
                 <span>Menu</span>
             </a>
@@ -143,7 +103,7 @@ $stmtcount->close();
                 <span>Tables</span>
             </a>
             <a href="/web/dashboard/users"
-                class="flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
+                class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
                 <i class='bx bxs-user mr-2 text-xl'></i>
                 <span>Users</span>
             </a>
@@ -153,7 +113,7 @@ $stmtcount->close();
                 <span>Review</span>
             </a>
             <a href="/web/dashboard/reports"
-                class="flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
+                class="sidebar-link flex items-center gap-3 cursor-pointer px-3 py-1 rounded hover:bg-accent hover:text-accentForeground transition">
                 <i class='bx bxs-report mr-2 text-xl'></i>
                 <span>Reports</span>
             </a>

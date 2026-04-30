@@ -183,7 +183,7 @@ $stmtcount->close();
     <div class="">
         <?php include '../includes/dashboard/branch/sidebar.php'; ?>
     </div>
-    <div class="min-h-screen w-full flex justify-center">
+    <div class="min-h-screen w-full flex justify-center flex-col">
         <div class="relative tab-group top-2">
             <div class="flex p-0.5 relative rounded-lg" role="tablist">
                 <div
@@ -199,8 +199,8 @@ $stmtcount->close();
                     Menu
                 </a>
             </div>
-            <?php include '../includes/dashboard/branch/categories/body.php'; ?>
         </div>
+        <?php include '../includes/dashboard/branch/categories/body.php'; ?>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>

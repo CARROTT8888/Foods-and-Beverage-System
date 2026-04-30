@@ -201,7 +201,7 @@ $stmtcount->close();
                                     <?php else: ?>
                                         <button type="button"
                                             class="inline-flex items-center cursor-not-allowed justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-amber-600 text-foreground border-secondary text-foreground w-full">
-                                            Order
+                                            Locked
                                         </button>
                                     <?php endif; ?>
                                 </div>

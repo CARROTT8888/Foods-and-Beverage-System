@@ -127,7 +127,7 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
     <div class="">
         <?php include '../includes/dashboard/branch/sidebar.php'; ?>
     </div>
-    <div class="min-h-screen w-full flex justify-center">
+    <div class="min-h-screen w-full flex justify-center flex-col">
         <div class="relative tab-group top-2">
             <div class="flex p-0.5 relative rounded-lg" role="tablist">
                 <div
@@ -143,8 +143,8 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
                     Menu
                 </a>
             </div>
-            <?php include '../includes/dashboard/branch/menu/body.php'; ?>
         </div>
+        <?php include '../includes/dashboard/branch/menu/body.php'; ?>
     </div>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </body>
