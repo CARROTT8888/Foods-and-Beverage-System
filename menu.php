@@ -1,11 +1,40 @@
 <?php
 session_start();
+include './database/fnbdb.php';
 
 // check if the session variable is exist
 if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
     exit();
 }
+
+$userId = $_SESSION['userId'];
+$branchId = $_SESSION['branchId'] ?? null;
+$orderId = $_SESSION['orderId'] ?? null;
+
+if (!$orderId) {
+    header("Location: order-location.php");
+    exit();
+}
+
+$stmtBranch = $conn->prepare("SELECT * FROM branch WHERE branchId = ?");
+$stmtBranch->bind_param("i", $branchId);
+$stmtBranch->execute();
+$branchResult = $stmtBranch->get_result()->fetch_assoc();
+$stmtBranch->close();
+
+$stmtCategory = $conn->prepare("SELECT * FROM food_category WHERE branchId = ? AND status = 'Visible' ORDER BY categoryId ASC");
+$stmtCategory->bind_param("i", $branchId);
+$stmtCategory->execute();
+$categoryResult = $stmtCategory->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtCategory->close();
+
+$stmtCart = $conn->prepare("SELECT SUM(quantity) as totalItems FROM order_item WHERE orderId = ?");
+$stmtCart->bind_param("i", $orderId);
+$stmtCart->execute();
+$cartRow = $stmtCart->get_result()->fetch_assoc();
+$cartCount = $cartRow['totalItems'] ?? 0;
+$stmtCart->close();
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +94,7 @@ if (!isset($_SESSION['userId'])) {
 <body class="flex flex-col justify-center h-screen">
     <div class="h-screen w-full overflow-scroll">
         <?php include_once './includes/navbar.php' ?>
-        a
+        <?php include './includes/menu/body.php'; ?>
         <?php include "./includes/footer.php"; ?>
     </div>
 </body>

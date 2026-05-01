@@ -24,7 +24,7 @@ include './database/fnbdb.php';
                             </a>
                         </li>
                         <li>
-                            <a href="/web/order-location"
+                            <a href="/web/menu"
                                 class="font-sans nav-link antialiased text-sm flex flex-row items-center gap-x-2 p-1 hover:text-primary">
                                 <i class='bx bxs-food-menu'></i>
                                 Menu

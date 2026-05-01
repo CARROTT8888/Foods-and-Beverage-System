@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggleMethod'])) {
     exit();
 }
 
-$branchQuery = "SELECT b.branchId, b.name, b.status,
+$branchQuery = "SELECT b.branchId, b.name, b.status, b.slug,
     GROUP_CONCAT(om.methodId ORDER BY om.methodId) as methodIds,
     GROUP_CONCAT(om.methodName ORDER BY om.methodId) as methodNames,
     GROUP_CONCAT(om.isEnabled ORDER BY om.methodId) as methodStatuses
@@ -66,9 +66,11 @@ $branchResult = $conn->query($branchQuery);
                     <!-- Branch Header -->
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <h2 class="font-bold text-lg text-slate-800">
-                                <?php echo htmlspecialchars($branch['name']); ?>
-                            </h2>
+                            <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>">
+                                <h2 class="font-bold text-lg text-slate-800">
+                                    <?php echo htmlspecialchars($branch['name']); ?>
+                                </h2>
+                            </a>
                             <?php if ($branch['status'] === 'Opening'): ?>
                                 <span
                                     class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-600 border border-green-300">Opening</span>

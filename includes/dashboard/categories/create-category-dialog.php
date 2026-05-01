@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createCategory'])) {
     $categoryName = $_POST['name'];
     $branchId = $_POST['branchId'];
     $status = $_POST['status'];
@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
 
     if ($checkStmt->num_rows > 0) {
         $errorMessage = 'The category name has already exists.';
+        echo "<script>alert('$errorMessage');</script>";
         $checkStmt->close();
     } else {
         $checkStmt->close();
@@ -78,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateCategory'])) {
                     <option value="Deprecated">Deprecated</option>
                 </select>
             </div>
-            <button type="submit"
+            <button type="submit" name="createCategory"
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>

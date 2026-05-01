@@ -138,6 +138,20 @@ $stmtcount->close();
                     closeUpdateCategoryDialog();
                 }
             });
+            const dialog4 = document.getElementById("deleteCategoryDialog");
+            window.openDeleteCategoryDialog = function () {
+                dialog4.classList.remove("opacity-0", "pointer-events-none");
+                dialog4.classList.add("opacity-100");
+            };
+            window.closeDeleteCategoryDialog = function () {
+                dialog4.classList.remove("opacity-100");
+                dialog4.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDeleteCategoryDialog();
+                }
+            });
             const drawer = document.getElementById("sidebarDrawer");
             function openDrawerBranch() {
                 drawer.classList.remove("opacity-0", "pointer-events-none");

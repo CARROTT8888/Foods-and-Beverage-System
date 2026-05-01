@@ -1,7 +1,7 @@
 <section
     class="relative overflow-y-scroll h-screen flex flex-col bg-linear-to-b from-blue-50 via-transparent to-transparent pb-12 pt-8 w-full">
     <div class="w-full px-4 sm:px-6 lg:px-8">
-        <h1 class="max-w-7xl mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8 w-full">
+        <h1 class="max-w-7xla mx-auto items-center mb-8 font-extrabold text-5xl px-4 sm:px-6 lg:px-8 w-full">
             <!-- Sidebar -->
             <!---<button class="text-gray-500 hover:text-gray-600" id="open-sidebar">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -215,11 +215,14 @@
                                                 Update Category
                                             </button>
 
-                                            <a href="sign-out.php"
+                                            <button type="button" onclick='deleteForm(
+                                                <?php echo json_encode($data["categoryId"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
                                                 <i class='bx bxs-trash mr-2 text-lg'></i>
                                                 Delete Category
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
@@ -265,6 +268,7 @@
                         </button>
                         <?php endif; ?>
                         <?php include 'update-category-dialog.php'; ?>
+                        <?php include 'delete-category-dialog.php'; ?>
                     </div>
                 </div>
             </div>
@@ -299,6 +303,20 @@
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
                 document.getElementById("updateCategoryDialog").classList.add("opacity-0", "pointer-events-none");
+            }
+        });
+    }
+
+    function deleteForm(categoryId, branchId) {
+        document.getElementById("deleteCategoryId").value = categoryId;
+        document.getElementById("deleteBranchId").value = branchId;
+
+        document.getElementById("deleteCategoryDialog").classList.remove("opacity-0", "pointer-events-none");
+
+        // ESC close
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                document.getElementById("deleteCategoryDialog").classList.add("opacity-0", "pointer-events-none");
             }
         });
     }
