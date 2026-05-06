@@ -3,6 +3,18 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 include './database/fnbdb.php';
+
+$orderId = $_SESSION['orderId'] ?? null;
+$cartCount = 0;
+
+if ($orderId) {
+    $stmtCart = $conn->prepare("SELECT SUM(quantity) as totalItems FROM order_item WHERE orderId = ?");
+    $stmtCart->bind_param("i", $orderId);
+    $stmtCart->execute();
+    $cartRow = $stmtCart->get_result()->fetch_assoc();
+    $cartCount = $cartRow['totalItems'] ?? 0;
+    $stmtCart->close();
+}
 ?>
 
 <div>
@@ -31,10 +43,16 @@ include './database/fnbdb.php';
                             </a>
                         </li>
                         <li>
-                            <a href="/orders"
+                            <a href="/web/orders"
                                 class="font-sans nav-link antialiased text-sm flex flex-row items-center gap-x-2 p-1 hover:text-primary">
                                 <i class='bx bxs-bowl-hot'></i>
-                                <span class="flex flex-row w-[65px]">0 Order(s)</span>
+                                <span class="flex flex-row w-[65px] gap-1">
+                                    <?php if ($cartCount > 0): ?>
+                                        <span><?php echo $cartCount; ?></span>
+                                    <?php else: ?>
+                                        0
+                                    <?php endif; ?>
+                                    Order(s)</span>
                             </a>
                         </li>
                         <li>
@@ -82,22 +100,31 @@ include './database/fnbdb.php';
                             </a>
                         <?php endif; ?>
                         <hr class="!my-1 -mx-1 border-slate-200">
-                        <a href="/web/order-location"
+                        <a href="/web/menu"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bxs-food-menu mr-2 text-lg'></i>
                             Menu
                         </a>
-                        <a href="#"
+                        <a href="/web/orders"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bxs-bowl-hot mr-2 text-lg'></i>
-                            0 Order(s)
+                            <span class="gap-1">
+                                <?php if ($cartCount > 0): ?>
+                                    <span>
+                                        <?php echo $cartCount; ?>
+                                    </span>
+                                <?php else: ?>
+                                    0
+                                <?php endif; ?>
+                                Order(s)
+                            </span>
                         </a>
                         <a href="#"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bx-history mr-2 text-lg'></i>
                             History
                         </a>
-                        <a href="#"
+                        <a href="/web/branches"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bxs-building mr-2 text-lg'></i>
                             Branches
@@ -117,18 +144,36 @@ include './database/fnbdb.php';
                             Help and Support
                         </a>
                         <hr class="!my-1 -mx-1 border-slate-200">
-                        <a href="sign-out.php"
-                            class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
+                        <button type="button" onclick="openSignoutDialog()"
+                            class="w-full block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
                             <i class='bx bx-log-out mr-2 text-lg'></i>
                             Logout
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
-
+            <?php include 'sign-out-dialog.php'; ?>
         </div>
     </nav>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script src="https://unpkg.com/@material-tailwind/html@3.0.0-beta.7/dist/material-tailwind.umd.min.js"
         defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dialog21 = document.getElementById("signoutDialog");
+            window.openSignoutDialog = function () {
+                dialog21.classList.remove("opacity-0", "pointer-events-none");
+                dialog.classList.add("opacity-100");
+            };
+            window.closeSignoutDialog = function () {
+                dialog21.classList.remove("opacity-100");
+                dialog21.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeSignoutDialog();
+                }
+            });
+        });
+    </script>
 </div>

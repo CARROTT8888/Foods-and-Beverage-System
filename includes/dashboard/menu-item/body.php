@@ -1,6 +1,6 @@
 <div class="max-w-5xl mx-auto mt-10 px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
     <div class="md:sticky md:top-20 flex flex-col gap-4">
-        <div class="image-hover rounded-2xl overflow-hidden aspect-[4/3] bg-stone-200 shadow-lg relative">
+        <div class="image-hover rounded-xl overflow-hidden aspect-[4/3] bg-stone-200 shadow-lg relative">
             <?php if ($food['image']): ?>
                 <img class="w-full h-full object-cover block hover:scale-[1.03] transition ease-in"
                     src="/Foods-and-Beverage-System/uploads/menus/<?php echo htmlspecialchars($food['image']); ?>"
@@ -111,7 +111,7 @@
         </div>
 
         <?php if (!empty($food['description'])): ?>
-            <div class="bg-white border border-stone-200 rounded-2xl px-5 py-5">
+            <div class="bg-white border border-stone-200 rounded-xl px-5 py-5">
                 <h3 class="text-sm text-slate-400 mb-2.5">Description</h3>
                 <p class="text-md leading-7 text-slate-500">
                     <?php echo nl2br(htmlspecialchars($food['description'])); ?>
@@ -128,7 +128,7 @@
 
             <?php if (!empty($optionGroups)): ?>
                 <?php foreach ($optionGroups as $group): ?>
-                    <div class="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm">
+                    <div class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm">
 
                         <div
                             class="px-4 py-3 bg-gradient-to-r from-amber-50 to-white border-b border-stone-200 flex items-center gap-2">

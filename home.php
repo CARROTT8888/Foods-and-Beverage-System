@@ -7,6 +7,13 @@ if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
     exit();
 }
+
+$stmtCart = $conn->prepare("SELECT SUM(quantity) as totalItems FROM order_item WHERE orderId = ?");
+$stmtCart->bind_param("i", $orderId);
+$stmtCart->execute();
+$cartRow = $stmtCart->get_result()->fetch_assoc();
+$cartCount = $cartRow['totalItems'] ?? 0;
+$stmtCart->close();
 ?>
 
 <!DOCTYPE html>

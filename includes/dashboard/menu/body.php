@@ -385,14 +385,14 @@
                                             $remaining = count($options) - $maxVisible;
                                             foreach ($shown as $optionName): ?>
                                                 <div data-shape="pill"
-                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-primary text-primary">
                                                     <span
                                                         class="font-sans text-current leading-none my-0.5 mx-1.5"><?php echo htmlspecialchars($optionName); ?></span>
                                                 </div>
                                             <?php endforeach; ?>
                                             <?php if ($remaining > 0): ?>
                                                 <div data-open="true" data-shape="pill"
-                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                                    class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-primary text-primary">
                                                     <span class="font-sans text-current leading-none my-0.5 mx-1.5">+
                                                         <?php echo $remaining; ?> more...</span>
                                                 </div>

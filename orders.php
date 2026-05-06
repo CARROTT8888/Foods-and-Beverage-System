@@ -1,34 +1,40 @@
 <?php
 session_start();
+include './database/fnbdb.php';
 
+// check if the session variable is exist
 if (!isset($_SESSION['userId'])) {
     header("Location: sign-in.php");
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $branchId = $_POST['branchId'] ?? null;
+$userId = $_SESSION['userId'];
+$branchId = $_SESSION['branchId'] ?? null;
+$orderId = $_SESSION['orderId'] ?? null;
 
-    if (!$branchId) {
-        header("Location: order-location.php");
-        exit();
-    }
-
-    $_SESSION['branchId'] = $branchId;
-
-    header("Location: order-method.php");
+if (!$orderId) {
+    header("Location: order-location.php");
     exit();
 }
 
-if (isset($_GET['updateLocation'])) {
-    unset($_SESSION['branchId']);
-    //unset($_SESSION['orderId']);
-}
+$stmtBranch = $conn->prepare("SELECT * FROM branch WHERE branchId = ?");
+$stmtBranch->bind_param("i", $branchId);
+$stmtBranch->execute();
+$branchResult = $stmtBranch->get_result()->fetch_assoc();
+$stmtBranch->close();
 
-if (isset($_SESSION['branchId']) && !isset($_GET['updateLocation'])) {
-    header("Location: order-method.php");
-    exit();
-}
+$stmtCategory = $conn->prepare("SELECT * FROM food_category WHERE branchId = ? AND status = 'Visible' ORDER BY categoryId ASC");
+$stmtCategory->bind_param("i", $branchId);
+$stmtCategory->execute();
+$categoryResult = $stmtCategory->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtCategory->close();
+
+$stmtCart = $conn->prepare("SELECT SUM(quantity) as totalItems FROM order_item WHERE orderId = ?");
+$stmtCart->bind_param("i", $orderId);
+$stmtCart->execute();
+$cartRow = $stmtCart->get_result()->fetch_assoc();
+$cartCount = $cartRow['totalItems'] ?? 0;
+$stmtCart->close();
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +45,7 @@ if (isset($_SESSION['branchId']) && !isset($_GET['updateLocation'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Floudemo - Order Location</title>
+    <title>Orders - Floudemo</title>
     <link rel="Icon" href="./assets/logo.png" sizes="64x64">
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -81,29 +87,49 @@ if (isset($_SESSION['branchId']) && !isset($_GET['updateLocation'])) {
                     link.setAttribute("aria-current", "page");
                 }
             });
-            const dialog2 = document.getElementById("searchOrFilterDialog");
-            window.openDialog = function () {
-                dialog2.classList.remove("opacity-0", "pointer-events-none");
-                dialog2.classList.add("opacity-100");
-            };
-            window.closeDialog = function () {
-                dialog2.classList.remove("opacity-100");
-                dialog2.classList.add("opacity-0", "pointer-events-none");
+            const dialog4 = document.getElementById("deleteOrderDialog");
+            window.openDeleteOrderDialog = function (orderItemId) {
+                document.getElementById('deleteOrderItemId').value = orderItemId;
+                document.getElementById('deleteOrderDialog').classList.remove('opacity-0', 'pointer-events-none');
+            }
+            window.closeDeleteOrderDialog = function () {
+                dialog4.classList.remove("opacity-100");
+                dialog4.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeDialog();
+                    closeDeleteOrderDialog();
                 }
             });
         });
     </script>
 </head>
 
-<body class="flex justify-center h-screen flex-col">
+<body class="flex flex-col justify-center h-screen">
     <div class="h-screen w-full overflow-y-scroll">
-        
-        <?php include './includes/menu/order-location/body.php' ?>
+        <?php include './includes/navbar.php'; ?>
+        <?php include_once './includes/orders/body.php'; ?>
+        <?php include_once './includes/footer.php'; ?>
     </div>
 </body>
 
 </html>
+
+<script>
+    function removeItem(orderItemId) {
+        if (!confirm('Remove this item from cart?')) return;
+
+        fetch('/web/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `removeItem=1&orderItemId=${orderItemId}`
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('cart-item-' + orderItemId).remove();
+                    location.reload();
+                }
+            });
+    }
+</script>

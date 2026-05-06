@@ -9,6 +9,19 @@ if (isset($_SESSION['branchId'])) {
     $branch = $branchResult->fetch_assoc();
     $stmtBranch->close();
 }
+
+$stmtCategory = $conn->prepare("SELECT * FROM food_category WHERE branchId = ? AND status = 'Visible' ORDER BY categoryId ASC");
+$stmtCategory->bind_param("i", $branchId);
+$stmtCategory->execute();
+$categories = $stmtCategory->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtCategory->close();
+
+$stmtCart = $conn->prepare("SELECT SUM(quantity) as totalItems FROM order_item WHERE orderId = ?");
+$stmtCart->bind_param("i", $orderId);
+$stmtCart->execute();
+$cartRow = $stmtCart->get_result()->fetch_assoc();
+$cartCount = $cartRow['totalItems'] ?? 0;
+$stmtCart->close();
 ?>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
@@ -24,7 +37,7 @@ if (isset($_SESSION['branchId'])) {
         <?php foreach ($categoryResult as $category): ?>
             <button onclick="filterCategory(<?php echo $category['categoryId']; ?>)"
                 id="cat-<?php echo $category['categoryId']; ?>"
-                class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border transition bg-white border-slate-200 text-slate-600 hover:border-primary hover:text-primary">
+                class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border transition bg-white border-slate-200 text-slate-600 hover:border-primary ">
                 <?php echo htmlspecialchars($category['name']); ?>
             </button>
         <?php endforeach; ?>
@@ -94,7 +107,7 @@ if (isset($_SESSION['branchId'])) {
                         <div class="pl-4 pr-1">
                             <div class="flex items-center justify-between">
                                 <h6 class="text-slate-800 text-xl font-semibold">
-                                    <a href="/web/dashboard/item?name=<?php echo htmlspecialchars($food['name']); ?>"
+                                    <a href="/web/item?name=<?php echo htmlspecialchars($food['name']); ?>"
                                         class="hover:underline"><?php echo htmlspecialchars($food['name']); ?></a>
                                 </h6>
                                 <span class="pr-1 font-medium text-green-600">RM <?php echo $food['basePrice']; ?></span>
@@ -108,7 +121,7 @@ if (isset($_SESSION['branchId'])) {
                                     $remaining = count($options) - $maxVisible;
                                     foreach ($shown as $optionName): ?>
                                         <div data-shape="pill"
-                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-accent text-primary">
+                                            class="relative inline-flex shrink-0 items-center border select-none font-sans font-medium rounded-md data-[shape=pill]:rounded-full text-xs p-0.5 shadow-sm bg-accent border-primary text-primary">
                                             <span
                                                 class="font-sans text-current leading-none my-0.5 mx-1.5"><?php echo htmlspecialchars($optionName); ?></span>
                                         </div>
@@ -124,23 +137,19 @@ if (isset($_SESSION['branchId'])) {
                             </div>
                         </div>
                         <div class="px-4 pb-4 pt-0 mt-2">
-                            <a href="/web/dashboard/item?name=a">
-                                <button
-                                    class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
-                                    data-shape="default" data-width="full">
-                                    Order
-                                </button>
-                            </a>
+                            <button onclick="openFoodDialog(<?php echo htmlspecialchars(json_encode($food)); ?>)"
+                                class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
+                                data-shape="default" data-width="full">
+                                Order
+                            </button>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
     <?php endforeach; ?>
+    <?php include 'food-dialog.php'; ?>
 </div>
-
-<input type="hidden" id="currentFoodId">
-<input type="hidden" id="currentBasePrice">
 
 <script>
     let currentQty = 1;
@@ -149,16 +158,16 @@ if (isset($_SESSION['branchId'])) {
     function openFoodDialog(food) {
         if (food.status === 'Sold Out' || food.status === 'Discontinued') return;
 
-        document.getElementById('currentFoodId').value = food.foodId;
-        document.getElementById('currentBasePrice').value = food.basePrice;
-        document.getElementById('dialogFoodName').innerText = food.name;
-        document.getElementById('dialogFoodDesc').innerText = food.description || '';
-        document.getElementById('dialogFoodPrice').innerText = 'RM ' + parseFloat(food.basePrice).toFixed(2);
+        document.getElementById('foodId').value = food.foodId;
+        document.getElementById('basePrice').value = food.basePrice;
+        document.getElementById('foodName').innerText = food.name;
+        document.getElementById('foodDescription').innerText = food.description || '';
+        document.getElementById('foodPrice').innerText = 'RM ' + parseFloat(food.basePrice).toFixed(2);
 
         // Image
-        const imgDiv = document.getElementById('dialogFoodImage');
+        const imgDiv = document.getElementById('foodImage');
         if (food.image) {
-            imgDiv.outerHTML = `<img id="dialogFoodImage" src="/Foods-and-Beverage-System/uploads/foods/${food.image}" class="w-full h-48 object-cover">`;
+            imgDiv.outerHTML = `<img id="foodImage" src="/Foods-and-Beverage-System/uploads/menus/${food.image}" class="w-full h-56 object-cover rounded-lg">`;
         }
 
         currentQty = 1;
@@ -167,7 +176,7 @@ if (isset($_SESSION['branchId'])) {
 
         // Load options via AJAX
         document.getElementById('dialogOptions').innerHTML = '<p class="text-sm text-slate-400">Loading options...</p>';
-        fetch(`get-food-options.php?foodId=${food.foodId}`)
+        fetch(`/web/includes/menu/get-food-options.php?foodId=${food.foodId}`)
             .then(res => res.json())
             .then(groups => {
                 let html = '';
@@ -178,8 +187,8 @@ if (isset($_SESSION['branchId'])) {
                     group.items.forEach(item => {
                         html += `<label class="flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 cursor-pointer hover:border-primary transition">
                         <div class="flex items-center gap-2">
-                            <input type="checkbox" name="option_${group.optionGroupId}" value="${item.optionItemId}" 
-                                onchange="updateTotal()" class="option-checkbox accent-amber-400">
+                            <input type="radio" name="option_${group.optionGroupId}" value="${item.optionItemId}"
+                                onchange="updateTotal()" class="option-radio accent-amber-400">
                             <span class="text-sm">${item.itemName}</span>
                         </div>
                         ${item.extraPrice > 0 ? `<span class="text-xs text-primary font-medium">+RM ${parseFloat(item.extraPrice).toFixed(2)}</span>` : ''}
@@ -206,40 +215,15 @@ if (isset($_SESSION['branchId'])) {
 
     function updateTotal() {
         let extraPrice = 0;
-        document.querySelectorAll('.option-checkbox:checked').forEach(cb => {
+        document.querySelectorAll('.option-radio:checked').forEach(cb => {
             const label = cb.closest('label');
-            const priceText = label.querySelector('span.text-primary');
+            const priceText = label.querySelector('span.text-green-600');
             if (priceText) {
                 extraPrice += parseFloat(priceText.innerText.replace('+RM ', '')) || 0;
             }
         });
         const total = (currentBasePrice + extraPrice) * currentQty;
         document.getElementById('totalPriceDisplay').innerText = total.toFixed(2);
-    }
-
-    function addToCart() {
-        const foodId = document.getElementById('currentFoodId').value;
-        const options = Array.from(document.querySelectorAll('.option-checkbox:checked')).map(cb => cb.value);
-
-        let body = `addToCart=1&foodId=${foodId}&quantity=${currentQty}`;
-        options.forEach(opt => body += `&options[]=${opt}`);
-
-        fetch('menu.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    closeFoodDialog();
-                    // updates cart badge
-                    const badge = document.querySelector('a[href="cart.php"] span');
-                    if (badge) {
-                        badge.innerText = parseInt(badge.innerText) + currentQty;
-                    }
-                }
-            });
     }
 
     function filterCategory(categoryId) {
