@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['addToCart'])) {
     $foodId = intval($_POST['foodId']);
     $quantity = intval($_POST['quantity']) ?: 1;
     $selectedOptions = $_POST['options'] ?? [];
+    sort($selectedOptions);
 
     $stmtFood = $conn->prepare("SELECT basePrice FROM food WHERE foodId = ?");
     $stmtFood->bind_param("i", $foodId);
@@ -42,42 +43,57 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['addToCart'])) {
 
     $purchasedPrice = ($food['basePrice'] + $extraPrice) * $quantity;
 
-    $stmtInsert = $conn->prepare("
-    INSERT INTO order_item (orderId, foodId, quantity, purchasedPrice) 
-    VALUES (?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE 
-        quantity = quantity + VALUES(quantity),
-        purchasedPrice = purchasedPrice + VALUES(purchasedPrice)
-");
-    $stmtInsert->bind_param("iiid", $orderId, $foodId, $quantity, $purchasedPrice);
-    $stmtInsert->execute();
+    $stmtExisting = $conn->prepare("SELECT orderItemId FROM order_item WHERE orderId = ? AND foodId = ?");
+    $stmtExisting->bind_param("ii", $orderId, $foodId);
+    $stmtExisting->execute();
+    $existingItems = $stmtExisting->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmtExisting->close();
 
-    if ($stmtInsert->insert_id > 0) {
-        $orderItemId = $stmtInsert->insert_id;
-    } else {
-        $stmtGetId = $conn->prepare("SELECT orderItemId FROM order_item WHERE orderId = ? AND foodId = ?");
-        $stmtGetId->bind_param("ii", $orderId, $foodId);
-        $stmtGetId->execute();
-        $orderItemId = $stmtGetId->get_result()->fetch_assoc()['orderItemId'];
-        $stmtGetId->close();
+    $matchedOrderItemId = null;
+
+    foreach ($existingItems as $existingItem) {
+        $stmtOptions = $conn->prepare("SELECT optionItemId FROM order_item_option WHERE orderItemId = ?");
+        $stmtOptions->bind_param("i", $existingItem['orderItemId']);
+        $stmtOptions->execute();
+        $existingOptions = $stmtOptions->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmtOptions->close();
+
+        $existingOptionIds = array_column($existingOptions, 'optionItemId');
+        sort($existingOptionIds);
+
+        if ($existingOptionIds === array_map('intval', $selectedOptions)) {
+            $matchedOrderItemId = $existingItem['orderItemId'];
+            break;
+        }
     }
-    $stmtInsert->close();
 
-    if (!empty($selectedOptions)) {
-        $stmtDeleteOption = $conn->prepare("DELETE FROM order_item_option WHERE orderItemId = ?");
-        $stmtDeleteOption->bind_param("i", $orderItemId);
-        $stmtDeleteOption->execute();
-        $stmtDeleteOption->close();
+    if ($matchedOrderItemId) {
+        $stmtUpdate = $conn->prepare("
+            UPDATE order_item 
+            SET quantity = quantity + ?, 
+                purchasedPrice = purchasedPrice + ?
+            WHERE orderItemId = ?
+        ");
+        $stmtUpdate->bind_param("idi", $quantity, $purchasedPrice, $matchedOrderItemId);
+        $stmtUpdate->execute();
+        $stmtUpdate->close();
+        $orderItemId = $matchedOrderItemId;
+    } else {
+        $stmtInsert = $conn->prepare("INSERT INTO order_item (orderId, foodId, quantity, purchasedPrice) VALUES (?, ?, ?, ?)");
+        $stmtInsert->bind_param("iiid", $orderId, $foodId, $quantity, $purchasedPrice);
+        $stmtInsert->execute();
+        $orderItemId = $stmtInsert->insert_id;
+        $stmtInsert->close();
 
         foreach ($selectedOptions as $optionItemId) {
             $stmtOptionPrice = $conn->prepare("SELECT extraPrice FROM food_option_item WHERE optionItemId = ?");
             $stmtOptionPrice->bind_param("i", $optionItemId);
             $stmtOptionPrice->execute();
-            $optionPrice = $stmtOptionPrice->get_result()->fetch_assoc();
+            $optPrice = $stmtOptionPrice->get_result()->fetch_assoc();
             $stmtOptionPrice->close();
 
             $stmtInsertOption = $conn->prepare("INSERT INTO order_item_option (orderItemId, optionItemId, purchasedPrice) VALUES (?, ?, ?)");
-            $stmtInsertOption->bind_param("iid", $orderItemId, $optionItemId, $optionPrice['extraPrice']);
+            $stmtInsertOption->bind_param("iid", $orderItemId, $optionItemId, $optPrice['extraPrice']);
             $stmtInsertOption->execute();
             $stmtInsertOption->close();
         }
@@ -86,19 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['addToCart'])) {
     $stmtTotal = $conn->prepare("SELECT SUM(purchasedPrice) as total FROM order_item WHERE orderId = ?");
     $stmtTotal->bind_param("i", $orderId);
     $stmtTotal->execute();
-    $stmtRow = $stmtTotal->get_result()->fetch_assoc();
+    $totalRow = $stmtTotal->get_result()->fetch_assoc();
     $stmtTotal->close();
 
     $stmtUpdateTotal = $conn->prepare("UPDATE `order` SET totalPrice = ? WHERE orderId = ?");
-    $stmtUpdateTotal->bind_param("di", $stmtRow['total'], $orderId);
+    $stmtUpdateTotal->bind_param("di", $totalRow['total'], $orderId);
     $stmtUpdateTotal->execute();
     $stmtUpdateTotal->close();
 
     header('Content-Type: application/json');
-    echo json_encode([
-        'success' => true,
-        'redirect' => '/web/orders'
-    ]);
+    echo json_encode(['success' => true, 'redirect' => '/web/orders']);
     exit();
 }
 

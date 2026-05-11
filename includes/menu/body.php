@@ -137,11 +137,19 @@ $stmtCart->close();
                             </div>
                         </div>
                         <div class="px-4 pb-4 pt-0 mt-2">
-                            <button onclick="openFoodDialog(<?php echo htmlspecialchars(json_encode($food)); ?>)"
-                                class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
-                                data-shape="default" data-width="full">
-                                Order
-                            </button>
+                            <?php if ($food['status'] == 'Available'): ?>
+                                <button onclick="openFoodDialog(<?php echo htmlspecialchars(json_encode($food)); ?>)"
+                                    class="inline-flex items-center justify-center border align-middle select-none font-sans font-bold text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
+                                    data-shape="default" data-width="full">
+                                    Order
+                                </button>
+                            <?php else: ?>
+                                <button onclick="openFoodDialog(<?php echo htmlspecialchars(json_encode($food)); ?>)"
+                                    class="inline-flex items-center cursor-not-allowed justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-secondaryForeground text-secondary border-secondary w-full"
+                                    data-shape="default" data-width="full">
+                                    Unavailable
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

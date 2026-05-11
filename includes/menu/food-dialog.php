@@ -2,7 +2,7 @@
     id="foodDialog" onclick="event.target === this && null">
     <input type="hidden" id="foodId">
     <input type="hidden" id="basePrice">
-    <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 w-148 scale-95">
+    <div class="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-xl max-h-[90vh] overflow-hidden">
         <div class="p-4 pb-2 flex justify-between items-center">
             <h1 class="text-lg text-slate-800 font-semibold">Menu Item</h1>
             <button type="button" data-dismiss="modal" aria-label="Close"
@@ -15,7 +15,7 @@
                 </svg>
             </button>
         </div>
-        <div class="h-[750px] overflow-y-scroll">
+        <div class="overflow-y-auto max-h-[80vh]">
             <div class="p-4">
                 <div id="foodImage" class="w-full h-full object-cover hidden "></div>
                 <div class="flex items-center justify-between mt-2">

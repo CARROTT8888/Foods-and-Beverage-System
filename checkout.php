@@ -99,36 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['updateOrderItem'])) {
     echo json_encode(['success' => true]);
     exit();
 }
-
-// checks order items
-$stmtItems = $conn->prepare("
-    SELECT oi.orderItemId, oi.quantity, oi.purchasedPrice,
-        f.name as foodName, f.image, f.basePrice, f.foodId,
-        c.name as categoryName
-    FROM order_item oi
-    JOIN food f ON oi.foodId = f.foodId
-    JOIN food_category c ON f.categoryId = c.categoryId
-    WHERE oi.orderId = ?
-    ORDER BY oi.orderItemId ASC
-");
-$stmtItems->bind_param("i", $orderId);
-$stmtItems->execute();
-$orderItems = $stmtItems->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmtItems->close();
-
-foreach ($orderItems as &$item) {
-    $stmtOptions = $conn->prepare("
-        SELECT foi.optionItemId, foi.itemName, oio.purchasedPrice, fog.groupName
-        FROM order_item_option oio
-        JOIN food_option_item foi ON oio.optionItemId = foi.optionItemId
-        JOIN food_option_group fog ON foi.optionGroupId = fog.optionGroupId
-        WHERE oio.orderItemId = ?
-    ");
-    $stmtOptions->bind_param("i", $item['orderItemId']);
-    $stmtOptions->execute();
-    $item['options'] = $stmtOptions->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmtOptions->close();
-}
 ?>
 
 <!DOCTYPE html>
@@ -195,9 +165,8 @@ foreach ($orderItems as &$item) {
                     closeDeleteOrderDialog();
                 }
             });
-            /*const dialog4a = document.getElementById("updateOrderDialog");
-            window.openUpdateOrderDialog = function (item) {
-                console.log(item);
+            const dialog4a = document.getElementById("updateOrderDialog");
+            window.openUpdateOrderDialog = function () {
                 dialog4a.classList.remove("opacity-0", "pointer-events-none");
                 dialog4a.classList.add("opacity-100");
             }
@@ -209,7 +178,7 @@ foreach ($orderItems as &$item) {
                 if (event.key === "Escape") {
                     closeUpdateOrderDialog();
                 }
-            });*/
+            });
         });
     </script>
 </head>
@@ -217,7 +186,7 @@ foreach ($orderItems as &$item) {
 <body class="flex flex-col justify-center h-screen">
     <div class="h-screen w-full overflow-y-scroll">
         <?php include './includes/navbar.php'; ?>
-        <?php include_once './includes/orders/body.php'; ?>
+        <?php include_once './includes/checkout/body.php'; ?>
         <?php include_once './includes/footer.php'; ?>
     </div>
 </body>

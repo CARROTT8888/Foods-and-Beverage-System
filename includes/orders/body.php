@@ -26,7 +26,7 @@ $stmtCart->close();
 // checks order items
 $stmtItems = $conn->prepare("
     SELECT oi.orderItemId, oi.quantity, oi.purchasedPrice,
-        f.name as foodName, f.image, f.basePrice,
+        f.name as foodName, f.image, f.basePrice, f.foodId,
         c.name as categoryName
     FROM order_item oi
     JOIN food f ON oi.foodId = f.foodId
@@ -41,7 +41,7 @@ $stmtItems->close();
 
 foreach ($orderItems as &$item) {
     $stmtOptions = $conn->prepare("
-        SELECT foi.itemName, oio.purchasedPrice, fog.groupName
+        SELECT foi.optionItemId, foi.itemName, oio.purchasedPrice, fog.groupName
         FROM order_item_option oio
         JOIN food_option_item foi ON oio.optionItemId = foi.optionItemId
         JOIN food_option_group fog ON foi.optionGroupId = fog.optionGroupId
@@ -125,9 +125,9 @@ $stmtOrder->close();
                                     </h3>
                                 </div>
                                 <div class="flex -mr-2">
-                                    <button onclick="openDeleteOrderDialog(<?php echo $item['orderItemId']; ?>)"
+                                    <button onclick="openUpdateOrderDialog(<?php echo $item['orderItemId']; ?>)"
                                         class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-primary hover:bg-amber-200/50 hover:border-amber-200/10 shadow-none hover:shadow-none outline-none">
-                                        <i class='bx bxs-edit text-lg'></i>
+                                        <i class='bx bxs-edit text-lg text-primary'></i>
                                     </button>
                                     <button onclick="openDeleteOrderDialog(<?php echo $item['orderItemId']; ?>)"
                                         class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-primary hover:bg-amber-200/50 hover:border-amber-200/10 shadow-none hover:shadow-none outline-none">
@@ -163,27 +163,90 @@ $stmtOrder->close();
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5 mb-6 md:col-span-1 col-span-2">
+            <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5 mb-6 md:col-span-1 col-span-2 h-[280px]">
                 <h2 class="font-bold text-slate-700 mb-4">Order Summary</h2>
                 <div class="flex justify-between text-sm text-slate-500 mb-2">
                     <span>Subtotal</span>
                     <span>RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
+                </div>
+                <div class="flex justify-between text-sm text-slate-500 mb-2">
+                    <span>Delivery Charge</span>
+                    <span>-</span>
                 </div>
                 <hr class="my-3 border-slate-100">
                 <div class="flex justify-between font-bold text-slate-800 text-lg">
                     <span>Total</span>
                     <span class="text-green-600">RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
                 </div>
-                <div class="mt-10">
-                    <button onclick="openFoodDialog(<?php echo htmlspecialchars(json_encode($food)); ?>)"
+                <div class="mt-6">
+                    <button onclick="window.location.href='/web/checkout'"
                         class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
                         data-shape="default" data-width="full">
                         <i class='bx bxs-lock-alt'></i>
-                        Proceed to Checkout
+                        Checkout
+                    </button>
+                    <button onclick="window.location.href='/web/menu'"
+                        class="text-center w-full mt-2 p-2 gap-2 text-md text-primary hover:underline items-center">
+                        <i class='bx bxs-left-arrow-circle'></i> Continue Ordering
                     </button>
                 </div>
             </div>
         </div>
     <?php endif; ?>
     <?php include 'delete-order-dialog.php'; ?>
+    <?php include 'update-order-dialog.php'; ?>
 </div>
+
+<script>
+    function openUpdateOrderDialog(orderItemId) {
+        const dialog = document.getElementById("updateOrderDialog");
+        const optionsContainer = document.getElementById("updateOrderOptions");
+
+        document.getElementById("updateOrderItemId").value = orderItemId;
+
+        optionsContainer.innerHTML = "<p class='text-slate-400'>Loading options...</p>";
+
+        fetch("/web/includes/orders/get-order-item.php?orderItemId=" + orderItemId)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("updateQuantity").value = data.quantity;
+
+                optionsContainer.innerHTML = "";
+
+                if (data.options && data.options.length > 0) {
+                    data.options.forEach(opt => {
+                        optionsContainer.innerHTML += `
+                            <label class="flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 cursor-pointer hover:border-primary transition">
+                                <div class="flex items-center gap-2">
+                            <input type="radio" name="options[]" value="${opt.optionItemId}"
+                                    ${opt.selected == 1 ? "checked" : ""}>
+                                ${opt.itemName}
+                                ${opt.price > 0 ? `<span class="text-xs text-primary font-medium">+RM ${parseFloat(opt.price).toFixed(2)})</span>` : ""}
+                            </label>
+                        `;
+                    });
+                } else {
+                    optionsContainer.innerHTML = "<p class='text-slate-400'>No options available.</p>";
+                }
+
+                // OPEN MODAL
+                dialog.classList.remove("opacity-0", "pointer-events-none");
+                dialog.classList.add("opacity-100");
+            })
+            .catch(err => {
+                console.error(err);
+                optionsContainer.innerHTML = "<p class='text-red-500'>Failed to load options.</p>";
+            });
+    }
+
+    function closeUpdateOrderDialog() {
+        const dialog = document.getElementById("updateOrderDialog");
+        dialog.classList.remove("opacity-100");
+        dialog.classList.add("opacity-0", "pointer-events-none");
+    }
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeUpdateOrderDialog();
+        }
+    });
+</script>

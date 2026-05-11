@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2026 at 05:18 PM
+-- Generation Time: May 11, 2026 at 06:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,13 +47,14 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`branchId`, `name`, `slug`, `image`, `createdAt`, `address`, `status`, `contactNumber`, `startTime`, `endTime`, `state`, `visibleStatus`) VALUES
-(1, 'Multimedia University', '111', 'branch_1777178141_2636.jpg', '2026-04-01 16:42:42', '', 'Closed', NULL, '', '', 'Perlis', 'Invisible'),
-(2, 'Treble Clef', 'tc', 'branch_1777178833_1263.jpg', '2026-04-01 16:42:33', 'Banda Kaba, Kampung Lapan, 75000, Melaka', 'Opening', '0123456789', '08:00', '17:00', 'Melaka', 'Visible'),
-(3, 'GPA 3.78', 'gpa', 'branch_1777178119_3192.jpg', '2026-03-25 21:14:55', 'abc123', 'Opening', NULL, '', '', 'Kelantan', 'Invisible'),
-(4, '???', 'tc2121', '', '2026-03-30 15:51:00', 'where is treble clef', 'Deprecated', NULL, '20:00', '22:00', 'Selangor', 'Invisible'),
-(5, 'Treble Clef 2', 'tc1121', 'branch_1777178821_7312.jpeg', '2026-03-31 00:42:30', 'Kampung Lapan, Treble Clef, 75000, Melaka', 'Setup', '043838238', '01:00', '18:00', 'Melaka', 'Visible'),
-(8, 'testing', '123', 'branch_1777178182_6978.jpg', '2026-03-31 01:26:35', 'i am testing header location', 'Opening', '0106553599', '09:00', '23:00', 'Kedah', 'Visible'),
-(9, 'The First Branch', 'tfb', 'branch_1777178799_5187.png', '2026-04-23 13:00:42', 'Multimedia University, Persiaran Multimedia, 63100 Cyberjaya, Selangor, Malaysia', 'Setup', '603 – 8312 5134', '08:00', '23:59', 'Selangor', 'Visible');
+(1, 'ABC Cafe - Johor Bahru', '111', 'branch_1777178141_2636.jpg', '2026-04-01 16:42:42', 'Lot 12, Jalan Sutera, Taman Sutera, 81300 Johor Bahru', 'Opening', '07-556 8899', '08:00', '22:00', 'Selangor', 'Visible'),
+(2, 'ABC Cafe - Kuala Lumpur', 'tc', 'branch_1777178833_1263.jpg', '2026-04-01 16:42:33', 'No 88, Jalan Bukit Bintang, 55100 Kuala Lumpur', 'Opening', '03-2144 7788', '09:00', '23:00', 'Negeri Sembilan', 'Visible'),
+(3, 'ABC Cafe - Penang', 'gpa', 'branch_1777178119_3192.jpg', '2026-03-25 21:14:55', '25, Lebuh Chulia, George Town, 10200 Penang', 'Opening', '04-262 1998', '10:00', '22:30', 'Pulau Pinang', 'Invisible'),
+(4, 'ABC Cafe - Melaka', 'tc2121', 'branch_1777614410_4755.png', '2026-03-30 15:51:00', '11, Jalan Hang Tuah, 75300 Melaka', 'Deprecated', '06-288 1122', '09:00', '21:00', 'Melaka', 'Invisible'),
+(5, 'ABC Cafe - Ipoh', 'tc1121', 'branch_1777178821_7312.jpeg', '2026-03-31 00:42:30', '40, Jalan Sultan Iskandar, 30000 Ipoh, Perak', 'Opening', '043838238', '08:30', '22:00', 'Perak', 'Visible'),
+(8, 'ABC Cafe - Kuching', '123', 'branch_1777178182_6978.jpg', '2026-03-31 01:26:35', 'Lot 6, Jalan Padungan, 93100 Kuching, Sarawak', 'Opening', '082-555 233', '09:00', '21:30', 'Sarawak', 'Visible'),
+(9, 'ABC Cafe - Kota Kinabalu', 'tfb', 'branch_1777178799_5187.png', '2026-04-23 13:00:42', 'Block A, Jalan Gaya, 88000 Kota Kinabalu', 'Setup', '603 – 8312 5134', '10:00', '23:00', 'Sabah', 'Visible'),
+(17, 'ABC Cafe - Putrajaya', 'tsb', 'branch_1777622570_9640.png', '2026-04-29 18:55:33', 'Presint 15, Jalan Diplomatik, 62000 Putrajaya', 'Closed', '03-8888 2323', '08:00', '20:00', 'Johor', 'Invisible');
 
 --
 -- Triggers `branch`
@@ -109,9 +110,11 @@ INSERT INTO `food` (`foodId`, `name`, `description`, `basePrice`, `status`, `vis
 (1, 'Burger', 'This is a burger', 12.50, 'Discontinued', 'Visible', 'menu_1777178046_1228.jpg', '2026-04-30 13:47:29', 10, 1),
 (2, 'YEEEEYAAAAHAAAAAA', 'YAMAHAAAAAAAAAAAAAAAA', 1000.00, 'Available', 'Invisible', 'menu_1777178015_6948.jpg', '2026-04-18 17:55:39', 14, 3),
 (3, 'Pizza', 'Pizzaaaaa', 10000.00, 'Available', 'Visible', 'menu_1777178005_1844.jpg', '2026-04-18 19:01:34', 9, 2),
-(4, 'YOSHI', '...', 100000.00, 'Discontinued', 'Invisible', 'menu_1777177992_3550.jpg', '2026-04-19 00:30:12', 9, 2),
-(5, 'BBQ', 'this is bbq', 10.50, 'Available', 'Invisible', 'menu_1777177980_1262.jpg', '2026-04-19 21:45:10', 12, 1),
-(6, 'Black Chicken', 'this is not a white chicken', 50.00, 'Sold Out', 'Visible', 'menu_1777177969_8078.jpg', '2026-04-20 22:49:25', 15, 3);
+(4, 'Curry Laksa', 'Spicy coconut curry noodle soup with tofu puffs and egg.', 13.90, 'Available', 'Visible', 'menu_1777177992_3550.jpg', '2026-04-19 00:30:12', 11, 2),
+(5, 'BBQ', 'this is bbq', 10.50, 'Available', 'Visible', 'menu_1777177980_1262.jpg', '2026-04-19 21:45:10', 12, 1),
+(6, 'Black Chicken', 'this is not a white chicken', 50.00, 'Sold Out', 'Visible', 'menu_1777177969_8078.jpg', '2026-04-20 22:49:25', 15, 3),
+(7, 'Vegetarian Food', 'This is not a vegetarian food hahahaha', 32.50, 'Sold Out', 'Visible', 'menu_1777628673_1413.png', '2026-05-01 17:44:33', 9, 2),
+(8, 'Www', 'WWWWWWWWW', 1.50, 'Available', 'Visible', 'menu_1777992613_5908.jpg', '2026-05-05 22:50:13', 13, 2);
 
 -- --------------------------------------------------------
 
@@ -131,15 +134,13 @@ CREATE TABLE `food_category` (
 --
 
 INSERT INTO `food_category` (`categoryId`, `name`, `status`, `branchId`) VALUES
-(6, 'Alcohol ', 'Visible', 2),
-(8, 'Normal Drink', 'Visible', 1),
-(9, 'no44 mud dust', 'Invisible', 2),
+(9, 'Vegetarian', 'Visible', 2),
 (10, 'Burgers', 'Deprecated', 1),
-(11, 'Rice', 'Deprecated', 2),
-(12, 'Noodles', 'Invisible', 1),
-(13, 'Whisky', 'Visible', 2),
-(14, 'Gintini', 'Visible', 3),
-(15, 'YEEEEE', 'Visible', 3);
+(11, 'Rice', 'Visible', 2),
+(12, 'Noodles', 'Visible', 1),
+(13, 'Western Food', 'Visible', 2),
+(14, 'Noodles', 'Visible', 3),
+(15, 'Rice', 'Visible', 3);
 
 -- --------------------------------------------------------
 
@@ -165,7 +166,8 @@ INSERT INTO `food_option_group` (`optionGroupId`, `groupName`, `foodId`) VALUES
 (49, 'Size', 6),
 (50, 'testing', 6),
 (51, 'Sugar Level', 1),
-(52, 'Spicy Level', 4);
+(52, 'Spicy Level', 4),
+(53, 'Size', 4);
 
 -- --------------------------------------------------------
 
@@ -207,7 +209,10 @@ INSERT INTO `food_option_item` (`optionItemId`, `itemName`, `extraPrice`, `optio
 (98, 'None1', 10.00, 47),
 (99, 'Little', 20.00, 47),
 (100, 'Normal', 30.00, 47),
-(101, 'Spicy', 40.00, 47);
+(101, 'Spicy', 40.00, 47),
+(102, 'Small', 0.00, 53),
+(103, 'Medium', 0.00, 53),
+(104, 'Large', 0.00, 53);
 
 -- --------------------------------------------------------
 
@@ -222,6 +227,8 @@ CREATE TABLE `order` (
   `methodId` int(10) UNSIGNED NOT NULL,
   `tableId` int(10) UNSIGNED DEFAULT NULL,
   `totalPrice` decimal(10,2) NOT NULL,
+  `username` varchar(150) DEFAULT NULL,
+  `contactNumber` varchar(20) DEFAULT NULL,
   `deliveryAddress` varchar(255) DEFAULT NULL,
   `deliveryState` varchar(150) DEFAULT NULL,
   `deliveryDistrict` varchar(150) DEFAULT NULL,
@@ -236,9 +243,10 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`orderId`, `userId`, `branchId`, `methodId`, `tableId`, `totalPrice`, `deliveryAddress`, `deliveryState`, `deliveryDistrict`, `deliveryPostalCode`, `extraNote`, `orderStatus`, `paymentStatus`, `createdAt`) VALUES
-(4, 1, 2, 2, NULL, 0.00, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-04-26 17:15:01'),
-(5, 1, 2, 2, NULL, 0.00, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-04-27 12:04:12');
+INSERT INTO `order` (`orderId`, `userId`, `branchId`, `methodId`, `tableId`, `totalPrice`, `username`, `contactNumber`, `deliveryAddress`, `deliveryState`, `deliveryDistrict`, `deliveryPostalCode`, `extraNote`, `orderStatus`, `paymentStatus`, `createdAt`) VALUES
+(20, 1, 2, 2, NULL, 3.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-05-08 15:01:53'),
+(21, 1, 2, 2, NULL, 216.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-05-09 16:56:54'),
+(22, 1, 2, 2, NULL, 17.40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-05-11 12:29:56');
 
 -- --------------------------------------------------------
 
@@ -287,7 +295,7 @@ CREATE TABLE `order_method` (
 INSERT INTO `order_method` (`methodId`, `methodName`, `branchId`, `isEnabled`) VALUES
 (1, 'Dine In', 2, 1),
 (2, 'Take Away', 2, 1),
-(3, 'Delivery', 2, 1),
+(3, 'Delivery', 2, 0),
 (13, 'Dine In', 1, 1),
 (14, 'Take Away', 1, 1),
 (15, 'Delivery', 1, 1),
@@ -301,11 +309,14 @@ INSERT INTO `order_method` (`methodId`, `methodName`, `branchId`, `isEnabled`) V
 (23, 'Take Away', 5, 1),
 (24, 'Delivery', 5, 1),
 (25, 'Dine In', 8, 1),
-(26, 'Take Away', 8, 1),
-(27, 'Delivery', 8, 1),
+(26, 'Take Away', 8, 0),
+(27, 'Delivery', 8, 0),
 (28, 'Dine In', 9, 1),
 (29, 'Take Away', 9, 1),
-(30, 'Delivery', 9, 1);
+(30, 'Delivery', 9, 1),
+(34, 'Dine In', 17, 0),
+(35, 'Take Away', 17, 1),
+(36, 'Delivery', 17, 1);
 
 -- --------------------------------------------------------
 
@@ -459,26 +470,26 @@ ALTER TABLE `food_option_item`
 --
 ALTER TABLE `order`
   ADD PRIMARY KEY (`orderId`),
-  ADD UNIQUE KEY `tableId` (`tableId`),
   ADD KEY `methodId` (`methodId`),
   ADD KEY `userId` (`userId`),
-  ADD KEY `branchId` (`branchId`);
+  ADD KEY `branchId` (`branchId`),
+  ADD KEY `tableId` (`tableId`);
 
 --
 -- Indexes for table `order_item`
 --
 ALTER TABLE `order_item`
   ADD PRIMARY KEY (`orderItemId`),
-  ADD UNIQUE KEY `orderId` (`orderId`),
-  ADD UNIQUE KEY `foodId` (`foodId`);
+  ADD KEY `orderId` (`orderId`),
+  ADD KEY `foodId` (`foodId`);
 
 --
 -- Indexes for table `order_item_option`
 --
 ALTER TABLE `order_item_option`
   ADD PRIMARY KEY (`orderItemOptionId`),
-  ADD UNIQUE KEY `optionItemId` (`optionItemId`),
-  ADD UNIQUE KEY `orderItemId` (`orderItemId`);
+  ADD KEY `optionItemId` (`optionItemId`),
+  ADD KEY `orderItemId` (`orderItemId`);
 
 --
 -- Indexes for table `order_method`
@@ -522,7 +533,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `branchId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `branchId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -534,49 +545,49 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `food`
 --
 ALTER TABLE `food`
-  MODIFY `foodId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `foodId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `food_category`
 --
 ALTER TABLE `food_category`
-  MODIFY `categoryId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `categoryId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `food_option_group`
 --
 ALTER TABLE `food_option_group`
-  MODIFY `optionGroupId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `optionGroupId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `food_option_item`
 --
 ALTER TABLE `food_option_item`
-  MODIFY `optionItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `optionItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `orderId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `orderId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `orderItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `orderItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `order_item_option`
 --
 ALTER TABLE `order_item_option`
-  MODIFY `orderItemOptionId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `orderItemOptionId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `order_method`
 --
 ALTER TABLE `order_method`
-  MODIFY `methodId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `methodId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
