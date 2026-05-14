@@ -195,6 +195,20 @@ foreach ($orderItems as &$item) {
                     closeDeleteOrderDialog();
                 }
             });
+            const dialog4a = document.getElementById("headerInfoDialog");
+            window.openHeaderInfoDialog = function () {
+                dialog4a.classList.add("opacity-100");
+                dialog4a.classList.remove("opacity-0", "pointer-events-none");
+            }
+            window.closeHeaderInfoDialog = function () {
+                dialog4a.classList.remove("opacity-100");
+                dialog4a.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeHeaderInfoDialog();
+                }
+            });
             /*const dialog4a = document.getElementById("updateOrderDialog");
             window.openUpdateOrderDialog = function (item) {
                 console.log(item);

@@ -224,11 +224,11 @@ $deliveryEnabled = ($data && $data['isEnabled'] == 1);
                 </button>
             <?php else: ?>
                 <button disabled title="Locked, not available now."
-                    class="cursor-not-allowed rounded-lg transition-all duration-300 border shadow-sm bg-white border-slate-200 shadow-slate-950/5 relative flex h-[30rem] w-full max-w-md flex-col items-end justify-center overflow-hidden text-center pb-12 pt-20">
+                    class="cursor-not-allowed rounded-lg transition-all text-secondaryForeground duration-300 border shadow-sm bg-secondary border-slate-200 shadow-slate-950/5 relative flex h-[30rem] w-full max-w-md flex-col items-end justify-center overflow-hidden text-center pb-12 pt-20">
                     <div class="p-2">
-                        <div class="absolute inset-0 m-0 h-full w-full rounded-none bg-primary bg-right">
+                        <div class="absolute inset-0 m-0 h-full w-full rounded-none">
                             <div
-                                class="absolute inset-0 h-full w-full bg-linear-to-t from-slate-400/80 via-yellow-500 to-slate-600/10">
+                                class="absolute inset-0 h-full w-full">
                             </div>
                             <i class="bx bxs-lock text-2xl mt-2 flex justify-end mr-2"></i>
                         </div>
@@ -236,12 +236,10 @@ $deliveryEnabled = ($data && $data['isEnabled'] == 1);
                     <div
                         class="w-full rounded relative bottom-0 flex h-full flex-col items-start justify-center px-6 py-14 md:px-12">
                         <i class='bx bxs-map-pin text-9xl'></i>
-                        <h4 class="font-sans antialiased font-bold text-xl md:text-2xl lg:text-3xl text-black">
+                        <h4 class="font-sans antialiased font-bold text-xl md:text-2xl lg:text-3xl text-secondaryForeground">
                             Delivery
                         </h4>
-                        <p class="mt-4 max-w-[26rem] text-left  text-base/6 text-secondaryForeground">Enjoy your meals at
-                            home
-                            with our reliable delivery service, right to your location.</p>
+                        <p class="mt-4 max-w-[26rem] text-left  text-base/6 text-secondaryForeground">Not Available Now</p>
                     </div>
                 </button>
             <?php endif; ?>

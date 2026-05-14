@@ -67,40 +67,116 @@ $stmtOrder->bind_param("i", $orderId);
 $stmtOrder->execute();
 $orderRow = $stmtOrder->get_result()->fetch_assoc();
 $stmtOrder->close();
+
+$stmtPay = $conn->prepare("SELECT paymentMethod, paymentStatus FROM payment WHERE orderId = ?");
+$stmtPay->bind_param("i", $orderId);
+$stmtPay->execute();
+$paymentRow = $stmtPay->get_result()->fetch_assoc();
+$stmtPay->close();
+
+$paymentStatus = $paymentRow['paymentStatus'] ?? null;
+$paymentMethod = $paymentRow['paymentMethod'] ?? null;
+
+$successMessage = "";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['savePayment'])) {
+    $orderId = intval($_POST['orderId']);
+    $paymentMethod = $_POST['paymentMethod'] ?? '';
+
+    if (empty($orderId) || empty($paymentMethod)) {
+        echo "<script>alert('Oppps... Invalid payment request.');</script>";
+    } else {
+        $paymentStatus = "Pending";
+
+        if ($paymentMethod === 'Online Payment') {
+            $paymentStatus = "Success";
+        }
+
+        $checkQuery = "SELECT paymentId FROM payment WHERE orderId=?";
+        $checkStmt = $conn->prepare($checkQuery);
+        $checkStmt->bind_param("i", $orderId);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+        $existingPayment = $checkResult->fetch_assoc();
+        $checkStmt->close();
+
+        if ($existingPayment) {
+            $updateQuery = "UPDATE payment SET paymentMethod = ?, paymentStatus = ? WHERE orderId = ?";
+            $updateStmt = $conn->prepare($updateQuery);
+            $updateStmt->bind_param("ssi", $paymentMethod, $paymentStatus, $orderId);
+
+            if ($updateStmt->execute()) {
+                $updateStmt->close();
+                echo "<script>window.location.href='/web/checkout'</script>";
+                $successMessage = "You have paid successfully.";
+                exit();
+            } else {
+                echo "Update failed.";
+            }
+            $updateStmt->close();
+        } else {
+            $insertQuery = "INSERT INTO payment (paymentMethod, paymentStatus, orderId) VALUES (?, ?, ?)";
+            $insertStmt = $conn->prepare($insertQuery);
+            $insertStmt->bind_param("ssi", $paymentMethod, $paymentStatus, $orderId);
+
+            if ($insertStmt->execute()) {
+                $insertStmt->close();
+                echo "<script>window.location.href='/web/checkout'</script>";
+                exit();
+            } else {
+                echo "Update failed.";
+            }
+            $insertStmt->close();
+        }
+    }
+}
 ?>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
     <!-- Header -->
     <?php include 'header.php'; ?>
     <?php if (!empty($orderItems)): ?>
-        
+
         <div class="grid md:grid-cols-4 grid-cols-1 gap-4">
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5 mb-6 md:col-span-2 col-span-2 h-[280px]">
-                <h2 class="font-bold text-slate-700 mb-4">Order Summary</h2>
-                <div class="flex justify-between text-sm text-slate-500 mb-2">
-                    <span>Subtotal</span>
-                    <span>RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
+            <div class="relative tab-group md:col-span-2 col-span-2">
+                <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
+                    <div
+                        class="absolute top-1 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
+                    </div>
+                    <?php if ($paymentStatus === 'Success' && $paymentMethod === 'Online Payment'): ?>
+                        <a href="#"
+                            class="cursor-not-allowed text-secondaryForeground line-through text-sm font-medium inline-block py-2 px-4 transition-all duration-300 relative z-1 mr-1"
+                            data-tab-target="tab1-group">
+                            Cash
+                        </a>
+                    <?php else: ?>
+                        <a href="#"
+                            class="tab-link text-sm font-medium active inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                            data-tab-target="tab1-group">
+                            Cash
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($paymentStatus === 'Pending' && $paymentMethod === 'Cash'): ?>
+                        <a href="#"
+                            class="cursor-not-allowed text-secondaryForeground line-through text-sm font-medium inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                            data-tab-target="tab2-group">
+                            Online Payment
+                        </a>
+                    <?php else: ?>
+                        <a href="#"
+                            class="tab-link text-sm font-medium inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                            data-tab-target="tab2-group">
+                            Online Payment
+                        </a>
+                    <?php endif; ?>
                 </div>
-                <div class="flex justify-between text-sm text-slate-500 mb-2">
-                    <span>Delivery Charge</span>
-                    <span>-</span>
-                </div>
-                <hr class="my-3 border-slate-100">
-                <div class="flex justify-between font-bold text-slate-800 text-lg">
-                    <span>Total</span>
-                    <span class="text-green-600">RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
-                </div>
-                <div class="mt-6">
-                    <button onclick="window.location.href='/web/checkout'"
-                        class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
-                        data-shape="default" data-width="full">
-                        <i class='bx bxs-lock-alt'></i>
-                        Proceed to Checkout
-                    </button>
-                    <button onclick="window.location.href='/web/menu'"
-                        class="text-center w-full mt-2 p-2 gap-2 text-md text-primary hover:underline items-center">
-                        <i class='bx bxs-left-arrow-circle'></i> Continue Ordering
-                    </button>
+                <div class="mt-4 tab-content-container">
+                    <div id="tab1-group" class="tab-content text-slate-800 block">
+                        <?php include 'cash-form.php'; ?>
+                    </div>
+                    <div id="tab2-group" class="tab-content text-slate-800 hidden">
+                        <?php include 'online-payment-form.php'; ?>
+                    </div>
                 </div>
             </div>
             <div class="grid grid-cols-1 col-span-2">
@@ -177,12 +253,21 @@ $stmtOrder->close();
                             <span class="text-green-600">RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
                         </div>
                         <div class="mt-6">
-                            <button onclick="window.location.href='/web/checkout'"
-                                class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
-                                data-shape="default" data-width="full">
-                                <i class='bx bxs-lock-alt'></i>
-                                Proceed to Checkout
-                            </button>
+                            <?php if ($paymentStatus === 'Pending' || $paymentStatus === 'Success'): ?>
+                                <button onclick="window.location.href='/web/confirmation'"
+                                    class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
+                                    data-shape="default" data-width="full">
+                                    <i class='bx bxs-check-circle'></i>
+                                    Confirmation
+                                </button>
+                            <?php else: ?>
+                                <button type="button"
+                                    class="inline-flex gap-2 items-center cursor-not-allowed justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-amber-600 text-foreground border-secondary w-full"
+                                    data-shape="default" data-width="full">
+                                    <i class='bx bxs-check-circle'></i>
+                                    Confirmation
+                                </button>
+                            <?php endif; ?>
                             <button onclick="window.location.href='/web/menu'"
                                 class="text-center w-full mt-2 p-2 gap-2 text-md text-primary hover:underline items-center">
                                 <i class='bx bxs-left-arrow-circle'></i> Continue Ordering

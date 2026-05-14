@@ -1,7 +1,7 @@
 <div class="items-center max-w-7xl w-auto my-5">
     <div role="alert"
         class="relative flex w-full justify-between items-start rounded-md border border-transparent bg-slate-800/10 p-2 text-slate-800">
-        <span class="grid shrink-0 place-items-center p-1">
+        <span class="grid shrink-0 place-items-center p-1 cursor-pointer" onclick="openHeaderInfoDialog()">
             <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5">
                 <path d="M12 7L12 13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -12,6 +12,7 @@
                     stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
         </span>
+        <?php include 'header-info-dialog.php'; ?>
         <div class="m-1.5 mt-0.5 w-full font-sans text-base leading-none">
             <p class="font-sans text-base antialiased">Current Branch Selected: <span
                     class="font-bold"><?php echo htmlspecialchars($branch['name']); ?></span></p>

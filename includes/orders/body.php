@@ -58,11 +58,18 @@ foreach ($orderItems as &$item) {
     exit();*/
 }
 
-$stmtOrder = $conn->prepare("SELECT totalPrice, methodId FROM `order` WHERE orderId = ?");
+$stmtOrder = $conn->prepare("
+    SELECT o.totalPrice, o.methodId, om.methodName, o.extraNote, o.deliveryAddress, o.deliveryState, o.deliveryPostalCode, o.deliveryDistrict
+    FROM `order` o
+    JOIN order_method om ON o.methodId = om.methodId
+    WHERE orderId = ?
+    ");
 $stmtOrder->bind_param("i", $orderId);
 $stmtOrder->execute();
 $orderRow = $stmtOrder->get_result()->fetch_assoc();
 $stmtOrder->close();
+
+$errorMessage = "";
 ?>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
@@ -96,8 +103,8 @@ $stmtOrder->close();
             </div>
         </div>
     <?php else: ?>
-        <div class="grid md:grid-cols-3 grid-cols-1 gap-4">
-            <div class="grid grid-cols-1 space-y-2 col-span-2">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+            <div class="grid grid-cols-1 space-y-2 col-span-1">
                 <?php foreach ($orderItems as &$item): ?>
                     <div class="bg-white rounded-lg border h-48 border-slate-200 hover:bg-accent hover:border-accentForeground transition shadow-sm overflow-hidden flex gap-0"
                         id="cart-item-<?php echo $item['orderItemId']; ?>">
@@ -131,7 +138,7 @@ $stmtOrder->close();
                                     </button>
                                     <button onclick="openDeleteOrderDialog(<?php echo $item['orderItemId']; ?>)"
                                         class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-primary hover:bg-amber-200/50 hover:border-amber-200/10 shadow-none hover:shadow-none outline-none">
-                                        <i class='bx bx-trash text-lg text-red-500'></i>
+                                        <i class='bx bxs-trash text-lg text-red-500'></i>
                                     </button>
                                 </div>
                             </div>
@@ -163,34 +170,45 @@ $stmtOrder->close();
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5 mb-6 md:col-span-1 col-span-2 h-[280px]">
-                <h2 class="font-bold text-slate-700 mb-4">Order Summary</h2>
-                <div class="flex justify-between text-sm text-slate-500 mb-2">
-                    <span>Subtotal</span>
-                    <span>RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
+            <form method="POST" action="/web/orders.php">
+                <div class="grid grid-cols-1">
+                    <?php include 'orders-form.php'; ?>
+                    <?php if (!empty($errorMessage)): ?>
+                        <div class="text-destructive text-sm">
+                                        <?php echo htmlspecialchars($errorMessage) ?>
+                        </div>
+                                <?php endif; ?>
+                    <div
+                        class="bg-white rounded-lg border border-slate-200 shadow-sm p-5 mb-6 md:col-span-1 col-span-2 h-[280px]">
+                        <h2 class="font-bold text-slate-700 mb-4">Order Summary</h2>
+                        <div class="flex justify-between text-sm text-slate-500 mb-2">
+                            <span>Subtotal</span>
+                            <span>RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
+                        </div>
+                        <div class="flex justify-between text-sm text-slate-500 mb-2">
+                            <span>Delivery Charge</span>
+                            <span>-</span>
+                        </div>
+                        <hr class="my-3 border-slate-100">
+                        <div class="flex justify-between font-bold text-slate-800 text-lg">
+                            <span>Total</span>
+                            <span class="text-green-600">RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
+                        </div>
+                        <div class="mt-6">
+                            <button type="submit"
+                                class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
+                                data-shape="default" data-width="full">
+                                <i class='bx bxs-lock-alt'></i>
+                                Checkout
+                            </button>
+                            <button type="button" onclick="window.location.href='/web/menu'"
+                                class="text-center w-full mt-2 p-2 gap-2 text-md text-primary hover:underline items-center">
+                                <i class='bx bxs-left-arrow-circle'></i> Continue Ordering
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex justify-between text-sm text-slate-500 mb-2">
-                    <span>Delivery Charge</span>
-                    <span>-</span>
-                </div>
-                <hr class="my-3 border-slate-100">
-                <div class="flex justify-between font-bold text-slate-800 text-lg">
-                    <span>Total</span>
-                    <span class="text-green-600">RM <?php echo number_format($orderRow['totalPrice'], 2); ?></span>
-                </div>
-                <div class="mt-6">
-                    <button onclick="window.location.href='/web/checkout'"
-                        class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground"
-                        data-shape="default" data-width="full">
-                        <i class='bx bxs-lock-alt'></i>
-                        Checkout
-                    </button>
-                    <button onclick="window.location.href='/web/menu'"
-                        class="text-center w-full mt-2 p-2 gap-2 text-md text-primary hover:underline items-center">
-                        <i class='bx bxs-left-arrow-circle'></i> Continue Ordering
-                    </button>
-                </div>
-            </div>
+            </form>
         </div>
     <?php endif; ?>
     <?php include 'delete-order-dialog.php'; ?>
@@ -198,6 +216,17 @@ $stmtOrder->close();
 </div>
 
 <script>
+    let currentQuantity = 1;
+
+    function changeQuantity(delta) {
+        currentQuantity = Math.max(1, currentQuantity + delta);
+
+        document.getElementById("updateQuantity").value = currentQuantity;
+        document.getElementById("updateQuantityDisplay").innerText = currentQuantity;
+
+        updateTotal();
+    }
+
     function openUpdateOrderDialog(orderItemId) {
         const dialog = document.getElementById("updateOrderDialog");
         const optionsContainer = document.getElementById("updateOrderOptions");
@@ -209,22 +238,64 @@ $stmtOrder->close();
         fetch("/web/includes/orders/get-order-item.php?orderItemId=" + orderItemId)
             .then(res => res.json())
             .then(data => {
-                document.getElementById("updateQuantity").value = data.quantity;
+                //document.getElementById("updateQuantity").value = data.quantity;
+                document.getElementById("updateFoodName").innerText = data.foodName;
+                document.getElementById("updateFoodDescription").innerText = data.foodDescription;
+                document.getElementById('updateBasePrice').value = data.basePrice;
+
+                currentQuantity = parseInt(data.quantity) || 1;
+
+                document.getElementById("updateQuantity").value = currentQuantity;
+                document.getElementById("updateQuantityDisplay").innerText = currentQuantity;
+
+                updateTotal();
+
+                // Image
+                const imgDiv = document.getElementById("updateFoodImage");
+                if (data.foodImage) {
+                    imgDiv.innerHTML = `<img src="/Foods-and-Beverage-System/uploads/menus/${data.foodImage}" class="w-full h-56 object-cover rounded-lg">`;
+                }
 
                 optionsContainer.innerHTML = "";
 
                 if (data.options && data.options.length > 0) {
+
+                    const grouped = {};
+
                     data.options.forEach(opt => {
-                        optionsContainer.innerHTML += `
-                            <label class="flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 cursor-pointer hover:border-primary transition">
-                                <div class="flex items-center gap-2">
-                            <input type="radio" name="options[]" value="${opt.optionItemId}"
-                                    ${opt.selected == 1 ? "checked" : ""}>
-                                ${opt.itemName}
-                                ${opt.price > 0 ? `<span class="text-xs text-primary font-medium">+RM ${parseFloat(opt.price).toFixed(2)})</span>` : ""}
-                            </label>
-                        `;
+                        if (!grouped[opt.groupName]) grouped[opt.groupName] = [];
+                        grouped[opt.groupName].push(opt);
                     });
+
+                    optionsContainer.innerHTML = "";
+
+                    Object.keys(grouped).forEach(groupName => {
+                        optionsContainer.innerHTML += `
+            <div class="mb-4">
+                <h3 class="text-sm font-bold text-slate-700 mb-2">${groupName}</h3>
+                <div class="space-y-2" id="group-${groupName.replace(/\s+/g, '-')}-options"></div>
+            </div>
+        `;
+
+                        const groupDiv = optionsContainer.querySelector(
+                            `#group-${groupName.replace(/\s+/g, '-')}-options`
+                        );
+
+                        grouped[groupName].forEach(opt => {
+                            groupDiv.innerHTML += `
+                <label class="flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 cursor-pointer hover:border-primary transition">
+                    <div class="flex items-center gap-2">
+                        <input type="radio" name="options[${groupName}]" value="${opt.optionItemId}"
+                            ${opt.selected == 1 ? "checked" : ""}>
+                        <span>${opt.itemName}</span>
+                    </div>
+
+                    ${opt.price > 0 ? `<span class="text-xs text-primary font-medium">+RM ${parseFloat(opt.price).toFixed(2)}</span>` : ""}
+                </label>
+            `;
+                        });
+                    });
+
                 } else {
                     optionsContainer.innerHTML = "<p class='text-slate-400'>No options available.</p>";
                 }
@@ -237,6 +308,18 @@ $stmtOrder->close();
                 console.error(err);
                 optionsContainer.innerHTML = "<p class='text-red-500'>Failed to load options.</p>";
             });
+    }
+
+    function updateTotal() {
+        let basePrice = parseFloat(document.getElementById("updateBasePrice").value) || 0;
+        let extra = 0;
+
+        document.querySelectorAll("#updateOrderOptions input:checked").forEach(opt => {
+            extra += parseFloat(opt.dataset.price) || 0;
+        });
+
+        let total = (basePrice + extra) * currentQuantity;
+        document.getElementById("updateTotalPriceDisplay").innerText = total.toFixed(2);
     }
 
     function closeUpdateOrderDialog() {

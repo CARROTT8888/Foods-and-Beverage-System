@@ -165,18 +165,18 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['updateOrderItem'])) {
                     closeDeleteOrderDialog();
                 }
             });
-            const dialog4a = document.getElementById("updateOrderDialog");
-            window.openUpdateOrderDialog = function () {
+            const dialog4a = document.getElementById("cashSubmissionDialog");
+            window.openCashSubmissionDialog = function () {
                 dialog4a.classList.remove("opacity-0", "pointer-events-none");
                 dialog4a.classList.add("opacity-100");
             }
-            window.closeUpdateOrderDialog = function () {
+            window.closeCashSubmissionDialog = function () {
                 dialog4a.classList.remove("opacity-100");
                 dialog4a.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeUpdateOrderDialog();
+                    closeCashSubmissionDialog();
                 }
             });
         });
