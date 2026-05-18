@@ -88,7 +88,7 @@
         data-placement="bottom-start">
         <div class="flex items-center gap-4" data-toggle="dropdown" aria-expanded="false">
             <img class="inline-block h-11 w-11 rounded-full object-cover object-center"
-                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/ct-assets/team-4.jpg"
+                src="/web/<?php echo htmlspecialchars($_SESSION['image']) ?>"
                 alt="avatar" />
             <div>
                 <p title="<?php echo htmlspecialchars($_SESSION['name']) ?>"
@@ -111,7 +111,7 @@
                 <i class='bx bxs-user-circle mr-2 text-lg'></i>
                 Profile
             </a>
-            <a href="#"
+            <a href="/web/settings"
                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center cursor-pointer">
                 <i class='bx bxs-cog mr-2 text-lg'></i>
                 Settings

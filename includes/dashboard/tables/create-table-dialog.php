@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateTable'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['createTable'])) {
     $tableName = $_POST['tableName'] ?? null;
     $branchId = $_POST['branchId'] ?? null;
     $totalSeat = $_POST['totalSeat'] ?? null;
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateTable'])) {
         //corrected bind_param types: s = string, i = integer, d = double/decimal\
         $addseatstmt->bind_param('siiis', $tableName, $branchId, $totalSeat, $availableSeat, $status);
         if ($addseatstmt->execute()) {
-            echo "<script>window.location.href='/web/dashboard/branches';</script>";
+            echo "<script>window.location.href='/web/dashboard/tables';</script>";
             exit();
         } else {
             $errorMessage = "Error: " . $conn->error;
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['updateTable'])) {
                     ?>
                 </select>
             </div>
-            <button type="submit"
+            <button type="submit" name="createTable"
                 class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
                 Create
             </button>

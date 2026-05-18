@@ -14,8 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['deleteCategory'])) {
         $checkFoodStmt->store_result();
 
         if ($checkFoodStmt->num_rows > 0) {
-            echo "<script>alert('Cannot delete. This category still has foods inside.');</script>";
             $checkFoodStmt->close();
+            echo "<script>window.location.href='/web/dashboard/categories?cannotDelete=1';</script>";
+            exit();
         } else {
             $checkFoodStmt->close();
 
@@ -54,7 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['deleteCategory'])) {
             </div>
             <input type="hidden" name="categoryId" id="deleteCategoryId">
             <input type="hidden" name="branchId" id="deleteBranchId">
-            <div class="text-slate-600 text-start">Are you sure you want to delete this category? The category's data won't
+            <div class="text-slate-600 text-start">Are you sure you want to delete this category? The category's data
+                won't
                 appear again once you delete.</div>
             <div class="mt-6">
                 <div class="flex justify-end gap-2">

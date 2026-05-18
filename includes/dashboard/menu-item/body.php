@@ -128,18 +128,18 @@
 
             <?php if (!empty($optionGroups)): ?>
                 <?php foreach ($optionGroups as $group): ?>
-                    <div class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm">
+                    <div class="bg-white border border-stone-200 rounded-   xl overflow-hidden shadow-sm">
 
                         <div
-                            class="px-4 py-3 bg-gradient-to-r from-amber-50 to-white border-b border-stone-200 flex items-center gap-2">
+                            class="px-4 justfify-between w-full py-3 bg-gradient-to-r from-amber-50 to-white border-b border-stone-200 flex items-center gap-2">
                             <i class='bx bxs-tag-alt text-amber-600 text-base'></i>
                             <span class="text-sm font-semibold text-stone-800 capitalize">
                                 <?php echo htmlspecialchars($group['groupName']); ?>
                             </span>
-                            <span class="ml-auto text-[0.72rem] text-slate-400">
+                            <!--<span class="ml-auto text-[0.72rem] text-slate-400">
                                 <?php echo count($group['items']); ?>
                                 option<?php echo count($group['items']) !== 1 ? 's' : ''; ?>
-                            </span>
+                            </span>-->
                             <button type="button" onclick='openUpdateFoodOptionDialog(
                                 <?= (int) $group["optionGroupId"] ?>,
                                 <?= json_encode($group["groupName"]) ?>,

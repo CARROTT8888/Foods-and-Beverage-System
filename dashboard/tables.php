@@ -144,6 +144,20 @@ $stmtcount->close();
                     closeUpdateDialog();
                 }
             });
+            const dialog4 = document.getElementById("deleteTableDialog");
+            window.openDeleteTableDialog = function () {
+                dialog4.classList.remove("opacity-0", "pointer-events-none");
+                dialog4.classList.add("opacity-100");
+            };
+            window.closeDeleteTableDialog = function () {
+                dialog4.classList.remove("opacity-100");
+                dialog4.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeDeleteTableDialog();
+                }
+            });
             const drawer = document.getElementById("sidebarDrawerBranch");
             function openDrawerBranch() {
                 drawer.classList.remove("opacity-0", "pointer-events-none");

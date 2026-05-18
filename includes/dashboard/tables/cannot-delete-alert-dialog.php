@@ -1,9 +1,9 @@
 <div class="fixed inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-9999"
-    id="cashSubmissionDialog" onclick="event.target === this && null">
+    id="cannotDeleteTableDialog" onclick="event.target === this && null">
     <div class="bg-white rounded-xl shadow-2xl shadow-slate-950/5 border border-slate-200 scale-95 w-115 p-5 ">
         <div class="flex justify-between mb-4">
-            <h1 class="text-lg text-slate-800 font-semibold">Confirming your Payment</h1>
-            <button type="button" data-dismiss="modal" aria-label="Close"
+            <h1 class="text-lg text-slate-800 font-semibold">Oppps...</h1>
+            <button type="button" data-dismiss="modal" onclick="window.location.href='/web/dashboard/tables'"
                 class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-red-500 hover:bg-red-200/10 hover:border-red-200/10 shadow-none hover:shadow-none outline-none">
                 <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5">
@@ -13,13 +13,11 @@
                 </svg>
             </button>
         </div>
-        <div class="text-slate-600 text-start">Are you sure you want to select the payment method? You cannot change another method once you selected.</div>
+        <div class="text-slate-600 text-start">You cannot delete this table. Other users are using the table right now.</div>
         <div class="mt-6">
             <div class="flex justify-end gap-2">
-                <button onclick="closeCashSubmissionDialog()" type="button"
-                    class="rounded-md border bg-secondary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-accent hover:text-accentForeground">Cancel</button>
-                <button type="submit"
-                    class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground">Yes</button>
+                <button type="button" onclick="window.location.href='/web/dashboard/tables'"
+                    class="inline-flex gap-2 items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-primary border-secondary text-foreground hover:bg-amber-400 hover:text-secondaryForeground">Close</button>
             </div>
             <span class="text-sm mt-4 w-full flex justify-end text-secondaryForeground">Click 'X' or
                 tab 'ESC' key to close the dialog.</span>

@@ -284,11 +284,14 @@
                                                 Update Table
                                             </button>
 
-                                            <a href="sign-out.php"
+                                            <button type="button" onclick='deleteForm(
+                                                <?php echo json_encode($data["tableId"]); ?>,
+                                                <?php echo json_encode($data["branchId"]); ?>
+                                                )'
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
                                                 <i class='bx bxs-trash mr-2 text-lg'></i>
                                                 Delete Table
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
@@ -334,6 +337,23 @@
                         </button>
                         <?php endif; ?>
                         <?php include 'update-table-dialog.php'; ?>
+                        <?php include 'delete-table-dialog.php'; ?>
+                        <?php include 'cannot-delete-alert-dialog.php'; ?>
+                        <?php if (isset($_GET['cannotDelete']) && $_GET['cannotDelete'] == 1): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                openCannotDeleteDialog();
+                            });
+                            document.addEventListener("keydown", function (event) {
+                                if (event.key === "Escape") {
+                                    event.preventDefault(); // Stop default browser action
+                                    event.stopPropagation(); // Stop other scripts from interfering
+
+                                    window.location.assign('/web/dashboard/tables');
+                                }
+                            }, true);
+                        </script>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -372,5 +392,28 @@
                 document.getElementById("updateTableDialog").classList.add("opacity-0", "pointer-events-none");
             }
         });
+    }
+
+    function deleteForm(tableId, branchId) {
+        document.getElementById("deleteTableId").value = tableId;
+        document.getElementById("deleteBranchId").value = branchId;
+
+        document.getElementById("deleteTableDialog").classList.remove("opacity-0", "pointer-events-none");
+
+        // ESC close
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                document.getElementById("deleteTableDialog").classList.add("opacity-0", "pointer-events-none");
+            }
+        });
+    }
+
+    function openCannotDeleteDialog() {
+        document.getElementById("cannotDeleteTableDialog")
+            .classList.remove("opacity-0", "pointer-events-none");
+    }
+    function closeCannotDeleteDialog() {
+        document.getElementById("cannotDeleteTableDialog")
+            .classList.add("opacity-0", "pointer-events-none");
     }
 </script>

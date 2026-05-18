@@ -269,6 +269,22 @@
                         <?php endif; ?>
                         <?php include 'update-category-dialog.php'; ?>
                         <?php include 'delete-category-dialog.php'; ?>
+                        <?php include 'cannot-delete-alert-dialog.php'; ?>
+                        <?php if (isset($_GET['cannotDelete']) && $_GET['cannotDelete'] == 1): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                openCannotDeleteDialog();
+                            });
+                            document.addEventListener("keydown", function (event) {
+                                if (event.key === "Escape") {
+                                    event.preventDefault(); // Stop default browser action
+                                    event.stopPropagation(); // Stop other scripts from interfering
+
+                                    window.location.assign('/web/dashboard/categories');
+                                }
+                            }, true);
+                        </script>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -319,5 +335,14 @@
                 document.getElementById("deleteCategoryDialog").classList.add("opacity-0", "pointer-events-none");
             }
         });
+    }
+
+    function openCannotDeleteDialog() {
+        document.getElementById("cannotDeleteTableDialog")
+            .classList.remove("opacity-0", "pointer-events-none");
+    }
+    function closeCannotDeleteDialog() {
+        document.getElementById("cannotDeleteTableDialog")
+            .classList.add("opacity-0", "pointer-events-none");
     }
 </script>

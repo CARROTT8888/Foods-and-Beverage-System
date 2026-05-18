@@ -7,6 +7,8 @@ include './database/fnbdb.php';
 $orderId = $_SESSION['orderId'] ?? null;
 $cartCount = 0;
 
+$userId = $_SESSION['userId'] ?? $_SESSION['userId'] ?? null;
+
 if ($orderId) {
     $stmtCart = $conn->prepare("SELECT SUM(quantity) as totalItems FROM order_item WHERE orderId = ?");
     $stmtCart->bind_param("i", $orderId);
@@ -14,6 +16,17 @@ if ($orderId) {
     $cartRow = $stmtCart->get_result()->fetch_assoc();
     $cartCount = $cartRow['totalItems'] ?? 0;
     $stmtCart->close();
+}
+
+$sql = "SELECT name, email, contactNumber, address, image FROM user WHERE userId = ?";
+$stmt = $conn->prepare($sql);
+if ($stmt) {
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    if (!$user)
+        die("User data not found.");
 }
 ?>
 
@@ -74,8 +87,7 @@ if ($orderId) {
 
 
                 <div class="dropdown w-full flex justify-end" data-placement="bottom-start">
-                    <img data-toggle="dropdown" aria-expanded="false"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/ct-assets/team-4.jpg"
+                    <img data-toggle="dropdown" aria-expanded="false" src="<?= htmlspecialchars($user['image']) ?>"
                         alt="profile-picture" class="object-cover w-11 h-11 rounded-full cursor-pointer">
                     <div data-role="menu"
                         class="hidden mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-30 w-[180px] cursor-default">
@@ -87,7 +99,7 @@ if ($orderId) {
                             <i class='bx bxs-user-circle mr-2 text-lg'></i>
                             Profile
                         </a>
-                        <a href="#"
+                        <a href="/web/settings"
                             class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                             <i class='bx bxs-cog mr-2 text-lg'></i>
                             Settings

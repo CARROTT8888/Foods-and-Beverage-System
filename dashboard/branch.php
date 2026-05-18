@@ -106,6 +106,20 @@ if (isset($_GET['slug']) && is_string($_GET['slug'])) {
                 dialog.classList.remove("opacity-100");
                 dialog.classList.add("opacity-0", "pointer-events-none");
             };
+            const dialog4 = document.getElementById("updateBranchVisibleStatusDialog");
+            window.openUpdateVisibleStatusDialog = function () {
+                dialog4.classList.remove("opacity-0", "pointer-events-none");
+                dialog4.classList.add("opacity-100");
+            };
+            window.closeUpdateVisibleStatusDialog = function () {
+                dialog4.classList.remove("opacity-100");
+                dialog4.classList.add("opacity-0", "pointer-events-none");
+            };
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeUpdateVisibleStatusDialog();
+                }
+            });
         });
     </script>
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet" />

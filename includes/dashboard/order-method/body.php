@@ -62,11 +62,11 @@ $branchResult = $conn->query($branchQuery);
 
                 $icons = ['Dine In' => 'bx-fork', 'Take Away' => 'bxs-shopping-bag-alt', 'Delivery' => 'bxs-map-pin'];
                 ?>
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5">
                     <!-- Branch Header -->
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>">
+                            <a href="/web/dashboard/branch?slug=<?php echo htmlspecialchars($branch['slug']); ?>" class="hover:underline">
                                 <h2 class="font-bold text-lg text-slate-800">
                                     <?php echo htmlspecialchars($branch['name']); ?>
                                 </h2>

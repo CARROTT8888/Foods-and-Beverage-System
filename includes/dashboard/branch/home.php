@@ -237,3 +237,18 @@ $stmtcount->close();
         </div>
     </div>
 </div>
+<?php include 'update-visible-status-dialog.php'; ?>
+
+<script>
+    function fillUpdateForm2(branchId, visibleStatus) {
+        //console.log(branchId, name);
+
+        document.getElementById("branchIdVisible").value = branchId;
+        document.getElementById("visibleStatus").value = visibleStatus;
+
+        document.getElementById("confirmText").innerText =
+            "Are you sure you want to change visible status to " + visibleStatus + "?";
+
+        document.getElementById("updateBranchVisibleStatusDialog").classList.remove("opacity-0", "pointer-events-none");
+    }
+</script>

@@ -165,6 +165,10 @@ if (!isset($_SESSION['userId'])) {
                     class="text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
                     Status
                 </a>
+                <a href="/web/dashboard/payment"
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Revenues: RM 0.00
+                </a>
             </div>
             
         </div>

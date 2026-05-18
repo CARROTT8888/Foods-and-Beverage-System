@@ -11,8 +11,8 @@ if (!isset($_SESSION['userId'])) {
 ;
 
 $filter = "";
-$countstatusAvailableFromFoodsql = "SELECT COUNT(*) FROM food WHERE status = 'Available'";
-$stmtcount = $conn->prepare($countstatusAvailableFromFoodsql);
+$countstatusPendingsql = "SELECT COUNT(*) FROM `order` WHERE orderStatus = 'Pending'";
+$stmtcount = $conn->prepare($countstatusPendingsql);
 $stmtcount->execute();
 $stmtcount->bind_result($totalStatusAvailableFromFood);
 $stmtcount->fetch();
@@ -198,6 +198,10 @@ $stmtcount->close();
                 <a href="/web/dashboard/orders"
                     class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
                     Status
+                </a>
+                <a href="/web/dashboard/payment"
+                    class="tab-link text-lg inline-block py-2 px-4 font-bold text-slate-800 transition-all duration-300 relative z-1 mr-1">
+                    Revenues: RM 0.00
                 </a>
             </div>
         </div>
