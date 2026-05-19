@@ -136,7 +136,7 @@ $categoryResult = $stmt->get_result();
                 class="justify-self-start inline-flex gap-2 items-center justify-center border mb-10 align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-full py-2 px-4 shadow-sm hover:shadow-md bg-secondary border-slate-300 text-primaryForeground hover:bg-accent hover:border-accentForeground hover:text-accentForeground outline-none group w-auto">
                 <i class="bx bx-search text-lg"></i><span class="lg:flex hidden">Search or Filter</span>
             </button>
-            <!--<?php include 'search-or-filter-dialog.php'; ?>-->
+            <?php include 'search-or-filter-dialog.php'; ?>
             <div class="flex items-center mb-10 gap-2 justify-self-start">
                 <?php foreach ($selectedStatuses as $status):
                     $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $status);

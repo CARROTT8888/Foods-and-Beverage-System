@@ -323,12 +323,10 @@
                                                 Update Order Status
                                             </button>
 
-                                            <button type="button" onclick='deleteForm(
-                                                <?php echo json_encode($data["categoryId"]); ?>,
-                                                <?php echo json_encode($data["branchId"]); ?>
-                                                )'
+                                            <button type="button"
+                                                onclick="cancelForm(<?= $data['orderId'] ?>, 'Cancelled')"
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
-                                                <i class='bx bxs-trash mr-2 text-lg'></i>
+                                                <i class='bx bxs-x-circle mr-2 text-lg'></i>
                                                 Cancel Order
                                             </button>
                                         </div>
@@ -559,6 +557,7 @@
                             </script>
                         <?php endif; ?>
                         <?php include 'update-order-status-dialog.php'; ?>
+                        <?php include 'cancel-order-dialog.php'; ?>
                     </div>
                 </div>
             </div>
@@ -597,16 +596,15 @@
         });
     }
 
-    function deleteForm(categoryId, branchId) {
-        document.getElementById("deleteCategoryId").value = categoryId;
-        document.getElementById("deleteBranchId").value = branchId;
+    function cancelForm(orderId, orderStatus) {
+        document.getElementById("cancelOrderId").value = orderId;
+        document.getElementById("cancelOrderStatus").value = orderStatus;
 
-        document.getElementById("deleteCategoryDialog").classList.remove("opacity-0", "pointer-events-none");
+        document.getElementById("cancelOrderDialog").classList.remove("opacity-0", "pointer-events-none");
 
-        // ESC close
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
-                document.getElementById("deleteCategoryDialog").classList.add("opacity-0", "pointer-events-none");
+                document.getElementById("cancelOrderDialog").classList.add("opacity-0", "pointer-events-none");
             }
         });
     }

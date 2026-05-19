@@ -138,33 +138,18 @@ $stmtcount->close();
                     closeUpdateOrderStatusDialog();
                 }
             });
-            const dialog4 = document.getElementById("updateFoodVisibleStatusDialog");
-            window.openUpdateVisibleStatusDialog = function () {
+            const dialog4 = document.getElementById("cancelOrderDialog");
+            window.openCancelOrderDialog = function () {
                 dialog4.classList.remove("opacity-0", "pointer-events-none");
                 dialog4.classList.add("opacity-100");
             };
-            window.closeUpdateVisibleStatusDialog = function () {
+            window.closeCancelOrderDialog = function () {
                 dialog4.classList.remove("opacity-100");
                 dialog4.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeUpdateVisibleStatusDialog();
-                }
-            });
-            const dialog5 = document.getElementById("foodOptionDialog");
-            window.openFoodOptionDialog = function (foodId) {
-                document.getElementById("modalFoodId").value = foodId;
-                dialog5.classList.remove("opacity-0", "pointer-events-none");
-                dialog5.classList.add("opacity-100");
-            };
-            window.closeFoodOptionDialog = function () {
-                dialog5.classList.remove("opacity-100");
-                dialog5.classList.add("opacity-0", "pointer-events-none");
-            };
-            document.addEventListener("keydown", function (event) {
-                if (event.key === "Escape") {
-                    closeFoodOptionDialog();
+                    closeCancelOrderDialog();
                 }
             });
             const drawer = document.getElementById("sidebarDrawer");
