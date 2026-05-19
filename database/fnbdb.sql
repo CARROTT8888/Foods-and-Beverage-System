@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2026 at 06:42 PM
+-- Generation Time: May 19, 2026 at 07:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,7 +54,7 @@ INSERT INTO `branch` (`branchId`, `name`, `slug`, `image`, `createdAt`, `address
 (5, 'ABC Cafe - Ipoh', 'tc1121', 'branch_1777178821_7312.jpeg', '2026-03-31 00:42:30', '40, Jalan Sultan Iskandar, 30000 Ipoh, Perak', 'Opening', '043838238', '08:30', '22:00', 'Perak', 'Visible'),
 (8, 'ABC Cafe - Kuching', '123', 'branch_1777178182_6978.jpg', '2026-03-31 01:26:35', 'Lot 6, Jalan Padungan, 93100 Kuching, Sarawak', 'Opening', '082-555 233', '09:00', '21:30', 'Sarawak', 'Visible'),
 (9, 'ABC Cafe - Kota Kinabalu', 'tfb', 'branch_1777178799_5187.png', '2026-04-23 13:00:42', 'Block A, Jalan Gaya, 88000 Kota Kinabalu', 'Setup', '603 – 8312 5134', '10:00', '23:00', 'Sabah', 'Visible'),
-(17, 'ABC Cafe - Putrajaya', 'tsb', 'branch_1777622570_9640.png', '2026-04-29 18:55:33', 'Presint 15, Jalan Diplomatik, 62000 Putrajaya', 'Closed', '03-8888 2323', '08:00', '20:00', 'Johor', 'Invisible');
+(17, 'ABC Cafe - Putrajaya', 'tsb', 'branch_1777622570_9640.png', '2026-04-29 18:55:33', 'Presint 15, Jalan Diplomatik, 62000 Putrajaya', 'Closed', '03-8888 2323', '08:00', '20:00', 'Johor', 'Visible');
 
 --
 -- Triggers `branch`
@@ -82,6 +82,13 @@ CREATE TABLE `employee` (
   `role` enum('Staff','Branch Manager','Admin') NOT NULL DEFAULT 'Staff',
   `createdAt` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`memberId`, `branchId`, `userId`, `role`, `createdAt`) VALUES
+(1, 2, 3, 'Branch Manager', '2026-05-19 12:39:15');
 
 -- --------------------------------------------------------
 
@@ -206,13 +213,12 @@ INSERT INTO `food_option_item` (`optionItemId`, `itemName`, `extraPrice`, `optio
 (81, 'No', 0.00, 45),
 (92, 'Yes', 0.50, 48),
 (93, 'No', 0.50, 48),
-(98, 'None1', 10.00, 47),
-(99, 'Little', 20.00, 47),
-(100, 'Normal', 30.00, 47),
-(101, 'Spicy', 40.00, 47),
 (102, 'Small', 0.00, 53),
 (103, 'Medium', 0.00, 53),
-(104, 'Large', 0.00, 53);
+(104, 'Large', 0.00, 53),
+(105, 'None1', 10.00, 47),
+(106, 'Little', 20.00, 47),
+(107, 'Normal', 30.00, 47);
 
 -- --------------------------------------------------------
 
@@ -227,15 +233,12 @@ CREATE TABLE `order` (
   `methodId` int(10) UNSIGNED NOT NULL,
   `tableId` int(10) UNSIGNED DEFAULT NULL,
   `totalPrice` decimal(10,2) NOT NULL,
-  `username` varchar(150) DEFAULT NULL,
-  `contactNumber` varchar(20) DEFAULT NULL,
   `deliveryAddress` varchar(255) DEFAULT NULL,
   `deliveryState` varchar(150) DEFAULT NULL,
   `deliveryDistrict` varchar(150) DEFAULT NULL,
   `deliveryPostalCode` int(5) DEFAULT NULL,
   `extraNote` varchar(255) DEFAULT NULL,
   `orderStatus` enum('Pending','In Progress','Done','Shipping','Delivered','Cancelled') NOT NULL DEFAULT 'Pending',
-  `paymentStatus` enum('Pending','Paid','Cancelled') NOT NULL DEFAULT 'Pending',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -243,10 +246,13 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`orderId`, `userId`, `branchId`, `methodId`, `tableId`, `totalPrice`, `username`, `contactNumber`, `deliveryAddress`, `deliveryState`, `deliveryDistrict`, `deliveryPostalCode`, `extraNote`, `orderStatus`, `paymentStatus`, `createdAt`) VALUES
-(20, 1, 2, 2, NULL, 3.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-05-08 15:01:53'),
-(21, 1, 2, 2, NULL, 216.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-05-09 16:56:54'),
-(22, 1, 2, 2, NULL, 17.40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Pending', 'Pending', '2026-05-11 12:29:56');
+INSERT INTO `order` (`orderId`, `userId`, `branchId`, `methodId`, `tableId`, `totalPrice`, `deliveryAddress`, `deliveryState`, `deliveryDistrict`, `deliveryPostalCode`, `extraNote`, `orderStatus`, `createdAt`) VALUES
+(26, 1, 2, 2, NULL, 48.80, NULL, NULL, NULL, NULL, 'extra note.....', 'Pending', '2026-05-17 13:48:19'),
+(27, 2, 2, 1, 53, 20000.00, NULL, NULL, NULL, NULL, '', 'Pending', '2026-05-14 05:08:22'),
+(28, 1, 1, 14, NULL, 222.00, NULL, NULL, NULL, NULL, '', 'Pending', '2026-05-17 06:31:41'),
+(29, 1, 1, 13, 45, 333.00, NULL, NULL, NULL, NULL, 'Please add cucumber', 'In Progress', '2026-05-18 13:56:01'),
+(30, 2, 2, 3, NULL, 20077.70, '75450 Ayer Keroh, Malacca, Malaysia', 'Melaka', 'Melaka Tengah', 75450, '', 'Delivered', '2026-05-18 13:38:24'),
+(31, 1, 2, 2, NULL, 28.80, NULL, NULL, NULL, NULL, '', 'Cancelled', '2026-05-18 14:06:56');
 
 -- --------------------------------------------------------
 
@@ -262,6 +268,21 @@ CREATE TABLE `order_item` (
   `purchasedPrice` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `order_item`
+--
+
+INSERT INTO `order_item` (`orderItemId`, `orderId`, `foodId`, `quantity`, `purchasedPrice`) VALUES
+(89, 26, 4, 2, 48.80),
+(90, 27, 3, 2, 20000.00),
+(91, 28, 5, 2, 222.00),
+(92, 29, 5, 3, 333.00),
+(93, 30, 3, 2, 20000.00),
+(94, 30, 4, 1, 24.40),
+(95, 30, 8, 3, 4.50),
+(96, 30, 4, 2, 48.80),
+(97, 31, 4, 2, 28.80);
+
 -- --------------------------------------------------------
 
 --
@@ -274,6 +295,28 @@ CREATE TABLE `order_item_option` (
   `orderItemId` int(10) UNSIGNED NOT NULL,
   `purchasedPrice` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_item_option`
+--
+
+INSERT INTO `order_item_option` (`orderItemOptionId`, `optionItemId`, `orderItemId`, `purchasedPrice`) VALUES
+(88, 76, 85, 10.50),
+(89, 103, 85, 0.00),
+(94, 102, 88, 0.00),
+(95, 76, 88, 10.50),
+(96, 76, 89, 10.50),
+(97, 104, 89, 0.00),
+(98, 58, 91, 100.50),
+(99, 80, 91, 0.00),
+(100, 58, 92, 100.50),
+(101, 80, 92, 0.00),
+(102, 76, 94, 10.50),
+(103, 103, 94, 0.00),
+(104, 76, 96, 10.50),
+(105, 102, 96, 0.00),
+(106, 75, 97, 0.50),
+(107, 104, 97, 0.00);
 
 -- --------------------------------------------------------
 
@@ -295,7 +338,7 @@ CREATE TABLE `order_method` (
 INSERT INTO `order_method` (`methodId`, `methodName`, `branchId`, `isEnabled`) VALUES
 (1, 'Dine In', 2, 1),
 (2, 'Take Away', 2, 1),
-(3, 'Delivery', 2, 0),
+(3, 'Delivery', 2, 1),
 (13, 'Dine In', 1, 1),
 (14, 'Take Away', 1, 1),
 (15, 'Delivery', 1, 1),
@@ -342,10 +385,21 @@ CREATE TABLE `order_status_history` (
 CREATE TABLE `payment` (
   `paymentId` int(10) UNSIGNED NOT NULL,
   `paymentMethod` enum('Cash','Online Payment') NOT NULL,
-  `paymentStatus` enum('Pending','Success','Failed','Cancelled') NOT NULL,
+  `paymentStatus` enum('Pending','Success','Cancelled') NOT NULL,
   `orderId` int(10) UNSIGNED NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payment`
+--
+
+INSERT INTO `payment` (`paymentId`, `paymentMethod`, `paymentStatus`, `orderId`, `createdAt`) VALUES
+(1, 'Online Payment', 'Success', 26, '2026-05-14 09:55:56'),
+(4, 'Cash', 'Pending', 27, '2026-05-17 14:08:29'),
+(5, 'Cash', 'Pending', 29, '2026-05-17 14:11:32'),
+(6, 'Online Payment', 'Success', 30, '2026-05-18 06:32:31'),
+(7, 'Cash', 'Pending', 31, '2026-05-18 06:38:00');
 
 -- --------------------------------------------------------
 
@@ -392,8 +446,7 @@ INSERT INTO `seat_table` (`tableId`, `tableName`, `totalSeat`, `availableSeat`, 
 (54, 'T3A', 2, 2, 'Available', 8),
 (55, 'D2Z', 2, 2, 'Occupied', 4),
 (56, 'D2D', 3, 3, 'Dirty', 8),
-(57, 'A30', 4, 4, 'Reserved', 8),
-(58, 'A84', 3, 2, 'Available', 8);
+(62, 'A32', 4, 4, 'Reserved', 8);
 
 -- --------------------------------------------------------
 
@@ -418,8 +471,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`userId`, `name`, `email`, `password`, `role`, `contactNumber`, `address`, `image`, `createdAt`) VALUES
-(1, 'Jane Doe', 'jane.doe@gmail.com', 'a2B+uate', 'employee', '0123456789', NULL, NULL, '2026-03-15 00:16:05'),
-(2, 'kieran', 'kieran.zhiming@gmail.com', 'abc123@', 'customer', '01010101010', NULL, NULL, '2026-03-15 00:18:03');
+(1, 'Jane Doe', 'jane.doe@gmail.com', 'a2B+uate', 'employee', '0123456789', 'Kampung Lapan, Banda Kaba, 65000, Melaka', 'uploads/profile_6a07f242c012c4.97970091.png', '2026-05-16 14:21:00'),
+(2, 'kierano', 'kieran.zhiming@gmail.com', 'abc123@', 'customer', '01010101010', '', 'uploads/profile_6a07eb750f0b10.60942962.jpg', '2026-05-16 19:57:47'),
+(3, 'A', 'a@a.com', 'aaaaaa123@', 'employee', '0106552192', NULL, NULL, '2026-05-19 12:39:15');
 
 --
 -- Indexes for dumped tables
@@ -539,7 +593,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `memberId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `memberId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `food`
@@ -563,25 +617,25 @@ ALTER TABLE `food_option_group`
 -- AUTO_INCREMENT for table `food_option_item`
 --
 ALTER TABLE `food_option_item`
-  MODIFY `optionItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `optionItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `orderId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `orderId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `orderItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `orderItemId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `order_item_option`
 --
 ALTER TABLE `order_item_option`
-  MODIFY `orderItemOptionId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `orderItemOptionId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `order_method`
@@ -599,19 +653,19 @@ ALTER TABLE `order_status_history`
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `paymentId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `paymentId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `seat_table`
 --
 ALTER TABLE `seat_table`
-  MODIFY `tableId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `tableId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `userId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
