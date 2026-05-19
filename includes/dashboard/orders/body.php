@@ -132,14 +132,15 @@
                             if ($tableResult->num_rows > 0):
                                 while ($data = $tableResult->fetch_assoc()):
                                     ?>
-                                    <tr>
-                                        <td class="p-4 border-b border-surface-light">
-                                            <div class="flex items-center gap-3">
-                                                <!---<img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                    <?php if ($data['orderStatus'] !== 'Cancelled'): ?>
+                                        <tr>
+                                            <td class="p-4 border-b border-surface-light">
+                                                <div class="flex items-center gap-3">
+                                                    <!---<img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
                                             src="https://docs.material-tailwind.com/img/logos/logo-spotify.svg"
                                             alt="Spotify" />--->
                                         <a
-                                            href="/web/dashboard/bcategories?slug=<?php echo htmlspecialchars($data['orderId']) ?>">
+                                            href="/web/pdf/display-order-pdf?orderId=<?php echo htmlspecialchars($data['orderId']) ?>">
                                             <small
                                                 class="font-sans antialiased text-sm text-current font-bold hover:underline">#
                                                 <?php echo htmlspecialchars($data['orderId']); ?>
@@ -148,66 +149,36 @@
                                     </div>
                                 </td>
                                 <td class="p-4 border-b border-surface-light">
-                                    <!--<div class="w-max">
-                                        <div
-                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 border-transparent text-green-500 shadow-none">
-                                            <?php if ($data['status'] === 'Visible'): ?>
-                                            <div
-                                                class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
-                                                <div class="relative flex size-3.5 items-center justify-center">
-                                                    <i class='bx bx-show text-lg'></i>
-                                                </div>
-                                                <span>Visible</span>
-                                            </div>
-                                            <?php elseif ($data['status'] === 'Invisible'): ?>
-                                            <div
-                                                class="flex items-center gap-2 text-red-500 border border-red-500 bg-red-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
-                                                <div class="relative flex size-3.5 items-center justify-center">
-                                                    <i class='bx bxs-low-vision text-lg'></i>
-                                                </div>
-                                                <span>Invisible</span>
-                                            </div>
-                                            <?php elseif ($data['status'] === 'Deprecated'): ?>
-                                            <div
-                                                class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
-                                                <div class="relative flex size-3.5 items-center justify-center">
-                                                    <i class='bx bxs-x-circle text-lg'></i>
-                                                </div>
-                                                <span>Deprecated</span>
-                                            </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>-->
-                                            <small
-                                                class="font-sans antialiased text-sm text-current capitalize hover:underline">
-                                                <?php echo htmlspecialchars($data['createdAt']); ?>
-                                            </small>
-                                        </td>
-                                        <td class="p-4 border-b border-surface-light">
-                                            <div class="flex flex-col">
-                                                <small class="font-sans antialiased text-sm text-current capitalize">
-                                                    <?php echo htmlspecialchars($data['username']); ?>
-                                                </small>
-                                                <small class="font-sans antialiased text-sm text-current opacity-70">
-                                                    <?php echo htmlspecialchars($data['contactNumber']); ?>
-                                                </small>
-                                            </div>
-                                        </td>
-                                        <td class="p-4 border-b border-surface-light">
-                                            <div class="flex flex-col">
-                                                <small class="font-sans antialiased text-sm text-current capitalize">
-                                                    <?php echo htmlspecialchars($data['methodName']); ?>
-                                                </small>
-                                                <?php if (!empty($data['tableName'])): ?>
-                                                    <small class="font-semibold antialiased text-sm text-current opacity-70">
-                                                        <?php echo htmlspecialchars($data['tableName']); ?>
-                                                    </small>
-                                                <?php endif; ?>
-                                            </div>
-                                        </td>
-                                        <td class="p-4 border-b border-surface-light">
-                                            <div class="flex items-center gap-3">
-                                                <!---<div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                    <small
+                                        class="font-sans antialiased text-sm text-current capitalize hover:underline">
+                                        <?php echo htmlspecialchars($data['createdAt']); ?>
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex flex-col">
+                                        <small class="font-sans antialiased text-sm text-current capitalize">
+                                            <?php echo htmlspecialchars($data['username']); ?>
+                                        </small>
+                                        <small class="font-sans antialiased text-sm text-current opacity-70">
+                                            <?php echo htmlspecialchars($data['contactNumber']); ?>
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex flex-col">
+                                        <small class="font-sans antialiased text-sm text-current capitalize">
+                                            <?php echo htmlspecialchars($data['methodName']); ?>
+                                        </small>
+                                        <?php if (!empty($data['tableName'])): ?>
+                                        <small class="font-semibold antialiased text-sm text-current opacity-70">
+                                            <?php echo htmlspecialchars($data['tableName']); ?>
+                                        </small>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="flex items-center gap-3">
+                                        <!---<div class="h-9 w-12 rounded-md border border-surface-light p-1">
                                             <img class="inline-block object-center rounded h-full w-full object-contain p-1"
                                                 src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
                                                 alt="visa" />
@@ -333,20 +304,23 @@
                                         <div data-role="menu"
                                             class="hidden min-w-40 grid max-w-lg grid-cols-1 gap-3a mt-2 bg-white border border-slate-200 rounded-lg shadow-xl shadow-slate-950/[0.025] p-1 z-10 absolute">
 
-                                            <a href="/web/dashboard/bcategories?slug=<?php echo htmlspecialchars($data['slug']); ?>"
+                                            <a href="/web/pdf/display-order-pdf?orderId=<?php echo htmlspecialchars($data['orderId']); ?>"
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
-                                                <i class='bx bxs-door-open mr-2 text-lg'></i>
-                                                View Categories
+                                                <i class='bx bxs-receipt mr-2 text-lg'></i>
+                                                View Receipt
+                                            </a>
+                                            <a href="/web/pdf/download-order-pdf?orderId=<?php echo htmlspecialchars($data['orderId']); ?>"
+                                                class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
+                                                <i class='bx bxs-download mr-2 text-lg'></i>
+                                                Download Receipt
                                             </a>
                                             <button type="button" onclick='fillUpdateForm(
-                                                <?php echo json_encode($data["categoryId"]); ?>,
-                                                <?php echo json_encode($data["name"]); ?>,
-                                                <?php echo json_encode($data["status"]); ?>,
-                                                <?php echo json_encode($data["branchId"]); ?>
+                                                <?php echo json_encode($data["orderId"]); ?>,
+                                                <?php echo json_encode($data["orderStatus"]); ?>,
                                                 )'
                                                 class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                 <i class='bx bxs-edit mr-2 text-lg'></i>
-                                                Update Category
+                                                Update Order Status
                                             </button>
 
                                             <button type="button" onclick='deleteForm(
@@ -355,12 +329,177 @@
                                                 )'
                                                 class="block p-1 text-sm text-red-500 hover:bg-red-200 rounded-md flex items-center font-bold">
                                                 <i class='bx bxs-trash mr-2 text-lg'></i>
-                                                Delete Category
+                                                Cancel Order
                                             </button>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            <?php else: ?>
+                            <tr class="bg-secondary cursor-not-allowed">
+                                <td class="p-4 border-b border-surface-light line-through cursor-not-allowed">
+                                    <div class="flex items-center gap-3">
+                                        <!---<img class="inline-block object-center w-11 h-11 rounded-md border border-surface-light bg-slate-100 object-contain p-1 dark:bg-surface-dark"
+                                            src="https://docs.material-tailwind.com/img/logos/logo-spotify.svg"
+                                            alt="Spotify" />--->
+                                        <small
+                                            class="font-sans antialiased text-sm text-current font-bold hover:underline">#
+                                            <?php echo htmlspecialchars($data['orderId']); ?>
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light line-through">
+                                    <small
+                                        class="font-sans antialiased text-sm text-current capitalize hover:underline">
+                                        <?php echo htmlspecialchars($data['createdAt']); ?>
+                                    </small>
+                                </td>
+                                <td class="p-4 border-b border-surface-light line-through">
+                                    <div class="flex flex-col">
+                                        <small class="font-sans antialiased text-sm text-current capitalize">
+                                            <?php echo htmlspecialchars($data['username']); ?>
+                                        </small>
+                                        <small class="font-sans antialiased text-sm text-current opacity-70">
+                                            <?php echo htmlspecialchars($data['contactNumber']); ?>
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light line-through">
+                                    <div class="flex flex-col">
+                                        <small class="font-sans antialiased text-sm text-current capitalize">
+                                            <?php echo htmlspecialchars($data['methodName']); ?>
+                                        </small>
+                                        <?php if (!empty($data['tableName'])): ?>
+                                        <small class="font-semibold antialiased text-sm text-current opacity-70">
+                                            <?php echo htmlspecialchars($data['tableName']); ?>
+                                        </small>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light line-through">
+                                    <div class="flex items-center gap-3">
+                                        <!---<div class="h-9 w-12 rounded-md border border-surface-light p-1">
+                                            <img class="inline-block object-center rounded h-full w-full object-contain p-1"
+                                                src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
+                                                alt="visa" />
+                                        </div>--->
+                                        <div class="flex flex-col cursor-not-allowed">
+
+                                            <small
+                                                class="font-sans antialiased text-sm text-current capitalize hover:underline">
+                                                <?php echo htmlspecialchars($data['branchName']); ?>
+                                            </small>
+                                            <?php if (!empty($data['address'])): ?>
+                                            <small
+                                                class="font-sans antialiased text-sm text-current opacity-70 hover:underline">
+                                                <?php echo htmlspecialchars($data['address']); ?>
+                                            </small>
+                                            <?php else: ?>
+                                            <small class="font-sans antialiased text-sm text-current opacity-70">
+                                                -
+                                            </small>
+                                            <?php endif ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 border-transparent text-green-500 shadow-none">
+                                            <?php if ($data['orderStatus'] === 'Done'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-bell text-lg'></i>
+                                                </div>
+                                                <span>Done</span>
+                                            </div>
+                                            <?php elseif ($data['orderStatus'] === 'In Progress'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bx-loader text-lg'></i>
+                                                </div>
+                                                <span>In Progress</span>
+                                            </div>
+                                            <?php elseif ($data['orderStatus'] === 'Pending'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-orange-500 border border-orange-500 bg-orange-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-hourglass-top text-lg'></i>
+                                                </div>
+                                                <span>Pending</span>
+                                            </div>
+                                            <?php elseif ($data['orderStatus'] === 'Shipping'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-blue-500 border border-blue-500 bg-blue-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-car text-lg'></i>
+                                                </div>
+                                                <span>Shipping</span>
+                                            </div>
+                                            <?php elseif ($data['orderStatus'] === 'Delivered'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-car text-lg'></i>
+                                                </div>
+                                                <span>Delivered</span>
+                                            </div>
+                                            <?php elseif ($data['orderStatus'] === 'Cancelled'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-x-circle text-lg'></i>
+                                                </div>
+                                                <span>Cancelled</span>
+                                            </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="w-max">
+                                        <div
+                                            class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 border-transparent text-green-500 shadow-none">
+                                            <?php if ($data['paymentStatus'] === 'Pending'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-orange-500 border border-orange-500 bg-orange-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-hourglass-top text-lg'></i>
+                                                </div>
+                                                <span>Pending</span>
+                                            </div>
+                                            <?php elseif ($data['paymentStatus'] === 'Success'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-green-500 border border-green-500 bg-green-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-check-circle text-lg'></i>
+                                                </div>
+                                                <span>Paid</span>
+                                            </div>
+                                            <?php elseif ($data['paymentStatus'] === 'Cancelled'): ?>
+                                            <div
+                                                class="flex items-center gap-2 text-red-500 border border-red-500 bg-red-100 rounded-full text-xs w-auto mx-auto p-1 px-2">
+                                                <div class="relative flex size-3.5 items-center justify-center">
+                                                    <i class='bx bxs-x-circle text-lg'></i>
+                                                </div>
+                                                <span>Cancelled</span>
+                                            </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 border-b border-surface-light">
+                                    <div class="dropdown">
+                                        <button data-toggle="dropdown" aria-expanded="false"
+                                            class="inline-grid cursor-not-allowed place-items-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none outline-none group">
+                                            <i class='bx bx-dots-vertical-rounded text-secondaryForeground'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
                             <?php endwhile ?>
                             <?php endif ?>
                         </tbody>
@@ -419,10 +558,12 @@
                                 }, true);
                             </script>
                         <?php endif; ?>
+                        <?php include 'update-order-status-dialog.php'; ?>
                     </div>
                 </div>
             </div>
 </section>
+
 <script>
     const sidebar = document.getElementById('sidebar');
     const openSidebarButton = document.getElementById('open-sidebar');
@@ -439,20 +580,19 @@
         }
     });
 
-    function fillUpdateForm(categoryId, name, status, branchId) {
+    function fillUpdateForm(orderId, orderStatus) {
         //console.log(branchId, name);
 
-        document.getElementById("categoryId").value = categoryId;
-        document.getElementById("updateCategoryName").value = name;
-        document.getElementById("updateStatus").value = status;
-        document.getElementById("updateBranch").value = branchId;
+        document.getElementById("orderId").value = orderId;
+        document.getElementById("updateStatus").value = orderStatus;
+        //document.getElementById("updateBranch").value = branchId;
 
-        document.getElementById("updateCategoryDialog").classList.remove("opacity-0", "pointer-events-none");
+        document.getElementById("updateOrderStatusDialog").classList.remove("opacity-0", "pointer-events-none");
 
         // ESC close
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
-                document.getElementById("updateCategoryDialog").classList.add("opacity-0", "pointer-events-none");
+                document.getElementById("updateOrderStatusDialog").classList.add("opacity-0", "pointer-events-none");
             }
         });
     }

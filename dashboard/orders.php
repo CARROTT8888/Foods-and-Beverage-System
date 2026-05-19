@@ -124,18 +124,18 @@ $stmtcount->close();
                     closeDialog();
                 }
             });
-            const dialog3 = document.getElementById("updateMenuDialog");
-            window.openUpdateMenuDialog = function () {
+            const dialog3 = document.getElementById("updateOrderStatusDialog");
+            window.openUpdateOrderStatusDialog = function () {
                 dialog3.classList.remove("opacity-0", "pointer-events-none");
                 dialog3.classList.add("opacity-100");
             };
-            window.closeUpdateMenuDialog = function () {
+            window.closeUpdateOrderStatusDialog = function () {
                 dialog3.classList.remove("opacity-100");
                 dialog3.classList.add("opacity-0", "pointer-events-none");
             };
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeUpdateMenuDialog();
+                    closeUpdateOrderStatusDialog();
                 }
             });
             const dialog4 = document.getElementById("updateFoodVisibleStatusDialog");

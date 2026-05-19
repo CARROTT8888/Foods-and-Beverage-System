@@ -23,7 +23,7 @@
                 <div class="w-full overflow-x-auto rounded-lg border border-slate-200 mt-4">
                     <table class="text-left w-full">
                         <thead
-                            class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600 dark:bg-surface-dark">
+                            class="border-b border-slate-200 bg-accent text-sm font-medium text-accentForeground dark:bg-surface-dark">
                             <tr>
                                 <th class="px-2.5 py-2 text-start font-medium">
                                     Category Name

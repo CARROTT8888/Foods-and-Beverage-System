@@ -512,33 +512,22 @@ function getOrderTypeBadge($type)
     </div>
 
     <script>
-        // ==========================================
-        // 🚀 全新逻辑：监听表单变化 (Form Dirty Tracker)
-        // ==========================================
         let formChanged = false;
         let pendingNavigation = { url: null, tab: null, isLogout: false };
 
         const profileForm = document.getElementById('profileForm');
-        // 只要在表格里打字，或者修改了文件，立刻标记为“已更改”
         profileForm.addEventListener('input', () => { formChanged = true; });
         document.getElementById('imageInput').addEventListener('change', () => { formChanged = true; });
 
-        // 如果用户正常点击底部的 "Save Changes" 按钮提交表单，重置标记
         profileForm.addEventListener('submit', () => { formChanged = false; });
 
-
-        // ==========================================
-        // 🚀 核心逻辑：智能导航拦截
-        // ==========================================
         function handleNavigation(event, targetUrl, targetTab, isLogout) {
             if (event) event.preventDefault();
 
             if (formChanged) {
-                // 如果有未保存的更改，拦下动作，记录他想去哪里，然后弹出警告！
                 pendingNavigation = { url: targetUrl, tab: targetTab, isLogout: isLogout };
                 showUnsavedModal();
             } else {
-                // 如果没有更改，直接放行
                 executeNavigation({ url: targetUrl, tab: targetTab, isLogout: isLogout });
             }
         }
@@ -554,9 +543,6 @@ function getOrderTypeBadge($type)
             }
         }
 
-        // ==========================================
-        // 弹窗控制函数 (Unsaved Modal)
-        // ==========================================
         function showUnsavedModal() {
             const modal = document.getElementById('unsavedModal');
             const content = document.getElementById('unsavedModalContent');

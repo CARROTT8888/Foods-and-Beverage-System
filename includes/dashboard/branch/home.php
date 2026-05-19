@@ -14,6 +14,13 @@ $stmtcount->execute();
 $stmtcount->bind_result($totalMenuNumber);
 $stmtcount->fetch();
 $stmtcount->close();
+$countordersql = "SELECT COUNT(*) FROM `order` WHERE branchId = ?";
+$stmtcount = $conn->prepare($countordersql);
+$stmtcount->bind_param("i", $branchId);
+$stmtcount->execute();
+$stmtcount->bind_result($totalOrderNumber);
+$stmtcount->fetch();
+$stmtcount->close();
 ?>
 
 <div class="max-w-7xl mx-auto mt-10a px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
@@ -187,7 +194,7 @@ $stmtcount->close();
                             <h1 class="text-lg font-bold text-amber-900">Order(s)</h1>
                         </div>
                         <p class="text-3xl text-amber-950 mt-3 font-extrabold">
-                            0
+                            <?php echo $totalOrderNumber; ?>
                         </p>
                     </div>
                 </div>

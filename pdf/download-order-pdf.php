@@ -1,6 +1,6 @@
 <?php
-require_once("./fpdf.php");
-include "./database/fnbdb.php";
+require_once("../fpdf.php");
+include "../database/fnbdb.php";
 session_start();
 
 if (!isset($_GET['orderId'])) {
@@ -195,6 +195,6 @@ $pdf->SetFont("Arial", "I", 9);
 $pdf->Cell(190, 5, "This is a system generated receipt.", 0, 1, "C");
 
 // OUTPUT
-$pdf->Output("I", "invoice_order_" . $orderId . ".pdf");
+$pdf->Output("D", "invoice_order_" . $orderId . ".pdf");
 exit;
 ?>

@@ -62,11 +62,18 @@ if (empty($orderItems)) {
     echo "<script>window.location.href='/web/orders'</script>";
 }
 
-$stmtOrder = $conn->prepare("SELECT totalPrice, methodId FROM `order` WHERE orderId = ?");
+$stmtOrder = $conn->prepare("
+    SELECT order.totalPrice, order.methodId, order_method.methodName
+    FROM `order`
+    JOIN order_method ON order.methodId = order_method.methodId
+    WHERE orderId = ?
+");
 $stmtOrder->bind_param("i", $orderId);
 $stmtOrder->execute();
 $orderRow = $stmtOrder->get_result()->fetch_assoc();
 $stmtOrder->close();
+
+$methodName = $orderRow['methodName'] ?? null;
 
 $stmtPay = $conn->prepare("SELECT paymentMethod, paymentStatus FROM payment WHERE orderId = ?");
 $stmtPay->bind_param("i", $orderId);
@@ -82,6 +89,19 @@ $successMessage = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['savePayment'])) {
     $orderId = intval($_POST['orderId']);
     $paymentMethod = $_POST['paymentMethod'] ?? '';
+
+    $stmtMethod = $conn->prepare("
+        SELECT order_method.methodName
+        FROM `order`
+        JOIN order_method ON order.methodId = order_method.methodId
+        WHERE orderId = ?
+    ");
+    $stmtMethod->bind_param("i", $orderId);
+    $stmtMethod->execute();
+    $methodRow = $stmtMethod->get_result()->fetch_assoc();
+    $stmtMethod->close();
+
+    $methodName = $methodRow['methodName'] ?? '';
 
     if (empty($orderId) || empty($paymentMethod)) {
         echo "<script>alert('Oppps... Invalid payment request.');</script>";
@@ -143,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['savePayment'])) {
                     <div
                         class="absolute top-1 left-0.5 h-8 bg-primary rounded-md shadow-sm transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
                     </div>
-                    <?php if ($paymentStatus === 'Success' && $paymentMethod === 'Online Payment'): ?>
+                    <?php if ($methodName === 'Delivery'): ?>
                         <a href="#"
                             class="cursor-not-allowed text-secondaryForeground line-through text-sm font-medium inline-block py-2 px-4 transition-all duration-300 relative z-1 mr-1"
                             data-tab-target="tab1-group">

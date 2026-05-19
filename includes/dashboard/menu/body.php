@@ -64,7 +64,7 @@
                     $filter .= " AND food.branchId IN (" . implode(',', $escapedBranches) . ")";
                 }
                 $menuQuery = "
-                            SELECT food.*, food_category.name AS categoryName
+                            SELECT food.*, food_category.name AS categoryName, branch.slug
                             FROM food
                             JOIN food_category ON food.categoryId = food_category.categoryId
                             JOIN branch ON food.branchId = branch.branchId
@@ -333,7 +333,7 @@
                                                         <i class='bx bxs-bowl-rice mr-2 text-lg'></i>
                                                         View Details
                                                     </a>
-                                                    <a href=""
+                                                    <a href="/web/dashboard/bmenu?slug=<?php echo htmlspecialchars($data['slug']); ?>"
                                                         class="block p-1 text-sm focus:bg-accent focus:text-accentForeground text-slate-600 hover:text-accentForeground hover:bg-accent rounded-md flex items-center">
                                                         <i class='bx bxs-door-open mr-2 text-lg'></i>
                                                         View Menu

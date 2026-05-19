@@ -4,6 +4,11 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include './database/fnbdb.php';
 
+if (isset($_GET['clear_cart']) || (isset($_SESSION['paymentStatus']) && $_SESSION['paymentStatus'] === 'paid')) {
+    unset($_SESSION['orderId']);
+    unset($_SESSION['paymentStatus']); // Clear the flag so it doesn't run every time
+}
+
 $orderId = $_SESSION['orderId'] ?? null;
 $cartCount = 0;
 
@@ -25,6 +30,7 @@ if ($stmt) {
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
+    $stmt->close();
     if (!$user)
         die("User data not found.");
 }

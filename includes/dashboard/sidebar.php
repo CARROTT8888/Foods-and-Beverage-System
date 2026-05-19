@@ -87,9 +87,14 @@
     <div class="w-full rounded p-2 mt-auto hover:bg-accent hover:text-accentForeground dropdown cursor-pointer"
         data-placement="bottom-start">
         <div class="flex items-center gap-4" data-toggle="dropdown" aria-expanded="false">
-            <img class="inline-block h-11 w-11 rounded-full object-cover object-center"
-                src="/web/<?php echo htmlspecialchars($_SESSION['image']) ?>"
-                alt="avatar" />
+            <?php if ($_SESSION['image']): ?>
+                <img class="inline-block h-11 w-11 rounded-full object-cover object-center"
+                    src="/web/<?php echo htmlspecialchars($_SESSION['image']) ?>" alt="avatar" />
+            <?php else: ?>
+                <div class="">
+                    <i class='bx bxs-user-circle inline-block text-primary text-5xl rounded-full object-cover object-center'></i>
+                </div>
+            <?php endif; ?>
             <div>
                 <p title="<?php echo htmlspecialchars($_SESSION['name']) ?>"
                     class="font-sans text-base text-current antialiased line-champ-1 truncate w-[100px]">

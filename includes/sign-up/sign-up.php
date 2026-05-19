@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $emailCheckStmt = $conn->prepare($userQuery);
             $emailCheckStmt->bind_param("ssss", $name, $email, $password, $contactNumber);
             if ($emailCheckStmt->execute()) {
-                header("Location: setup.php");
+                header("Location: sign-in.php");
                 exit();
             }
         }
