@@ -19,7 +19,6 @@
         <?php include 'header.php'; ?>
         <!-- Dropdown Container -->
         <div class="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ">
-
             <div class="w-auto text-center max-w-7xl mx-auto items-center px-4 sm:px-6 lg:px-8">
                 <div class="w-full overflow-x-auto rounded-lg border border-slate-200 mt-4">
                     <table class="text-left w-full">
@@ -58,21 +57,21 @@
                             $types = "";
                             $search = $_GET['search'] ?? '';
                             if (!empty($search)) {
-                                $filter = " AND (food_category.name LIKE ?)";
+                                $filter = " AND (order.orderId LIKE ?)";
                                 $searchValue = "%" . $search . "%";
                                 $params = [$searchValue];
                                 $types = "s";
                             }
                             ;
-                            if (!empty($_GET['status'])) {
-                                $statuses = $_GET['status'];
+                            if (!empty($_GET['orderStatus'])) {
+                                $statuses = $_GET['orderStatus'];
                                 if (!is_array($statuses)) {
                                     $statuses = [$statuses];
                                 }
-                                $escapedStatuses = array_map(function ($status) use ($conn) {
-                                    return "'" . $conn->real_escape_string($status) . "'";
+                                $escapedStatuses = array_map(function ($orderStatus) use ($conn) {
+                                    return "'" . $conn->real_escape_string($orderStatus) . "'";
                                 }, $statuses);
-                                $filter .= " AND food_category.status IN (" . implode(',', $escapedStatuses) . ")";
+                                $filter .= " AND order.orderStatus IN (" . implode(',', $escapedStatuses) . ")";
                             }
 
                             if (!empty($_GET['branch'])) {
@@ -83,7 +82,7 @@
                                 $escapedBranches = array_map(function ($id) use ($conn) {
                                     return (int) $id;
                                 }, $selectedBranches);
-                                $filter .= " AND food_category.branchId IN (" . implode(',', $escapedBranches) . ")";
+                                $filter .= " AND order.branchId IN (" . implode(',', $escapedBranches) . ")";
                             }
                             $limitRecords = 10;
                             $perPage = isset($_GET['perPage']) && is_numeric($_GET['perPage']) ? (int) $_GET['perPage'] : 1;

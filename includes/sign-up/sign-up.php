@@ -36,12 +36,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $emailCheckStmt->close();
         } else {
             $emailCheckStmt->close();
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $userQuery = "INSERT INTO user (name, email, password, contactNumber) VALUES (?, ?, ?, ?)";
-            $emailCheckStmt = $conn->prepare($userQuery);
-            $emailCheckStmt->bind_param("ssss", $name, $email, $password, $contactNumber);
-            if ($emailCheckStmt->execute()) {
+            $insertStmt = $conn->prepare($userQuery);
+            $insertStmt->bind_param("ssss", $name, $email, $hashedPassword, $contactNumber);
+
+            if ($insertStmt->execute()) {
+                $insertStmt->close();
                 header("Location: sign-in.php");
                 exit();
+            } else {
+                $errorMessage = "Something went wrong. Please try again.";
+                $insertStmt->close();
             }
         }
     }
@@ -49,67 +55,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <div class="w-full max-w-md bg-white rounded-lg border border-secondary shadow-lg p-6">
-        <div class="mb-5">
-            <h2 class="text-xl font-bold text-foreground">
-                Sign Up
-            </h2>
-            <p class="text-mutedForeground text-sm">
-                Create your account below
-            </p>
-        </div>
-        <form class="space-y-4" method="POST" action="" class="">
-            <div>
-                <label class="text-sm text-foreground" for="name">
-                    Name
-                </label>
-                <input type="text" name="name" placeholder="Jane Doe" required
-                    class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
-            </div>
-            <div>
-                <label class="text-sm text-foreground" for="email">
-                    Email
-                </label>
-                <input type="text" name="email" placeholder="janedoe@gmail.com" required
-                    class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
-            </div>
-            <div>
-                <label class="text-sm text-foreground" for="password">
-                    Password
-                </label>
-                <input type="password" name="password" placeholder="********" required
-                    class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
-            </div>
-            <div>
-                <label class="text-sm text-foreground" for="confirmPassword">
-                    Confirm Password
-                </label>
-                <input type="password" name="confirmPassword" placeholder="********" required
-                    class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
-            </div>
-            <div>
-                <label class="text-sm text-foreground">
-                    Contact Number
-                </label>
-                <input type="text" name="contactNumber" placeholder="012-3456789" required pattern="01\d{8,9}"
-                    maxlength="11" inputmode="numeric"
-                    class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
-            </div>
-            <button type="submit"
-                class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
-                Sign Up
-            </button>
-        </form>
-        <div class="mt-4 text-center">
-            <?php if (!empty($errorMessage)): ?>
-                <div class="text-destructive text-sm">
-                    <?php echo htmlspecialchars($errorMessage) ?>
-                </div>
-            <?php endif; ?>
-        </div>
-        <div class="text-center mt-5 text-sm text-mutedForeground">
-            Already have an account?
-            <a href="sign-in.php" class="text-primary hover:underline ml-1">
-                Sign In
-            </a>
-        </div>
+    <div class="mb-5">
+        <h2 class="text-xl font-bold text-foreground">
+            Sign Up
+        </h2>
+        <p class="text-mutedForeground text-sm">
+            Create your account below
+        </p>
     </div>
+    <form class="space-y-4" method="POST" action="" class="">
+        <div>
+            <label class="text-sm text-foreground" for="name">
+                Name
+            </label>
+            <input type="text" name="name" placeholder="Jane Doe" required
+                class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <div>
+            <label class="text-sm text-foreground" for="email">
+                Email
+            </label>
+            <input type="text" name="email" placeholder="janedoe@gmail.com" required
+                class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <div>
+            <label class="text-sm text-foreground" for="password">
+                Password
+            </label>
+            <input type="password" name="password" placeholder="********" required
+                class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <div>
+            <label class="text-sm text-foreground" for="confirmPassword">
+                Confirm Password
+            </label>
+            <input type="password" name="confirmPassword" placeholder="********" required
+                class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <div>
+            <label class="text-sm text-foreground">
+                Contact Number
+            </label>
+            <input type="text" name="contactNumber" placeholder="012-3456789" required pattern="01\d{8,9}"
+                maxlength="11" inputmode="numeric"
+                class="w-full border border-secondary rounded-custom px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <button type="submit"
+            class="w-full rounded-md border bg-primary px-4 py-2 text-center text-sm font-medium text-black transition hover:bg-amber-300">
+            Sign Up
+        </button>
+    </form>
+    <div class="mt-4 text-center">
+        <?php if (!empty($errorMessage)): ?>
+            <div class="text-destructive text-sm">
+                <?php echo htmlspecialchars($errorMessage) ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div class="text-center mt-5 text-sm text-mutedForeground">
+        Already have an account?
+        <a href="sign-in.php" class="text-primary hover:underline ml-1">
+            Sign In
+        </a>
+    </div>
+</div>

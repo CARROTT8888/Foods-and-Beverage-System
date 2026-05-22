@@ -4,22 +4,22 @@ $params = [];
 $types = "";
 $search = $_GET['search'] ?? '';
 if (!empty($search)) {
-    $filter = " AND (food_category.name LIKE ?)";
+    $filter = " AND (order.orderId LIKE ?)";
     $searchValue = "%" . $search . "%";
     $params = [$searchValue];
     $types = "s";
 }
 ;
 // filtering status
-$selectedStatuses = $_GET['status'] ?? [];
+$selectedStatuses = $_GET['orderStatus'] ?? [];
 if (!is_array($selectedStatuses)) {
     $selectedStatuses = [$selectedStatuses];
 }
 if (!empty($selectedStatuses)) {
-    $escapedStatuses = array_map(function ($status) use ($conn) {
-        return "'" . $conn->real_escape_string($status) . "'";
+    $escapedStatuses = array_map(function ($orderStatus) use ($conn) {
+        return "'" . $conn->real_escape_string($orderStatus) . "'";
     }, $selectedStatuses);
-    $filter .= " AND food_category.status IN (" . implode(',', $escapedStatuses) . ")";
+    $filter .= " AND order.orderStatus IN (" . implode(',', $escapedStatuses) . ")";
 }
 
 $selectedBranches = $_GET['branch'] ?? [];
@@ -31,20 +31,20 @@ if (!empty($selectedBranches)) {
     $escapedBranches = array_map(function ($id) use ($conn) {
         return (int) $id;
     }, $selectedBranches);
-    $filter .= " AND food_category.branchId IN (" . implode(',', $escapedBranches) . ")";
+    $filter .= " AND order.branchId IN (" . implode(',', $escapedBranches) . ")";
 }
 
 // final query with filter
 /*$branchQuery = "SELECT * FROM branch WHERE 1" . $filter . " ORDER BY branchId DESC";
 $branchResult = $conn->query($branchQuery);*/
 
-$categoryQuery = "SELECT * FROM food_category WHERE 1" . $filter . " ORDER BY categoryId DESC";
-$stmt = $conn->prepare($categoryQuery);
+$orderQuery = "SELECT * FROM `order` WHERE 1" . $filter . " ORDER BY orderId DESC";
+$stmt = $conn->prepare($orderQuery);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
 }
 $stmt->execute();
-$categoryResult = $stmt->get_result();
+$orderResult = $stmt->get_result();
 ?>
 
 <div class="w-full px-4 sm:px-6 lg:px-10">
@@ -66,10 +66,10 @@ $categoryResult = $stmt->get_result();
                     <div class="relative flex size-4 items-center justify-center">
                         <i class='bx bx-show text-lg text-green-600'></i>
                     </div>
-                    <h1 class="text-lg font-bold text-green-900">Visible</h1>
+                    <h1 class="text-lg font-bold text-green-900">Pending</h1>
                 </div>
                 <p class="text-3xl text-green-950 mt-3 font-extrabold">
-                    -
+                    <?php echo $totalOrderStatusPending; ?>
                 </p>
             </div>
         </div>
@@ -124,7 +124,7 @@ $categoryResult = $stmt->get_result();
     </div>
     <?php
     // filtering status
-    $selectedStatuses = $_GET['status'] ?? [];
+    $selectedStatuses = $_GET['orderStatus'] ?? [];
     if (!is_array($selectedStatuses)) {
         $selectedStatuses = [$selectedStatuses];
     }
@@ -138,30 +138,45 @@ $categoryResult = $stmt->get_result();
             </button>
             <?php include 'search-or-filter-dialog.php'; ?>
             <div class="flex items-center mb-10 gap-2 justify-self-start">
-                <?php foreach ($selectedStatuses as $status):
-                    $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $status);
+                <?php foreach ($selectedStatuses as $orderStatus):
+                    $newStatuses = array_filter($selectedStatuses, fn($s) => $s !== $orderStatus);
                     $query = $_GET;
                     $query['status'] = $newStatuses;
                     if (empty($newStatuses)) {
-                        unset($query['status']);
+                        unset($query['orderStatus']);
                     }
                     $url = '?' . http_build_query($query);
                     ?>
                     <a href="<?= $url ?>" class="">
-                        <?php if ($status === 'Visible'): ?>
+                        <?php if ($orderStatus === 'Pending'): ?>
                             <div
-                                class="text-green-500  border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                                class="text-orange-500  border border-orange-500 bg-orange-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($orderStatus); ?> <i class='bx bx-x-circle text-sm'></i>
                             </div>
-                        <?php elseif ($status === 'Invisible'): ?>
+                        <?php elseif ($orderStatus === 'In Progress'): ?>
                             <div
-                                class="text-red-500 border border-red-500 bg-red-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                                class="text-amber-500 border border-amber-500 bg-amber-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($orderStatus); ?> <i class='bx bx-x-circle text-sm'></i>
                             </div>
-                        <?php elseif ($status === 'Deprecated'): ?>
+                        <?php elseif ($orderStatus === 'Done'): ?>
+                            <div
+                                class="text-green-500 border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($orderStatus); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($orderStatus === 'Shipping'): ?>
+                            <div
+                                class="text-blue-500 border border-blue-500 bg-blue-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($orderStatus); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($orderStatus === 'Delivered'): ?>
+                            <div
+                                class="text-green-500 border border-green-500 bg-green-100 rounded-full text-sm w-auto p-1 px-2 items-center">
+                                <?php echo htmlspecialchars($orderStatus); ?> <i class='bx bx-x-circle text-sm'></i>
+                            </div>
+                        <?php elseif ($orderStatus === 'Cancelled'): ?>
                             <div
                                 class="text-slate-500 border border-slate-500 bg-slate-100 rounded-full text-sm w-auto p-1 px-2 items-center">
-                                <?php echo htmlspecialchars($status); ?> <i class='bx bx-x-circle text-sm'></i>
+                                <?php echo htmlspecialchars($orderStatus); ?> <i class='bx bx-x-circle text-sm'></i>
                             </div>
                         <?php endif ?>
                     </a>
@@ -170,8 +185,8 @@ $categoryResult = $stmt->get_result();
         </div>
     </div>
     <span class="text-secondaryForeground">Showing
-        <?php echo $categoryResult->num_rows; ?> of
-        -
+        <?php echo $orderResult->num_rows; ?> of
+        <?php echo $totalOrder; ?>
         categories
     </span>
 </div>

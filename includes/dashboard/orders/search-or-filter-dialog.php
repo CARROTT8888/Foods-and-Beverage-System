@@ -7,7 +7,7 @@
                 <small class="font-sans antialiased text-sm mx-2 font-semibold text-slate-600">Search or
                     Filter</small>
                 <div class="flex items-center">
-                    <a href="/web/dashboard/categories">
+                    <a href="/web/dashboard/orders">
                         <button type="button"
                             class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 bg-transparent border-transparent text-slate-800 hover:bg-slate-200/10 hover:border-slate-600/10 shadow-none hover:shadow-none"
                             data-shape="default" data-width="default">Clear All</button>
@@ -25,7 +25,7 @@
             </div>
             <div class="relative w-full">
 
-                <input placeholder="Search a name, state, or address" name="search" value=""
+                <input placeholder="Search an order ID" name="search" value=""
                     class="w-full aria-disabled:cursor-not-allowed outline-none focus:outline-none placeholder:text-slate-black bg-transparent ring-transparent border border-slate-200 transition-all duration-300 ease-in disabled:opacity-50 disabled:pointer-events-none data-[error=true]:border-error data-[success=true]:border-success select-none data-[shape=pill]:rounded-full text-sm rounded-md py-2 px-2.5 ring shadow-sm data-[icon-placement=start]:ps-9 data-[icon-placement=end]:pe-9 hover:border-primary-800 hover:ring-primary-800/10 focus:border-primary peer"
                     data-error="false" data-success="false" data-shape="default" data-icon-placement="end" type="text"
                     data-tabindex="" />
@@ -61,9 +61,50 @@
 
                             <!-- Checkbox Item -->
                             <div class="inline-flex items-center justify-betweena">
-                                <label class="flex items-center cursor-pointer relative" for="Visible">
-                                    <input type="checkbox" id="Visible" name="status[]" value="Visible"
-                                        <?= in_array('Visible', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Pending">
+                                    <input type="checkbox" id="Pending" name="orderStatus[]" value="Pending"
+                                        <?= in_array('Pending', $selectedStatuses) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-orange-600 flex-1"
+                                    for="Pending">Pending</label>
+                                <span
+                                    class="font-sans antialiased text-sm text-orange-600 ml-6"><?php echo $totalOrderStatusPending; ?></span>
+                            </div>
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="In Progress">
+                                    <input type="checkbox" id="In Progress" name="orderStatus[]" value="In Progress"
+                                        <?= in_array('In Progress', $selectedStatuses) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-amber-600 flex-1"
+                                    for="In Progress">In Progress</label>
+                                <span
+                                    class="font-sans antialiased text-sm text-amber-600 ml-6"><?php echo $totalOrderStatusInProgress; ?></span>
+                            </div>
+
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Done">
+                                    <input type="checkbox" id="Done" name="orderStatus[]" value="Done"
+                                        <?= in_array('Done', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -76,14 +117,15 @@
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
-                                    for="Visible">Visible</label>
+                                    for="Done">Done</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-green-600 ml-6"><?php echo $totalStatusVisible; ?></span>
+                                    class="font-sans antialiased text-sm text-green-600 ml-6"><?php echo $totalOrderStatusDone; ?></span>
                             </div>
+
                             <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Invisible">
-                                    <input type="checkbox" id="Invisible" name="status[]" value="Invisible"
-                                        <?= in_array('Invisible', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Shipping">
+                                    <input type="checkbox" id="Shipping" name="orderStatus[]" value="Shipping"
+                                        <?= in_array('Done', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -95,16 +137,37 @@
                                         </svg>
                                     </span>
                                 </label>
-                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-red-600 flex-1"
-                                    for="Occupied">Invisible</label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-blue-600 flex-1"
+                                    for="Shipping">Shipping</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-red-600 ml-6"><?php echo $totalStatusInvisible; ?></span>
+                                    class="font-sans antialiased text-sm text-blue-600 ml-6"><?php echo $totalOrderStatusShipping; ?></span>
                             </div>
 
                             <div class="inline-flex items-center justify-between">
-                                <label class="flex items-center cursor-pointer relative" for="Deprecated">
-                                    <input type="checkbox" id="Deprecated" name="status[]" value="Deprecated"
-                                        <?= in_array('Deprecated', $selectedStatuses) ? 'checked' : '' ?>
+                                <label class="flex items-center cursor-pointer relative" for="Delivered">
+                                    <input type="checkbox" id="Done" name="orderStatus[]" value="Delivered"
+                                        <?= in_array('Delivered', $selectedStatuses) ? 'checked' : '' ?>
+                                        class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
+                                    <span
+                                        class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-green-600 flex-1"
+                                    for="Delivered">Delivered</label>
+                                <span
+                                    class="font-sans antialiased text-sm text-green-600 ml-6"><?php echo $totalOrderStatusDelivered; ?></span>
+                            </div>
+
+                            <div class="inline-flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer relative" for="Cancelled">
+                                    <input type="checkbox" id="Cancelled" name="orderStatus[]" value="Cancelled"
+                                        <?= in_array('Cancelled', $selectedStatuses) ? 'checked' : '' ?>
                                         class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-secondary" />
                                     <span
                                         class="absolute text-white opacity-0 peer-checked:opacity-100 top-4.5 left-4.5 transform -translate-x-1/2 -translate-y-1/2">
@@ -117,9 +180,9 @@
                                     </span>
                                 </label>
                                 <label class="cursor-pointer ml-2 font-sans antialiased text-sm text-slate-600 flex-1"
-                                    for="Deprecated">Deprecated</label>
+                                    for="Cancelled">Cancelled</label>
                                 <span
-                                    class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalStatusDeprecated1; ?></span>
+                                    class="font-sans antialiased text-sm text-slate-600 ml-6"><?php echo $totalOrderStatusCancelled; ?></span>
                             </div>
                         </div>
                     </div>
