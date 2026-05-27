@@ -1,6 +1,3 @@
-// IF YOU SEE IT, JUST IGNORE THIS FILE AND THE CODE
-// WE'RE DOING ANOTHER ASSIGNMENT AND PROJECT IN THIS FILE
-
 #include <iostream>
 #include <iomanip>
 #include <chrono>

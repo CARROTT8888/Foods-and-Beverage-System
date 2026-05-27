@@ -270,9 +270,9 @@ int main()
         cin >> (*ptr).mark;
     }*/
 
-    const int SIZE = 500;
+    const int SIZE = 300;
 
-    // 500 hotel booking records
+    // 100 hotel booking records
     Booking originalBooking[SIZE] =
         {
             {1234, "Customer412", 890, 14},
@@ -604,226 +604,7 @@ int main()
             {1303, "Customer469", 600, 23},
             {1545, "Customer153", 1390, 6},
             {1258, "Customer325", 690, 17},
-
-            {1150, "Customer555", 400, 13},
-            {1502, "Customer219", 1200, 29},
-            {1365, "Customer401", 770, 22},
-            {1218, "Customer111", 550, 4},
-            {1561, "Customer395", 1430, 25},
-            {1170, "Customer527", 420, 10},
-            {1407, "Customer261", 970, 18},
-            {1287, "Customer415", 770, 31},
-            {1520, "Customer177", 1240, 1},
-            {1375, "Customer357", 860, 16},
-
-            {1135, "Customer431", 370, 8},
-            {1475, "Customer299", 1130, 24},
-            {1395, "Customer567", 940, 15},
-            {1250, "Customer161", 670, 3},
-            {1593, "Customer381", 1580, 26},
-            {1191, "Customer549", 490, 12},
-            {1422, "Customer215", 1020, 30},
-            {1297, "Customer457", 810, 7},
-            {1540, "Customer109", 1370, 21},
-            {1330, "Customer327", 650, 19},
-
-            {1109, "Customer511", 320, 5},
-            {1467, "Customer233", 1100, 22},
-            {1350, "Customer497", 730, 14},
-            {1230, "Customer127", 580, 27},
-            {1566, "Customer311", 1460, 11},
-            {1174, "Customer575", 440, 18},
-            {1420, "Customer251", 1010, 9},
-            {1283, "Customer461", 760, 30},
-            {1549, "Customer137", 1400, 13},
-            {1389, "Customer303", 910, 2},
-
-            {1123, "Customer429", 350, 28},
-            {1494, "Customer283", 1180, 16},
-            {1379, "Customer547", 870, 6},
-            {1266, "Customer175", 710, 23},
-            {1599, "Customer319", 1590, 1},
-            {1158, "Customer503", 410, 15},
-            {1438, "Customer267", 1050, 29},
-            {1308, "Customer439", 610, 12},
-            {1531, "Customer151", 1350, 20},
-            {1247, "Customer367", 660, 8},
-
-            {1118, "Customer593", 340, 17},
-            {1454, "Customer205", 1080, 4},
-            {1338, "Customer445", 640, 25},
-            {1205, "Customer115", 530, 14},
-            {1578, "Customer383", 1510, 31},
-            {1168, "Customer529", 420, 11},
-            {1410, "Customer271", 980, 22},
-            {1279, "Customer419", 730, 9},
-            {1512, "Customer189", 1210, 30},
-            {1358, "Customer355", 750, 13},
-
-            {1142, "Customer531", 380, 26},
-            {1480, "Customer247", 1220, 12},
-            {1398, "Customer405", 940, 5},
-            {1262, "Customer155", 700, 24},
-            {1582, "Customer322", 1520, 18},
-            {1196, "Customer577", 490, 7},
-            {1426, "Customer294", 1040, 29},
-            {1295, "Customer483", 810, 16},
-            {1538, "Customer169", 1370, 1},
-            {1328, "Customer341", 650, 21},
-
-            {1106, "Customer499", 310, 23},
-            {1470, "Customer212", 1110, 10},
-            {1355, "Customer425", 740, 8},
-            {1240, "Customer139", 600, 27},
-            {1569, "Customer369", 1470, 15},
-            {1182, "Customer501", 460, 4},
-            {1405, "Customer228", 960, 19},
-            {1285, "Customer455", 760, 31},
-            {1555, "Customer111", 1420, 14},
-            {1385, "Customer331", 890, 11},
-
-            {1148, "Customer555", 390, 30},
-            {1499, "Customer285", 1190, 13},
-            {1372, "Customer413", 800, 25},
-            {1210, "Customer177", 540, 6},
-            {1596, "Customer305", 1580, 18},
-            {1164, "Customer581", 430, 22},
-            {1442, "Customer241", 1060, 9},
-            {1312, "Customer463", 620, 17},
-            {1526, "Customer149", 1270, 2},
-            {1273, "Customer311", 740, 28},
-
-            {1129, "Customer517", 360, 12},
-            {1459, "Customer261", 1100, 21},
-            {1343, "Customer433", 680, 5},
-            {1224, "Customer181", 560, 16},
-            {1576, "Customer357", 1510, 27},
-            {1186, "Customer525", 470, 10},
-            {1416, "Customer239", 1000, 31},
-            {1290, "Customer401", 780, 14},
-            {1516, "Customer134", 1220, 24},
-            {1376, "Customer399", 840, 8},
-
-            {1116, "Customer453", 330, 19},
-            {1485, "Customer215", 1140, 13},
-            {1391, "Customer591", 920, 6},
-            {1245, "Customer165", 670, 25},
-            {1590, "Customer327", 1540, 18},
-            {1199, "Customer553", 500, 2},
-            {1437, "Customer281", 1040, 29},
-            {1304, "Customer419", 600, 11},
-            {1546, "Customer103", 1390, 22},
-            {1259, "Customer387", 690, 15},
-
-            {1152, "Customer571", 400, 7},
-            {1503, "Customer227", 1200, 30},
-            {1366, "Customer487", 770, 17},
-            {1220, "Customer133", 550, 9},
-            {1562, "Customer347", 1440, 24},
-            {1171, "Customer509", 420, 13},
-            {1408, "Customer291", 970, 1},
-            {1288, "Customer443", 770, 28},
-            {1521, "Customer155", 1240, 4},
-            {1376, "Customer319", 860, 21},
-
-            {1136, "Customer405", 370, 14},
-            {1476, "Customer201", 1130, 26},
-            {1396, "Customer511", 940, 8},
-            {1251, "Customer195", 670, 19},
-            {1594, "Customer333", 1580, 31},
-            {1192, "Customer583", 490, 5},
-            {1423, "Customer267", 1020, 22},
-            {1298, "Customer421", 820, 12},
-            {1541, "Customer129", 1370, 30},
-            {1331, "Customer355", 650, 16},
-
-            {1110, "Customer597", 320, 2},
-            {1468, "Customer249", 1100, 27},
-            {1351, "Customer411", 730, 10},
-            {1231, "Customer117", 590, 23},
-            {1567, "Customer376", 1460, 15},
-            {1175, "Customer529", 440, 8},
-            {1421, "Customer256", 1010, 29},
-            {1284, "Customer481", 760, 1},
-            {1550, "Customer145", 1410, 18},
-            {1390, "Customer322", 910, 25},
-
-            {1124, "Customer431", 350, 13},
-            {1495, "Customer279", 1180, 30},
-            {1380, "Customer565", 880, 22},
-            {1267, "Customer169", 710, 4},
-            {1600, "Customer343", 1600, 17},
-            {1159, "Customer533", 410, 9},
-            {1439, "Customer213", 1050, 26},
-            {1309, "Customer495", 620, 11},
-            {1532, "Customer141", 1350, 15},
-            {1248, "Customer317", 660, 28},
-
-            {1119, "Customer547", 340, 6},
-            {1455, "Customer289", 1080, 20},
-            {1339, "Customer409", 640, 14},
-            {1206, "Customer131", 530, 31},
-            {1579, "Customer350", 1510, 7},
-            {1169, "Customer558", 420, 24},
-            {1411, "Customer205", 990, 12},
-            {1280, "Customer447", 730, 3},
-            {1513, "Customer163", 1210, 19},
-            {1359, "Customer381", 750, 27},
-
-            {1143, "Customer503", 380, 10},
-            {1481, "Customer255", 1220, 16},
-            {1399, "Customer469", 940, 1},
-            {1263, "Customer151", 700, 25},
-            {1583, "Customer391", 1520, 13},
-            {1197, "Customer513", 500, 29},
-            {1427, "Customer277", 1040, 8},
-            {1296, "Customer451", 810, 22},
-            {1539, "Customer174", 1370, 5},
-            {1329, "Customer313", 650, 18},
-
-            {1107, "Customer483", 310, 14},
-            {1471, "Customer221", 1110, 30},
-            {1356, "Customer461", 740, 21},
-            {1241, "Customer121", 600, 7},
-            {1570, "Customer301", 1470, 26},
-            {1183, "Customer587", 470, 11},
-            {1406, "Customer236", 960, 15},
-            {1286, "Customer472", 770, 4},
-            {1556, "Customer152", 1420, 23},
-            {1386, "Customer334", 890, 9},
-
-            {1149, "Customer522", 400, 28},
-            {1500, "Customer293", 1190, 12},
-            {1373, "Customer441", 800, 20},
-            {1211, "Customer189", 540, 31},
-            {1597, "Customer325", 1590, 16},
-            {1165, "Customer515", 430, 6},
-            {1443, "Customer254", 1060, 25},
-            {1313, "Customer401", 620, 13},
-            {1527, "Customer111", 1270, 2},
-            {1274, "Customer367", 740, 17},
-
-            {1130, "Customer594", 360, 10},
-            {1460, "Customer216", 1100, 24},
-            {1344, "Customer449", 680, 15},
-            {1225, "Customer134", 570, 8},
-            {1577, "Customer349", 1510, 29},
-            {1187, "Customer551", 480, 22},
-            {1417, "Customer212", 1010, 1},
-            {1291, "Customer428", 780, 19},
-            {1517, "Customer192", 1220, 14},
-            {1377, "Customer389", 840, 30},
-
-            {1117, "Customer415", 330, 7},
-            {1486, "Customer258", 1140, 26},
-            {1392, "Customer537", 920, 12},
-            {1246, "Customer106", 660, 21},
-            {1591, "Customer379", 1550, 18},
-            {1200, "Customer564", 500, 5},
-            {1438, "Customer228", 1050, 13},
-            {1305, "Customer462", 600, 31},
-            {1547, "Customer128", 1400, 9},
-            {1260, "Customer308", 690, 23}};
+        };
 
     Booking workingBooking[SIZE];
     int choice;
@@ -858,7 +639,7 @@ int main()
                 workingBooking[i] = originalBooking[i];
             }
 
-            cout << "\nRunning Heap Sort with 100 Booking Records" << endl;
+            cout << "\nRunning Heap Sort with 300 Booking Records" << endl;
             algorithm(workingBooking, SIZE, 1);
         }
 
@@ -869,13 +650,13 @@ int main()
                 workingBooking[i] = originalBooking[i];
             }
 
-            cout << "\nRunning Shell Sort with 100 Booking Records" << endl;
+            cout << "\nRunning Shell Sort with 300 Booking Records" << endl;
             algorithm(workingBooking, SIZE, 2);
         }
 
         else if (choice == 4)
         {
-            const int DEMO_SIZE = 50;
+            const int DEMO_SIZE = 30;
             Booking demoDataArray1[DEMO_SIZE] = {
                 /*Demo Customer*/
                 {1028, "DC1", 500, 1},
@@ -910,28 +691,6 @@ int main()
                 {1223, "DC28", 1200, 28},
                 {1266, "DC29", 450, 29},
                 {1291, "DC30", 1300, 30},
-
-                {1318, "DC31", 550, 31},
-                {1362, "DC32", 650, 32},
-                {1304, "DC33", 750, 33},
-                {1349, "DC34", 850, 34},
-                {1385, "DC35", 950, 35},
-                {1331, "DC36", 350, 36},
-                {1370, "DC37", 250, 37},
-                {1394, "DC38", 1400, 38},
-                {1325, "DC39", 700, 39},
-                {1357, "DC40", 1500, 40},
-
-                {1412, "DC41", 500, 41},
-                {1467, "DC42", 600, 42},
-                {1409, "DC43", 700, 43},
-                {1433, "DC44", 800, 44},
-                {1481, "DC45", 900, 45},
-                {1424, "DC46", 400, 46},
-                {1476, "DC47", 300, 47},
-                {1495, "DC48", 1150, 48},
-                {1448, "DC49", 550, 49},
-                {1453, "DC50", 1250, 50},
             };
             Booking demoDataArray2[DEMO_SIZE];
             for (int i = 0; i < DEMO_SIZE; i++)
@@ -960,7 +719,7 @@ int main()
 
             else
             {
-                cout << "\nInvalid Selection!" << endl;
+                cout << "Invalid Selection!" << endl;
             }
         }
 
@@ -980,7 +739,7 @@ int main()
             createWorstCase(bestCase, worstCase, SIZE);
 
             cout << "\n=============================" << endl;
-            cout << "PERFORMANCE BENCHMARK (N=500)" << endl;
+            cout << "PERFORMANCE BENCHMARK (N=100)" << endl;
             cout << "=============================" << endl;
             cout << "\n=== HEAP SORT PERFORMANCE ===" << endl;
             cout << "-----------------------------" << endl;
@@ -1010,7 +769,7 @@ int main()
 
         else
         {
-            cout << "\nInvalid choice!\n";
+            cout << "\nInvalid choice!" << endl;
         }
     } while (choice != 0);
 
