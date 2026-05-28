@@ -639,7 +639,7 @@ int main()
                 workingBooking[i] = originalBooking[i];
             }
 
-            cout << "\nRunning Heap Sort with 300 Booking Records" << endl;
+            cout << "\n=== Running Heap Sort with 300 Booking Records ===" << endl;
             algorithm(workingBooking, SIZE, 1);
         }
 
@@ -650,7 +650,7 @@ int main()
                 workingBooking[i] = originalBooking[i];
             }
 
-            cout << "\nRunning Shell Sort with 300 Booking Records" << endl;
+            cout << "\n=== Running Shell Sort with 300 Booking Records ===" << endl;
             algorithm(workingBooking, SIZE, 2);
         }
 
@@ -707,19 +707,23 @@ int main()
 
             if (demoChoice == 1)
             {
+                cout << "\n=============================" << endl;
                 cout << "Heap Sort Step-by-step algorithm demonstration" << endl;
+                cout << "=============================" << endl;
                 heapSortDemo(demoDataArray1, DEMO_SIZE);
             }
 
             else if (demoChoice == 2)
             {
+                cout << "\n=============================" << endl;
                 cout << "Shell Sort Step-by-step algorithm demonstration" << endl;
+                cout << "=============================" << endl;
                 shellSortDemo(demoDataArray2, DEMO_SIZE);
             }
 
             else
             {
-                cout << "Invalid Selection!" << endl;
+                cout << "\nInvalid Selection!" << endl;
             }
         }
 
@@ -739,7 +743,7 @@ int main()
             createWorstCase(bestCase, worstCase, SIZE);
 
             cout << "\n=============================" << endl;
-            cout << "PERFORMANCE BENCHMARK (N=100)" << endl;
+            cout << "PERFORMANCE BENCHMARK (N=300)" << endl;
             cout << "=============================" << endl;
             cout << "\n=== HEAP SORT PERFORMANCE ===" << endl;
             cout << "-----------------------------" << endl;
@@ -769,7 +773,7 @@ int main()
 
         else
         {
-            cout << "\nInvalid choice!" << endl;
+            cout << "\nInvalid Choice!" << endl;
         }
     } while (choice != 0);
 

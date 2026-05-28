@@ -823,7 +823,8 @@ int main()
             {1438, "Customer228", 1050, 13},
             {1305, "Customer462", 600, 31},
             {1547, "Customer128", 1400, 9},
-            {1260, "Customer308", 690, 23}};
+            {1260, "Customer308", 690, 23},
+        };
 
     Booking workingBooking[SIZE];
     int choice;
@@ -858,7 +859,7 @@ int main()
                 workingBooking[i] = originalBooking[i];
             }
 
-            cout << "\nRunning Heap Sort with 100 Booking Records" << endl;
+            cout << "\n=== Running Heap Sort with 500 Booking Records ===" << endl;
             algorithm(workingBooking, SIZE, 1);
         }
 
@@ -869,7 +870,7 @@ int main()
                 workingBooking[i] = originalBooking[i];
             }
 
-            cout << "\nRunning Shell Sort with 100 Booking Records" << endl;
+            cout << "\n=== Running Shell Sort with 500 Booking Records ===" << endl;
             algorithm(workingBooking, SIZE, 2);
         }
 
@@ -948,13 +949,17 @@ int main()
 
             if (demoChoice == 1)
             {
+                cout << "\n=============================" << endl;
                 cout << "Heap Sort Step-by-step algorithm demonstration" << endl;
+                cout << "=============================" << endl;
                 heapSortDemo(demoDataArray1, DEMO_SIZE);
             }
 
             else if (demoChoice == 2)
             {
+                cout << "\n=============================" << endl;
                 cout << "Shell Sort Step-by-step algorithm demonstration" << endl;
+                cout << "=============================" << endl;
                 shellSortDemo(demoDataArray2, DEMO_SIZE);
             }
 
@@ -1010,7 +1015,7 @@ int main()
 
         else
         {
-            cout << "\nInvalid choice!\n";
+            cout << "\nInvalid Choice!\n";
         }
     } while (choice != 0);
 
