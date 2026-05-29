@@ -1,3 +1,6 @@
+// IF YOU SEE IT, JUST IGNORE THIS FILE AND THE CODE
+// WE'RE DOING ANOTHER ASSIGNMENT AND PROJECT IN THIS FILE
+
 #include <iostream>
 #include <iomanip>
 #include <chrono>
@@ -56,17 +59,17 @@ void heapify(Booking booking[], int n, int i)
     int left = 2 * i + 1;
     int right = 2 * i + 2;
 
+    comparisons++;
     // If left child is larger than root
     if (left < n && booking[left].bookingId > booking[largest].bookingId)
     {
-        comparisons++;
         largest = left;
     }
 
+    comparisons++;
     // If right child is larger than largest so far
     if (right < n && booking[right].bookingId > booking[largest].bookingId)
     {
-        comparisons++;
         largest = right;
     }
 
@@ -142,6 +145,7 @@ void shellSort(Booking booking[], int n)
             // Current element to be placed correctly
             Booking temp = booking[i];
             int j;
+            bool moved = false;
 
             for (j = i; j >= gap; j -= gap)
             {
@@ -151,6 +155,7 @@ void shellSort(Booking booking[], int n)
                 {
                     booking[j] = booking[j - gap];
                     swapsCount++;
+                    moved = true;
                 }
 
                 else
@@ -161,7 +166,10 @@ void shellSort(Booking booking[], int n)
 
             // Place temp in its correct location
             booking[j] = temp;
-            swapsCount++;
+            if (moved)
+            {
+                swapsCount++;
+            }
         }
     }
 }
@@ -181,6 +189,7 @@ void shellSortDemo(Booking booking[], int n)
         {
             Booking temp = booking[i];
             int j;
+            bool moved = false;
             for (j = i; j >= gap; j -= gap)
             {
                 comparisons++;
@@ -188,6 +197,7 @@ void shellSortDemo(Booking booking[], int n)
                 {
                     booking[j] = booking[j - gap];
                     swapsCount++;
+                    moved = true;
                 }
 
                 else
@@ -196,7 +206,10 @@ void shellSortDemo(Booking booking[], int n)
                 }
             }
             booking[j] = temp;
-            swapsCount++;
+            if (moved)
+            {
+                swapsCount++;
+            }
 
             cout << "Step " << (step++) << " (Insert ID " << temp.bookingId << "): ";
             displayArray(booking, n);
@@ -205,14 +218,24 @@ void shellSortDemo(Booking booking[], int n)
     }
 }
 
+void resetCounter()
+{
+    comparisons = 0;
+    swapsCount = 0;
+}
+
 void createBestCase(Booking source[], Booking target[], int size)
 {
+    resetCounter();
+
     for (int i = 0; i < size; i++)
     {
         target[i] = source[i];
     }
 
     shellSort(target, size);
+
+    resetCounter();
 }
 
 void createWorstCase(Booking bestCase[], Booking target[], int size)
@@ -221,12 +244,6 @@ void createWorstCase(Booking bestCase[], Booking target[], int size)
     {
         target[i] = bestCase[size - 1 - i];
     }
-}
-
-void resetCounter()
-{
-    comparisons = 0;
-    swapsCount = 0;
 }
 
 void algorithm(Booking booking[], int size, int algorithmChoice)
@@ -1587,7 +1604,7 @@ int main()
             createWorstCase(bestCase, worstCase, SIZE);
 
             cout << "\n=============================" << endl;
-            cout << "PERFORMANCE BENCHMARK (N=100)" << endl;
+            cout << "PERFORMANCE BENCHMARK (N=1000)" << endl;
             cout << "=============================" << endl;
             cout << "\n=== HEAP SORT PERFORMANCE ===" << endl;
             cout << "-----------------------------" << endl;

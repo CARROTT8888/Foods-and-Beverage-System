@@ -59,17 +59,17 @@ void heapify(Booking booking[], int n, int i)
     int left = 2 * i + 1;
     int right = 2 * i + 2;
 
+    comparisons++;
     // If left child is larger than root
     if (left < n && booking[left].bookingId > booking[largest].bookingId)
     {
-        comparisons++;
         largest = left;
     }
 
+    comparisons++;
     // If right child is larger than largest so far
     if (right < n && booking[right].bookingId > booking[largest].bookingId)
     {
-        comparisons++;
         largest = right;
     }
 
@@ -145,6 +145,7 @@ void shellSort(Booking booking[], int n)
             // Current element to be placed correctly
             Booking temp = booking[i];
             int j;
+            bool moved = false;
 
             for (j = i; j >= gap; j -= gap)
             {
@@ -154,6 +155,7 @@ void shellSort(Booking booking[], int n)
                 {
                     booking[j] = booking[j - gap];
                     swapsCount++;
+                    moved = true;
                 }
 
                 else
@@ -164,7 +166,10 @@ void shellSort(Booking booking[], int n)
 
             // Place temp in its correct location
             booking[j] = temp;
-            swapsCount++;
+            if (moved)
+            {
+                swapsCount++;
+            }
         }
     }
 }
@@ -184,6 +189,7 @@ void shellSortDemo(Booking booking[], int n)
         {
             Booking temp = booking[i];
             int j;
+            bool moved = false;
             for (j = i; j >= gap; j -= gap)
             {
                 comparisons++;
@@ -191,6 +197,7 @@ void shellSortDemo(Booking booking[], int n)
                 {
                     booking[j] = booking[j - gap];
                     swapsCount++;
+                    moved = true;
                 }
 
                 else
@@ -199,7 +206,10 @@ void shellSortDemo(Booking booking[], int n)
                 }
             }
             booking[j] = temp;
-            swapsCount++;
+            if (moved)
+            {
+                swapsCount++;
+            }
 
             cout << "Step " << (step++) << " (Insert ID " << temp.bookingId << "): ";
             displayArray(booking, n);
@@ -208,14 +218,24 @@ void shellSortDemo(Booking booking[], int n)
     }
 }
 
+void resetCounter()
+{
+    comparisons = 0;
+    swapsCount = 0;
+}
+
 void createBestCase(Booking source[], Booking target[], int size)
 {
+    resetCounter();
+
     for (int i = 0; i < size; i++)
     {
         target[i] = source[i];
     }
 
     shellSort(target, size);
+
+    resetCounter();
 }
 
 void createWorstCase(Booking bestCase[], Booking target[], int size)
@@ -224,12 +244,6 @@ void createWorstCase(Booking bestCase[], Booking target[], int size)
     {
         target[i] = bestCase[size - 1 - i];
     }
-}
-
-void resetCounter()
-{
-    comparisons = 0;
-    swapsCount = 0;
 }
 
 void algorithm(Booking booking[], int size, int algorithmChoice)
@@ -275,115 +289,116 @@ int main()
     // 100 hotel booking records
     Booking originalBooking[SIZE] =
         {
-            {1028, "Customer28", 525, 27},
-            {1063, "Customer63", 1050, 6},
-            {1005, "Customer55", 930, 19},
-            {1012, "Customer12", 285, 25},
-            {1087, "Customer87", 1410, 24},
-            {1041, "Customer41", 720, 23},
-            {1074, "Customer74", 1215, 29},
-            {1019, "Customer19", 390, 8},
-            {1093, "Customer93", 1500, 5},
-            {1052, "Customer52", 885, 13},
+            {1234, "Customer412", 890, 14},
+            {1556, "Customer128", 1420, 3},
+            {1102, "Customer389", 310, 22},
+            {1489, "Customer572", 1150, 29},
+            {1315, "Customer201", 620, 7},
+            {1178, "Customer445", 450, 1},
+            {1592, "Customer103", 1580, 18},
+            {1367, "Customer334", 780, 25},
+            {1211, "Customer519", 510, 12},
+            {1445, "Customer267", 1310, 30},
 
-            {1002, "Customer02", 135, 3},
-            {1069, "Customer69", 1140, 19},
-            {1034, "Customer34", 615, 6},
-            {1081, "Customer81", 1320, 11},
-            {1015, "Customer15", 330, 1},
-            {1046, "Customer46", 795, 1},
-            {1006, "Customer6", 195, 12},
-            {1059, "Customer59", 990, 28},
-            {1023, "Customer23", 450, 17},
-            {1078, "Customer78", 1275, 5},
+            {1512, "Customer155", 1210, 5},
+            {1134, "Customer498", 380, 19},
+            {1399, "Customer212", 940, 26},
+            {1278, "Customer367", 710, 8},
+            {1577, "Customer588", 1490, 11},
+            {1190, "Customer114", 490, 31},
+            {1423, "Customer431", 1050, 15},
+            {1333, "Customer299", 680, 2},
+            {1471, "Customer504", 1280, 24},
+            {1256, "Customer187", 830, 17},
 
-            {1039, "Customer39", 690, 18},
-            {1001, "Customer1", 120, 1},
-            {1099, "Customer99", 1590, 19},
-            {1066, "Customer66", 1095, 12},
-            {1016, "Customer16", 345, 2},
-            {1048, "Customer48", 825, 4},
-            {1085, "Customer85", 1380, 20},
-            {1027, "Customer27", 510, 26},
-            {1056, "Customer56", 945, 22},
-            {1072, "Customer72", 1185, 25},
+            {1115, "Customer322", 340, 9},
+            {1533, "Customer541", 1360, 28},
+            {1351, "Customer149", 740, 13},
+            {1202, "Customer476", 530, 6},
+            {1588, "Customer233", 1540, 21},
+            {1411, "Customer395", 990, 4},
+            {1156, "Customer511", 410, 23},
+            {1459, "Customer177", 1120, 16},
+            {1290, "Customer308", 790, 10},
+            {1378, "Customer462", 870, 27},
 
-            {1091, "Customer91", 1470, 1},
-            {1032, "Customer32", 585, 3},
-            {1061, "Customer61", 1020, 2},
-            {1004, "Customer4", 165, 7},
-            {1083, "Customer83", 1350, 16},
-            {1044, "Customer44", 765, 28},
-            {1076, "Customer76", 1245, 1},
-            {1021, "Customer21", 420, 13},
-            {1050, "Customer50", 855, 9},
-            {1097, "Customer97", 1560, 14},
+            {1544, "Customer254", 1390, 2},
+            {1122, "Customer533", 320, 20},
+            {1495, "Customer121", 1180, 14},
+            {1245, "Customer376", 660, 7},
+            {1562, "Customer490", 1450, 25},
+            {1185, "Customer165", 470, 11},
+            {1431, "Customer311", 1020, 30},
+            {1302, "Customer564", 600, 18},
+            {1521, "Customer228", 1250, 9},
+            {1223, "Customer405", 560, 13},
 
-            {1036, "Customer36", 645, 12},
-            {1067, "Customer67", 1110, 15},
-            {1010, "Customer10", 255, 20},
-            {1089, "Customer89", 1440, 29},
-            {1042, "Customer42", 735, 25},
-            {1070, "Customer70", 1155, 21},
-            {1025, "Customer25", 480, 21},
-            {1054, "Customer54", 915, 17},
-            {1095, "Customer95", 1530, 10},
-            {1031, "Customer31", 570, 2},
+            {1147, "Customer189", 390, 24},
+            {1466, "Customer347", 1290, 5},
+            {1388, "Customer522", 910, 17},
+            {1267, "Customer283", 750, 1},
+            {1599, "Customer419", 1590, 22},
+            {1163, "Customer106", 430, 28},
+            {1404, "Customer550", 960, 8},
+            {1322, "Customer241", 640, 31},
+            {1550, "Customer383", 1410, 12},
+            {1281, "Customer469", 730, 3},
 
-            {1008, "Customer8", 225, 15},
-            {1065, "Customer65", 1080, 10},
-            {1014, "Customer14", 315, 30},
-            {1080, "Customer80", 1305, 9},
-            {1047, "Customer47", 810, 3},
-            {1075, "Customer75", 1230, 30},
-            {1020, "Customer20", 405, 11},
-            {1058, "Customer58", 975, 26},
-            {1094, "Customer94", 1515, 8},
-            {1035, "Customer35", 630, 9},
+            {1105, "Customer271", 330, 16},
+            {1503, "Customer515", 1160, 26},
+            {1344, "Customer134", 700, 19},
+            {1215, "Customer399", 540, 10},
+            {1571, "Customer455", 1480, 6},
+            {1195, "Customer208", 500, 23},
+            {1449, "Customer581", 1330, 15},
+            {1311, "Customer169", 610, 29},
+            {1537, "Customer327", 1370, 1},
+            {1239, "Customer483", 880, 21},
 
-            {1003, "Customer3", 150, 5},
-            {1062, "Customer62", 1035, 4},
-            {1018, "Customer18", 375, 6},
-            {1082, "Customer82", 1335, 14},
-            {1045, "Customer45", 780, 30},
-            {1073, "Customer73", 1200, 26},
-            {1029, "Customer29", 540, 29},
-            {1051, "Customer51", 870, 11},
-            {1100, "Customer100", 1605, 22},
-            {1038, "Customer38", 675, 16},
+            {1139, "Customer247", 370, 7},
+            {1481, "Customer401", 1230, 14},
+            {1361, "Customer594", 760, 25},
+            {1251, "Customer152", 670, 12},
+            {1583, "Customer316", 1510, 30},
+            {1172, "Customer488", 440, 18},
+            {1417, "Customer219", 1010, 4},
+            {1296, "Customer555", 810, 27},
+            {1515, "Customer111", 1220, 9},
+            {1339, "Customer361", 690, 20},
 
-            {1007, "Customer7", 210, 14},
-            {1064, "Customer64", 1065, 8},
-            {1013, "Customer13", 300, 28},
-            {1086, "Customer86", 1395, 22},
-            {1049, "Customer49", 840, 7},
-            {1079, "Customer79", 1290, 7},
-            {1022, "Customer22", 435, 15},
-            {1057, "Customer57", 960, 24},
-            {1092, "Customer92", 1485, 3},
-            {1033, "Customer33", 600, 5},
+            {1111, "Customer439", 350, 11},
+            {1462, "Customer262", 1100, 2},
+            {1381, "Customer527", 900, 24},
+            {1228, "Customer195", 570, 17},
+            {1566, "Customer355", 1460, 31},
+            {1151, "Customer501", 400, 5},
+            {1437, "Customer144", 1040, 13},
+            {1307, "Customer425", 610, 22},
+            {1548, "Customer288", 1400, 8},
+            {1272, "Customer577", 720, 29},
 
-            {1009, "Customer9", 240, 18},
-            {1068, "Customer68", 1125, 17},
-            {1017, "Customer17", 360, 4},
-            {1084, "Customer84", 1365, 18},
-            {1043, "Customer43", 750, 27},
-            {1077, "Customer77", 1260, 3},
-            {1024, "Customer24", 465, 19},
-            {1053, "Customer53", 900, 15},
-            {1096, "Customer96", 1545, 12},
-            {1037, "Customer37", 660, 14},
+            {1128, "Customer172", 360, 15},
+            {1499, "Customer339", 1190, 26},
+            {1394, "Customer561", 930, 3},
+            {1261, "Customer222", 740, 10},
+            {1596, "Customer447", 1570, 23},
+            {1181, "Customer131", 460, 19},
+            {1427, "Customer508", 1030, 6},
+            {1328, "Customer294", 650, 28},
+            {1527, "Customer416", 1270, 1},
+            {1241, "Customer158", 650, 12},
 
-            {1060, "Customer60", 1005, 31},
-            {1011, "Customer11", 270, 22},
-            {1088, "Customer88", 1425, 27},
-            {1040, "Customer40", 705, 20},
-            {1071, "Customer71", 1170, 23},
-            {1026, "Customer26", 495, 24},
-            {1030, "Customer30", 555, 31},
-            {1098, "Customer98", 1575, 17},
-            {1090, "Customer90", 1455, 30},
-            {1005, "Customer5", 180, 10}};
+            {1101, "Customer350", 300, 21},
+            {1451, "Customer585", 1070, 14},
+            {1356, "Customer216", 750, 30},
+            {1206, "Customer493", 520, 25},
+            {1574, "Customer141", 1500, 7},
+            {1168, "Customer371", 420, 16},
+            {1408, "Customer544", 970, 11},
+            {1286, "Customer277", 770, 4},
+            {1541, "Customer409", 1380, 18},
+            {1372, "Customer198", 860, 9},
+        };
 
     Booking workingBooking[SIZE];
     int choice;
@@ -489,6 +504,7 @@ int main()
             Booking bestCase[SIZE];
             Booking worstCase[SIZE];
             Booking averageCase[SIZE];
+            Booking temp[SIZE];
 
             createBestCase(originalBooking, bestCase, SIZE);
 
@@ -505,20 +521,44 @@ int main()
             cout << "\n=== HEAP SORT PERFORMANCE ===" << endl;
             cout << "-----------------------------" << endl;
             cout << "[Best Case]" << endl;
-            algorithm(bestCase, SIZE, 1);
+            for (int i = 0; i < SIZE; i++)
+            {
+                temp[i] = bestCase[i];
+            }
+            algorithm(temp, SIZE, 1);
             cout << "\n[Average Case]" << endl;
-            algorithm(averageCase, SIZE, 1);
+            for (int i = 0; i < SIZE; i++)
+            {
+                temp[i] = averageCase[i];
+            }
+            algorithm(temp, SIZE, 1);
             cout << "\n[Worst Case]" << endl;
-            algorithm(worstCase, SIZE, 1);
+            for (int i = 0; i < SIZE; i++)
+            {
+                temp[i] = worstCase[i];
+            }
+            algorithm(temp, SIZE, 1);
 
             cout << "\n=== SHELL SORT PERFORMANCE ===" << endl;
             cout << "------------------------------" << endl;
             cout << "[Best Case]" << endl;
-            algorithm(bestCase, SIZE, 2);
+            for (int i = 0; i < SIZE; i++)
+            {
+                temp[i] = bestCase[i];
+            }
+            algorithm(temp, SIZE, 2);
             cout << "\n[Average Case]" << endl;
-            algorithm(averageCase, SIZE, 2);
+            for (int i = 0; i < SIZE; i++)
+            {
+                temp[i] = averageCase[i];
+            }
+            algorithm(temp, SIZE, 2);
             cout << "\n[Worst Case]" << endl;
-            algorithm(worstCase, SIZE, 2);
+            for (int i = 0; i < SIZE; i++)
+            {
+                temp[i] = worstCase[i];
+            }
+            algorithm(temp, SIZE, 2);
             cout << "=============================" << endl;
         }
 
